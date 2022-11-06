@@ -1,0 +1,37 @@
+@import './base.css';
+
+@font-face {
+    font-family: 'Raleway';
+    src: url('fonts/Raleway.ttf');
+}
+
+#app {
+    width: auto;
+    max-width: 1280px;
+    height: fit-content;
+    margin: 0 auto;
+    overflow-x: hidden;
+}
+
+.logo {
+    font-family: Raleway;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-left: 24px;
+    user-select: none;
+}
+
+.header_main {
+    font-size: 2rem;
+    width: 100%;
+    text-align: center;
+    font-family: Raleway;
+    padding: 16px 0;
+    user-select: none;
+}
+
+.product_list_inline {
+    width: 100%;
+    height: fit-content;
+    padding: 16px;
+}
