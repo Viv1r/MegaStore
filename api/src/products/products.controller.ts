@@ -19,6 +19,7 @@ export class ProductsController {
                 id: true,
                 title: true,
                 description: true,
+                price: true,
                 store: {
                     select: {
                         title: true
@@ -27,7 +28,6 @@ export class ProductsController {
             },
             take: body.count || 10
         });
-        console.log(result);
         return result;
     }
 }
