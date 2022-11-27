@@ -1,0 +1,63 @@
+.main_page {
+    width: 100%;
+    height: fit-content;
+    min-height: 92vh;
+}
+
+.container_featured {
+    width: 100%;
+    height: 466px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container_recommended {
+    width: 100%;
+    height: 392px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header_main {
+    font-size: 30px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Kufam';
+    margin: 37px auto 30px auto;
+    user-select: none;
+}
+
+.product_list_inline {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 48px;
+}
+
+.btn_more {
+    width: 170px;
+    height: 37px;
+    border: 1.5px solid #003BD1;
+    border-radius: 10px;
+    font-family: 'Kulim Park';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: #003BD1;
+    transition: all .2s ease-out;
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+        color: white;
+        background-color: #003BD1;
+    }
+}
