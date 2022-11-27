@@ -10,7 +10,7 @@
                     :alt="product.title"
                 >
                 <h1>{{ product.title || 'No title' }}</h1>
-                <p>{{ product.description || '' }}</p>
+                <h2 v-if="product.store">Seller: {{ product.store.title }}</h2>
                 <div class="action_buttons">
                     <div class="btn_details">More details</div>
                     <div class="btn_add_item">Add to cart</div>
@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
     .product_list_inline {
         width: 100%;
         height: 300px;
@@ -48,13 +48,24 @@ export default {
         flex-direction: column;
         padding: 8px;
         border: 1px solid #cccccc;
-    }
-
-    .product img {
-        max-width: 60%;
-        max-height: 70%;
-        height: auto;
-        margin: 0 auto;
+        img {
+            max-width: 60%;
+            max-height: 70%;
+            height: auto;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 30px;
+        }
+        h2 {
+            font-size: 12px;
+        }
+        p {
+            font-size: 16px;
+        }
+        .action_buttons {
+            margin-top: 16px;
+        }
     }
 
     .action_buttons {
@@ -64,8 +75,8 @@ export default {
         gap: 12px;
     }
 
-    .btn_add_item,
-    .btn_details {
+    .btn_details,
+    .btn_add_item {
         width: fit-content;
         border-radius: 8px;
         padding: 2px 24px;
@@ -73,11 +84,12 @@ export default {
         user-select: none;
     }
 
-    .btn_details {
-        background-color: #5bbeff;
-    }
-
-    .btn_add_item {
-        background-color: #ffa600;
+    .btn {
+        &_details {
+            background-color: #54d4ff;
+        }
+        &_add_item {
+            background-color: #ffa600;
+        }
     }
 </style>
