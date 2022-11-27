@@ -6,8 +6,16 @@
 }
 
 #app {
-    width: auto;
+    width: 100%;
+    min-width: 600px;
     height: fit-content;
     margin: 0 auto;
     overflow-x: hidden;
+}
+
+@media (max-width: 600px) {
+    #app {
+        margin: 0;
+        transform: translateX(calc((600px - 100vw) * -0.5));
+    }
 }

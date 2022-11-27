@@ -1,4 +1,3 @@
-// @ts-ignore
 import { createStore } from 'vuex';
 
 export default createStore({
@@ -30,6 +29,8 @@ export default createStore({
 
     actions: {
         async getItems(store, count) {
+            store.productList = [];
+
             const URL = 'api/products';
             const body = {
                 count: count || 10

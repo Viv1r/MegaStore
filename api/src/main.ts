@@ -7,7 +7,8 @@ const PORT = 80;
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
-	app.useStaticAssets(join(__dirname, '..', 'public'));
+	const assets = join(__dirname, '..', 'public');
+	app.useStaticAssets(assets);
 	await app.listen(PORT);
 }
 

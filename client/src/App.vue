@@ -6,29 +6,22 @@
                     <img src="./assets/svg/menu.svg" alt="menu">
                 </div>
             </div>
-            <div class="logo">
-                MegaStore
-            </div>
+            <div class="logo">MegaStore</div>
             <div class="right_side">
                 <div class="btn_cart">
                     <img src="./assets/svg/cart.svg" alt="cart">
                 </div>
-                <div class="btn_auth">
-                    Log in
-                </div>
+                <div class="btn_auth">Log in</div>
             </div>
         </div>
     </header>
     <div class="container">
         <RouterView />
     </div>
-    <footer>
-        MegaStore © 2022 (by viv1r)
-    </footer>
+    <footer>MegaStore © 2022 (by viv1r)</footer>
 </template>
 
 <script>
-import { RouterLink, RouterView } from 'vue-router';
 import { mapActions } from 'vuex';
 
 export default {
@@ -86,6 +79,8 @@ export default {
         font-style: normal;
         font-weight: 400;
         font-size: 36px;
+        user-select: none;
+        cursor: pointer;
     }
 
     .btn_menu,
@@ -96,12 +91,12 @@ export default {
         margin-left: 16px;
         cursor: pointer;
     }
-    
+
     .btn_menu img {
         width: 100%;
         height: auto;
     }
-    
+
     .btn_cart img {
         width: 90%;
         height: auto;
@@ -135,6 +130,7 @@ export default {
     }
 
     footer {
+        margin-top: 48px;
         width: 100%;
         height: 128px;
         display: flex;
@@ -144,4 +140,5 @@ export default {
         color: white;
         font-family: 'Kulim Park';
     }
+
 </style>
