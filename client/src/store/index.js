@@ -14,13 +14,14 @@ export default createStore({
     mutations: {
         addProducts(store, newProducts) {
             store.productList.push(
-                ...newProducts.map(({id, title, description, price, store}) => {
+                ...newProducts.map(({id, title, description, price, store, picture}) => {
                     return {
                         id: id,
                         title: title,
                         description: description,
                         price: price,
-                        store: store
+                        store: store,
+                        picture: picture
                     };
                 })
             );
@@ -43,7 +44,10 @@ export default createStore({
                 body: JSON.stringify(body)
             });
             const data = await response.json();
-            store.commit('addProducts', data);
+            
+            if (data && data.products) {
+                store.commit('addProducts', data.products);
+            }
         }
     }
 });

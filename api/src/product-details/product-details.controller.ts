@@ -24,6 +24,7 @@ export class ProductDetailsController {
 
         if (result) {
             const picturesList = [];
+            
             try {
                 const regex = /^.*\.(jpg|png|jpeg)$/;
                 const folder = itemsFolder + `/${result.id}/`;

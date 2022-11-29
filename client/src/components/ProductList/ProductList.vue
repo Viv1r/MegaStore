@@ -4,9 +4,9 @@
             class="product_card"
             @click="openProduct(product)"
         >
-            <div class="product_card__image">
+            <div class="product_card__picture">
                 <img
-                    :src="`api/assets/items/${product.id}/0.jpg`"
+                    :src="product.picture ? `api/${product.picture}` : 'src/assets/pictures/no_picture.jpg'"
                     :alt="product.title"
                 >
             </div>
