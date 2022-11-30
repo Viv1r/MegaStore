@@ -3,7 +3,7 @@ import { SqlService } from 'src/sql/sql.service';
 
 import fs from 'fs';
 
-const mainFolder = './public/';
+const mainFolder = './dist/public/';
 const itemsFolder = 'assets/items';
 
 @Controller('product-details')

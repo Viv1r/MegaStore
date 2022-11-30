@@ -13,7 +13,7 @@ interface Store {
 interface Product {
     id: Number,
     title: String,
-    description: String,
+    description?: String,
     price: Decimal,
     picture?: String,
     store?: Store
@@ -32,7 +32,6 @@ export class ProductsController {
             select: {
                 id: true,
                 title: true,
-                description: true,
                 price: true,
                 store: {
                     select: {
