@@ -3,7 +3,7 @@ import { SqlService } from 'src/sql/sql.service';
 
 import fs from 'fs';
 
-const mainFolder = './public/';
+const mainFolder = './dist/public/';
 const itemsFolder = 'assets/items';
 
 @Controller('product-details')
@@ -24,6 +24,7 @@ export class ProductDetailsController {
 
         if (result) {
             const picturesList = [];
+            
             try {
                 const regex = /^.*\.(jpg|png|jpeg)$/;
                 const folder = itemsFolder + `/${result.id}/`;

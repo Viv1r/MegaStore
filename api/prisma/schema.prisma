@@ -32,7 +32,8 @@ model stores {
 model users {
   id              Int       @id @default(autoincrement())
   name            String?   @db.VarChar(128) @default("Anonymous")
-  email           String    @db.VarChar(256)
+  email           String    @db.VarChar(256) @unique
+  password        String?   @db.VarChar(128)
 
   managed_stores  managersOnStores[]
   owned_stores    stores[]
