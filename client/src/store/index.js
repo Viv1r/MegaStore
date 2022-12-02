@@ -34,6 +34,10 @@ export default createStore({
                 return;
             }
 
+            if (store.cart.find(elem => elem.id === parsedProduct.id)) {
+                return;
+            }
+
             store.cart.push(parsedProduct);
         }
     },
