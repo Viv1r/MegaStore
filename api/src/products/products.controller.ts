@@ -27,7 +27,7 @@ export class ProductsController {
     constructor(private readonly sqlService: SqlService) {}
 
     @Post()
-    async productsPost(@Body() body) {
+    async productsPost(@Body() body): Promise<Object> {
         const result: Product[] = await this.sqlService.client.products.findMany({
             select: {
                 id: true,

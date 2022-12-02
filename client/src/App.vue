@@ -8,33 +8,42 @@
             </div>
             <div class="logo">MegaStore</div>
             <div class="right_side">
-                <div class="btn_cart">
+                <div
+                    class="btn_cart"
+                    @click="cartActive = !cartActive"
+                >
                     <img src="./assets/svg/cart.svg" alt="cart">
                 </div>
+                <Cart v-if="cartActive"/>
                 <div class="btn_auth">Log in</div>
             </div>
         </div>
     </header>
+    <div v-if="cartActive" class="blackout"></div>
     <div class="container">
-        <RouterView />
+        <RouterView/>
     </div>
     <footer>MegaStore © 2022 (by viv1r)</footer>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import Cart from './components/Cart/Cart.vue';
 
 export default {
     data() {
         return {
-
+            cartActive: false
         }
     },
+    components: {
+        Cart
+    },
     created() {
-        this.getItems();
+        this.loadProducts(5);
     },
     methods: {
-        ...mapActions(['getItems'])
+        ...mapActions(['loadProducts'])
     }
 }
 </script>
@@ -141,4 +150,11 @@ export default {
         font-family: 'Kulim Park';
     }
 
+    .blackout {
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 64px);
+        background-color: rgba(0, 0, 0, .5);
+        z-index: 9;
+    }
 </style>

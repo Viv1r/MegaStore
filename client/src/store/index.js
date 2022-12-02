@@ -2,13 +2,8 @@ import { createStore } from 'vuex';
 
 export default createStore({
     state: {
-        productList: []
-    },
-
-    getters: {
-        getProductList(store) {
-            return store.productList;
-        }
+        productList: [],
+        cart: []
     },
 
     mutations: {
@@ -25,11 +20,26 @@ export default createStore({
                     };
                 })
             );
+        },
+
+        addToCart(store, {id, title, price, picture}) {
+            const parsedProduct = {
+                id: id,
+                title: title,
+                price: price,
+                picture: picture
+            };
+
+            if (Object.values(parsedProduct).some(elem => !elem)) {
+                return;
+            }
+
+            store.cart.push(parsedProduct);
         }
     },
 
     actions: {
-        async getItems(store, count) {
+        async loadProducts(store, count) {
             store.productList = [];
 
             const URL = 'api/products';

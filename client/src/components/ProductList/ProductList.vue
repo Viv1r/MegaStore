@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapState, mapMutations } from 'vuex';
 
 export default {
     props: {
@@ -47,9 +47,10 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['getProductList']),
+        ...mapState(['productList']),
+
         products() {
-            const list = this.getProductList
+            const list = this.productList
                 .slice(this.startIndex,this.endIndex - this.startIndex + 1);
             return this.reversed
                 ? list.reverse()
@@ -57,12 +58,10 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['addToCart']),
+
         openProduct(product) {
             console.log(`Get ${product.title} details.`);
-        },
-
-        addToCart(product) {
-            console.log(`Added ${product.title} to cart.`);
         }
     }
 }

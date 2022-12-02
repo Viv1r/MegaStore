@@ -32,22 +32,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import ProductList from "../components/ProductList/ProductList.vue";
 
 export default {
     components: {
         ProductList
-    },
-
-    computed: {
-        ...mapGetters(['getProductList'])
-    },
-
-    methods: {
-        Number(num) {
-            return Number(num);
-        }
     }
 }
 </script>

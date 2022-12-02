@@ -11,7 +11,7 @@ export class ProductDetailsController {
     constructor(private readonly sqlService: SqlService) {}
 
     @Post()
-    async productDetailsPost(@Body() body) {
+    async productDetailsPost(@Body() body): Promise<Object> {
         if (isNaN(Number(body.id)) || body.id === null) {
             return { statusCode: 'error', statusMessage: 'Wrong ID!' };
         }
