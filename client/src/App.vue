@@ -13,14 +13,20 @@
                     @click="cartActive = !cartActive"
                 >
                     <img src="./assets/svg/cart.svg" alt="cart">
-                    <div v-if="cart.length > 0" class="btn_cart__counter">{{ cart.length }}</div>
+                    <Transition name="grow">
+                        <div v-if="cart.length > 0" class="btn_cart__counter">{{ cart.length }}</div>
+                    </Transition>
                 </div>
-                <Cart v-if="cartActive"/>
+                <Transition name="dropdown">
+                    <Cart v-if="cartActive"/>
+                </Transition>
                 <div class="btn_auth">Log in</div>
             </div>
         </div>
     </header>
-    <div v-if="cartActive" class="blackout" @click="cartActive = false"></div>
+    <Transition>
+        <div v-if="cartActive" class="blackout" @click="cartActive = false"></div>
+    </Transition>
     <div class="container">
         <RouterView/>
     </div>
@@ -175,5 +181,60 @@ export default {
         height: calc(100% - 64px);
         background-color: rgba(0, 0, 0, .5);
         z-index: 9;
+    }
+
+    @media(max-width: 600px) {
+        .header__content {
+            margin: 0 auto;
+            width: 100vw;
+        }
+
+        .logo {
+            bottom: 5px;
+            font-size: 32px;
+        }
+
+        .btn_cart {
+            top: 2px;
+        }
+
+        .btn_auth {
+            display: none;
+        }
+
+        .cart {
+            max-width: 90vw;
+        }
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+        transition: opacity 0.15s ease-in-out;
+    }
+
+    .v-enter-from,
+    .v-leave-to {
+        opacity: 0;
+    }
+
+    .dropdown-enter-active,
+    .dropdown-leave-active {
+        transition: all 0.15s ease-out;
+    }
+
+    .dropdown-enter-from,
+    .dropdown-leave-to {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+
+    .grow-enter-active,
+    .grow-leave-active {
+        transition: all 0.15s ease-out;
+    }
+
+    .grow-enter-from,
+    .grow-leave-to {
+        transform: scale(0%);
     }
 </style>
