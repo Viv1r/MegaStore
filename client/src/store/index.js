@@ -1,14 +1,59 @@
 import { createStore } from 'vuex';
 
 export default createStore({
+    
     state: {
-        productList: [],
-        cart: []
+        cart: [],
+        productList: []
     },
 
     mutations: {
-        addProducts(store, newProducts) {
-            store.productList.push(
+        addToCart({cart}, {id, title, price, picture}) {
+            const parsedProduct = {
+                id: id,
+                title: title,
+                price: price,
+                count: 1
+            };
+
+            if (Object.values(parsedProduct).some(elem => !elem)) return;
+            if (cart.find(elem => elem.id === parsedProduct.id)) return;
+
+            parsedProduct.picture = picture;
+            cart.push(parsedProduct);
+        },
+
+        removeFromCart({cart}, id) {
+            const targetIndex = cart.findIndex(elem => elem.id === id);
+            if (targetIndex >= 0) {
+                cart.splice(targetIndex, 1);
+            }
+        },
+
+        cartAddCount({cart}, {id, count}) {
+            const targetIndex = cart.findIndex(elem => elem.id === id);
+            const targetProduct = cart[targetIndex];
+            if (targetProduct) {
+                targetProduct.count += Number(count);
+                if (targetProduct.count <= 0) {
+                    cart.splice(targetIndex, 1);
+                }
+            }
+        },
+
+        cartSetCount({cart}, {id, count}) {
+            const targetIndex = cart.findIndex(elem => elem.id === id);
+            const targetProduct = cart[targetIndex];
+            if (targetProduct) {
+                targetProduct.count = parseInt(count) || 0;
+                if (targetProduct.count <= 0) {
+                    cart.splice(targetIndex, 1);
+                }
+            }
+        },
+
+        addProducts({productList}, newProducts) {
+            productList.push(
                 ...newProducts.map(({id, title, description, price, store, picture}) => {
                     return {
                         id: id,
@@ -21,46 +66,28 @@ export default createStore({
                 })
             );
         },
-
-        addToCart(store, {id, title, price, picture}) {
-            const parsedProduct = {
-                id: id,
-                title: title,
-                price: price,
-                picture: picture
-            };
-
-            if (Object.values(parsedProduct).some(elem => !elem)) {
-                return;
-            }
-
-            if (store.cart.find(elem => elem.id === parsedProduct.id)) {
-                return;
-            }
-
-            store.cart.push(parsedProduct);
-        }
     },
 
     actions: {
-        async loadProducts(store, count) {
-            store.productList = [];
+        async loadProducts({productList, commit}, count) {
+            productList = [];
 
             const URL = 'api/products';
-            const body = {
+            const params = {
                 count: count || 10
             };
+
             const response = await fetch(URL, {
-                method: 'POST',
+                method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(body)
+                params: JSON.stringify(params)
             });
             const data = await response.json();
             
             if (data && data.products) {
-                store.commit('addProducts', data.products);
+                commit('addProducts', data.products);
             }
         }
     }

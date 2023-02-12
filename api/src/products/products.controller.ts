@@ -1,4 +1,6 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Controller, Req, Res, Get, Post, Body, Param } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { AppService } from '../app.service';
 import { SqlService } from 'src/sql/sql.service';
 import { resourceLimits } from 'worker_threads';
@@ -7,15 +9,15 @@ import fs from 'fs';
 import { Decimal } from '@prisma/client/runtime';
 
 interface Store {
-    title: String
+    title: string
 }
 
 interface Product {
-    id: Number,
-    title: String,
-    description?: String,
+    id: number,
+    title: string,
+    description?: string,
     price: Decimal,
-    picture?: String,
+    picture?: string,
     store?: Store
 }
 
@@ -26,8 +28,8 @@ const itemsFolder = 'assets/items';
 export class ProductsController {
     constructor(private readonly sqlService: SqlService) {}
 
-    @Post()
-    async productsPost(@Body() body): Promise<Object> {
+    @Get()
+    async getProducts(@Param('count') count: string): Promise<object> {
         const result: Product[] = await this.sqlService.client.products.findMany({
             select: {
                 id: true,
@@ -39,11 +41,11 @@ export class ProductsController {
                     }
                 }
             },
-            take: body.count || 10
+            take: Number(count) || 10
         });
         
         if (result) {
-            for (let elem of result) {
+            for (const elem of result) {
                 try {
                     const regex = /^.*\.(jpg|png|jpeg)$/;
                     const folder = itemsFolder + `/${elem.id}/`;
@@ -63,4 +65,33 @@ export class ProductsController {
             return { statusCode: 'ok', products: result };
         }
     }
+
+    @Get('/:id')
+    async getProduct(@Param() params: { id: number }): Promise<object> {
+        const result: Product[] = await this.sqlService.client.products.findMany({
+            select: {
+                id: true,
+                title: true,
+                price: true,
+                store: {
+                    select: {
+                        title: true
+                    }
+                }
+            },
+            where: {
+                id: Number(params.id) || 0
+            }
+        });
+        return result;
+    }
+
+	@Post('/create')
+	async createProduct(@Req() request: Request, @Res({ passthrough: true }) response: Response): Promise<object> {
+		const token = request.cookies['token'];
+		if (!token) {
+			return { statusCode: 'error', statusMessage: 'bad token!' };
+		}
+		return { token: token };
+	}
 }

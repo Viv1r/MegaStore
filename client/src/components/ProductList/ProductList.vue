@@ -13,15 +13,21 @@
             <div class="product_card__info">
                 <div class="product_card__title">{{ product.title || 'Product' }}</div>
                 <div class="actions_wrapper">
+
                     <div class="product_card__price">
                         {{ '$' + Number(product.price).toFixed(2) }}
                     </div>
-                    <div
-                        class="btn_add_item"
-                        @click.stop="addToCart(product)"
-                    >
-                        Add to cart
+
+                    <div v-if="cart.some(elem => elem.id == product.id)" class="count_selector" @click.stop>
+                        <button class="btn_decrease" style="border-radius: 6px 0 0 6px"
+                            @click="cartAddCount({id: product.id, count: -1})">-</button>
+                        <input type="text" @input="cartSetCount({id: product.id, count: parseInt($event.target.value)})" :value="cart[cart.findIndex(elem => elem.id === product.id)].count">
+                        <button class="btn_increase" style="border-radius: 0 6px 6px 0"
+                            @click="cartAddCount({id: product.id, count: 1})">+</button>
                     </div>
+
+                    <div v-else class="btn_add_item" @click.stop="addToCart(product)">Add to cart</div>
+                    
                 </div>
             </div>
         </div>
@@ -47,18 +53,18 @@ export default {
         }
     },
     computed: {
-        ...mapState(['productList']),
+        ...mapState(['productList', 'cart']),
 
         products() {
             const list = this.productList
-                .slice(this.startIndex,this.endIndex - this.startIndex + 1);
+                .slice(this.startIndex, this.endIndex - this.startIndex + 1);
             return this.reversed
                 ? list.reverse()
                 : list;
         }
     },
     methods: {
-        ...mapMutations(['addToCart']),
+        ...mapMutations(['addToCart', 'cartAddCount', 'cartSetCount']),
 
         openProduct(product) {
             console.log(`Get ${product.title} details.`);

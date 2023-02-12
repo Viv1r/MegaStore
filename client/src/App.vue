@@ -13,13 +13,14 @@
                     @click="cartActive = !cartActive"
                 >
                     <img src="./assets/svg/cart.svg" alt="cart">
+                    <div v-if="cart.length > 0" class="btn_cart__counter">{{ cart.length }}</div>
                 </div>
                 <Cart v-if="cartActive"/>
                 <div class="btn_auth">Log in</div>
             </div>
         </div>
     </header>
-    <div v-if="cartActive" class="blackout"></div>
+    <div v-if="cartActive" class="blackout" @click="cartActive = false"></div>
     <div class="container">
         <RouterView/>
     </div>
@@ -27,23 +28,23 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import Cart from './components/Cart/Cart.vue';
 
 export default {
+    components: {
+        Cart
+    },
     data() {
         return {
             cartActive: false
         }
     },
-    components: {
-        Cart
+    computed: {
+        ...mapState(['cart'])
     },
     created() {
-        this.loadProducts(5);
-    },
-    methods: {
-        ...mapActions(['loadProducts'])
+        this.$store.dispatch('loadProducts', 5);
     }
 }
 </script>
@@ -106,9 +107,27 @@ export default {
         height: auto;
     }
 
-    .btn_cart img {
-        width: 90%;
-        height: auto;
+    .btn_cart {
+        img {
+            width: 90%;
+            height: auto;
+        }
+
+        &__counter {
+            width: 19px;
+            height: 19px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+            border-radius: 50%;
+            background: #236af2;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+        }
     }
 
     .left_side {
