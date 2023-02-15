@@ -7,44 +7,54 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model products {
-  id              Int       @id @default(autoincrement())
-  title           String    @db.VarChar(256)
-  description     String?
-  attributes      String?
-  price           Decimal?  @default(0.00) @db.Decimal(16, 2)
-  count_available Int?      @default(0)
-  store_id        Int?
-  
-  store           stores?   @relation(fields: [store_id], references: [id])
-}
+model categories {
+  id                  Int                   @id @default(autoincrement())
+  name                String                @db.VarChar(64)
 
-model stores {
-  id              Int       @id @default(autoincrement())
-  title           String?   @db.VarChar(128) @default("Store")
-  owner_id        Int
-  
-  owner           users     @relation(fields: [owner_id], references: [id])
-  managers        managersOnStores[]
-  products        products[] 
+  products            products[]
+}         
+
+model products {          
+  id                  Int                   @id @default(autoincrement())
+  title               String                @db.VarChar(256)
+  category_id         Int?
+  description         String?         
+  attributes          String?         
+  price               Decimal?              @default(0.00) @db.Decimal(16, 2)
+  count_available     Int?                  @default(0)
+  store_id            Int?          
+
+  category            categories?           @relation(fields: [category_id], references: [id])
+  store               stores?               @relation(fields: [store_id], references: [id])
+}         
+
+model stores {          
+  id                  Int                   @id @default(autoincrement())
+  title               String?               @db.VarChar(128) @default("Store")
+  owner_id            Int           
+
+  owner               users                 @relation(fields: [owner_id], references: [id])
+  managers            managersOnStores[]
+  products            products[] 
 }
 
 model users {
-  id              Int       @id @default(autoincrement())
-  name            String?   @db.VarChar(128) @default("Anonymous")
-  email           String    @db.VarChar(256) @unique
-  password        String?   @db.VarChar(128)
-  auth_token      String?   @db.VarChar(64)
+  id                  Int                   @id @default(autoincrement())
+  name                String?               @db.VarChar(128) @default("Anonymous")
+  email               String                @db.VarChar(256) @unique
+  password            String?               @db.VarChar(128)
+  auth_token          String?               @db.VarChar(64)
 
-  managed_stores  managersOnStores[]
-  owned_stores    stores[]
+  managed_stores      managersOnStores[]
+  owned_stores        stores[]
 }
 
 model managersOnStores {
-  manager_id      Int
-  store_id        Int
+  manager_id          Int
+  store_id            Int
 
-  manager         users     @relation(fields: [manager_id], references: [id])
-  store           stores    @relation(fields: [store_id], references: [id])
+  manager             users                 @relation(fields: [manager_id], references: [id])
+  store               stores                @relation(fields: [store_id], references: [id])
+  
   @@id([manager_id, store_id])
 }

@@ -39,6 +39,11 @@ export class ProductsController {
                     select: {
                         title: true
                     }
+                },
+                category: {
+                    select: {
+                        name: true
+                    }
                 }
             },
             take: Number(count) || 10
