@@ -13,21 +13,19 @@
             <div class="product_card__info">
                 <div class="product_card__title">{{ product.title || 'Product' }}</div>
                 <div class="actions_wrapper">
-
                     <div class="product_card__price">
                         {{ '$' + Number(product.price).toFixed(2) }}
                     </div>
 
                     <div v-if="cart.some(elem => elem.id == product.id)" class="count_selector" @click.stop>
-                        <button class="btn_decrease" style="border-radius: 6px 0 0 6px"
+                        <button class="btn_decrease"
                             @click="cartAddCount({id: product.id, count: -1})">-</button>
                         <input type="text" @input="cartSetCount({id: product.id, count: parseInt($event.target.value)})" :value="cart[cart.findIndex(elem => elem.id === product.id)].count">
-                        <button class="btn_increase" style="border-radius: 0 6px 6px 0"
+                        <button class="btn_increase"
                             @click="cartAddCount({id: product.id, count: 1})">+</button>
                     </div>
 
                     <div v-else class="btn_add_item" @click.stop="addToCart(product)">Add to cart</div>
-                    
                 </div>
             </div>
         </div>

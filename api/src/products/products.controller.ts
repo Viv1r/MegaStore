@@ -1,9 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Req, Res, Get, Post, Body, Param } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AppService } from '../app.service';
 import { SqlService } from 'src/sql/sql.service';
-import { resourceLimits } from 'worker_threads';
 
 import fs from 'fs';
 import { Decimal } from '@prisma/client/runtime';
@@ -28,9 +26,11 @@ const itemsFolder = 'assets/items';
 export class ProductsController {
     constructor(private readonly sqlService: SqlService) {}
 
+    private readonly products = this.sqlService.client.products;
+
     @Get()
     async getProducts(@Param('count') count: string): Promise<object> {
-        const result: Product[] = await this.sqlService.client.products.findMany({
+        const result: Product[] = await this.products.findMany({
             select: {
                 id: true,
                 title: true,
@@ -73,7 +73,7 @@ export class ProductsController {
 
     @Get('/:id')
     async getProduct(@Param() params: { id: number }): Promise<object> {
-        const result: Product[] = await this.sqlService.client.products.findMany({
+        const result: Product[] = await this.products.findMany({
             select: {
                 id: true,
                 title: true,

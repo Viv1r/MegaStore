@@ -5,9 +5,18 @@
     src: url('fonts/Raleway.ttf');
 }
 
+@font-face {
+    font-family: 'Kufam';
+    src: url('fonts/Kufam-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Kulim Park';
+    src: url('fonts/KulimPark-Regular.ttf');
+}
+
 #app {
     width: 100%;
-    min-width: 600px;
     height: fit-content;
     margin: 0 auto;
     overflow-x: hidden;
@@ -16,6 +25,47 @@
 @media (max-width: 600px) {
     #app {
         margin: 0;
-        transform: translateX(calc((600px - 100vw) * -0.5));
     }
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.15s ease-in-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+
+.dropdown-enter-active,
+.dropdown-leave-active {
+    transition: all 0.15s ease-out;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+    transform: translateY(-50px);
+    opacity: 0;
+}
+
+.sidebar-enter-active,
+.sidebar-leave-active {
+    transition: all 0.15s ease-out;
+}
+
+.sidebar-enter-from,
+.sidebar-leave-to {
+    transform: translateX(-200px);
+    opacity: 0;
+}
+
+.grow-enter-active,
+.grow-leave-active {
+    transition: all 0.15s ease-out;
+}
+
+.grow-enter-from,
+.grow-leave-to {
+    transform: scale(0%);
 }

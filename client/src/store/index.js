@@ -6,6 +6,7 @@ export default createStore({
     state: {
         cart: [],
         productList: [],
+        categories: [],
         loggedIn: false
     },
 
@@ -18,8 +19,8 @@ export default createStore({
                 count: 1
             };
 
-            if (Object.values(parsedProduct).some(elem => !elem)) return; // Отмена при наличии невалидных полей
-            if (cart.find(elem => elem.id === parsedProduct.id)) return; // Отмена если продукт есть в корзине
+            if (Object.values(parsedProduct).some(elem => !elem)) return; // Cancel if the product contains invalid fields
+            if (cart.find(elem => elem.id === parsedProduct.id)) return; // Cancel if the product is already in the cart
 
             parsedProduct.picture = picture;
             cart.push(parsedProduct);
@@ -71,27 +72,46 @@ export default createStore({
                 })
             );
         },
+
+        setCategories(store, newCategories) {
+            store.categories = newCategories;
+        }
     },
 
     actions: {
-        async loadProducts({productList, commit}, count) {
-            productList = [];
+        async loadProducts(store, count) {
+            store.productList = [];
 
             const URL = 'api/products';
             const params = {
                 count: count || 10
             };
 
+            let data;
             try {
                 const response = await axios.get(URL, {
                     params: params
                 });
-                const data = response.data;
-                
+                data = response.data;
+            } finally {
                 if (data && data.products) {
-                    commit('addProducts', data.products);
+                    store.commit('addProducts', data.products);
                 }
-            } catch {}
+            }
+        },
+
+        async loadCategories({commit}) {
+            const URL = 'api/categories';
+            
+            let data;
+            try {
+                const response = await axios.get(URL);
+                data = response.data;
+            } finally {
+                if (data && data.categories) {
+                    commit('setCategories', data.categories);
+                }
+            }
         }
     }
 });

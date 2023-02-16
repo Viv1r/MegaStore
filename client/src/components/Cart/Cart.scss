@@ -76,6 +76,7 @@
     padding: 10px 14px 14px 14px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 16px;
 
     .btn_checkout {
@@ -103,6 +104,44 @@
         &:hover {
             color: white;
             background-color: #0085FF;
+        }
+    }
+}
+
+@media(max-width: 600px) {
+    .cart {
+        max-width: 90vw;
+
+        &__product {
+            min-height: 64px;
+
+            &__title {
+                font-size: 20px;
+                line-height: 24px;
+            }
+
+            &__price {
+                font-size: 18px;
+                line-height: 20px;
+            }
+
+            &__btn_remove {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+
+        .checkout_wrapper {
+            font-size: 18px;
+            line-height: 21px;
+        }
+
+        .btn_checkout {
+            width: 136px;
+            height: 33px;
+            border-radius: 12px;
+            font-size: 15px;
         }
     }
 }
