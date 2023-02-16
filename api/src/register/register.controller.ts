@@ -5,7 +5,7 @@ import validate from 'src/modules/validate';
 
 
 function generateHash(length): string {
-    const rand = (max) => Math.floor(Math.random() * Math.floor(max));
+    const rand = (max: number) => Math.floor(Math.random() * Math.floor(max));
     const SYMBOLS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     let result = '';
@@ -20,8 +20,10 @@ function generateHash(length): string {
 export class RegisterController {
     constructor(private readonly sqlService: SqlService) {}
 
+    private readonly users = this.sqlService.client.users;
+
     async emailExists(email: string): Promise<boolean> {
-        const data = await this.sqlService.client.users.findFirst({
+        const data = await this.users.findFirst({
             where: {
                 email: email
             }
@@ -50,7 +52,7 @@ export class RegisterController {
 
         let result;
         try {
-            result = await this.sqlService.client.users.create({
+            result = await this.users.create({
                 data: { ...registerData, auth_token: generateHash(64) }
             });
         } catch (err) {

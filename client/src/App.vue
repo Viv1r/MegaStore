@@ -81,6 +81,7 @@ export default {
     created() {
         this.$store.dispatch('loadProducts', 5);
         this.$store.dispatch('loadCategories');
+        this.$store.dispatch('loadCart');
     }
 }
 </script>

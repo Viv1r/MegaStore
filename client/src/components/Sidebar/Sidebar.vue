@@ -16,9 +16,6 @@ export default {
     computed: {
         ...mapState(['categories'])
     },
-    mounted() {
-        console.log(this.categories);
-    },
     emits: ['close']
 }
 </script>

@@ -11,12 +11,12 @@ export default createStore({
     },
 
     mutations: {
-        addToCart({cart}, {id, title, price, picture}) {
+        addToCart({cart}, {id, title, price, picture, count}) {
             const parsedProduct = {
                 id: id,
                 title: title,
                 price: price,
-                count: 1
+                count: count || 1
             };
 
             if (Object.values(parsedProduct).some(elem => !elem)) return; // Cancel if the product contains invalid fields
@@ -24,6 +24,8 @@ export default createStore({
 
             parsedProduct.picture = picture;
             cart.push(parsedProduct);
+
+            localStorage.setItem('cart', JSON.stringify(cart));
         },
 
         removeFromCart({cart}, id) {
@@ -31,6 +33,8 @@ export default createStore({
 
             if (targetIndex >= 0) {
                 cart.splice(targetIndex, 1);
+
+                localStorage.setItem('cart', JSON.stringify(cart));
             }
         },
 
@@ -43,6 +47,8 @@ export default createStore({
                 if (targetProduct.count <= 0) {
                     cart.splice(targetIndex, 1);
                 }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
             }
         },
 
@@ -55,6 +61,8 @@ export default createStore({
                 if (targetProduct.count <= 0) {
                     cart.splice(targetIndex, 1);
                 }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
             }
         },
 
@@ -111,6 +119,16 @@ export default createStore({
                 if (data && data.categories) {
                     commit('setCategories', data.categories);
                 }
+            }
+        },
+
+        loadCart({commit}) {
+            const data = JSON.parse(localStorage.getItem('cart'));
+            
+            if (data) {
+                data.forEach(product => commit('addToCart', product));
+            } else {
+                localStorage.removeItem('cart');
             }
         }
     }
