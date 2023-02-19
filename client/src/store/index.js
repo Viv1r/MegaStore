@@ -2,7 +2,6 @@ import { createStore } from 'vuex';
 import axios from 'axios';
 
 export default createStore({
-    
     state: {
         cart: [],
         productList: [],
@@ -10,14 +9,27 @@ export default createStore({
         loggedIn: false
     },
 
+    getters: {
+        cartGetCount: state => id => {
+            const target = state.cart.find(product => product.id === id);
+            if (target) {
+                return target.count;
+            }
+            return 0;
+        }
+    },
+
     mutations: {
-        addToCart({cart}, {id, title, price, picture, count}) {
+        addToCart({cart}, {id, title, price, picture, count, countAvailable}) {
             const parsedProduct = {
                 id: id,
                 title: title,
                 price: price,
-                count: count || 1
+                count: count || 1,
+                countAvailable: countAvailable
             };
+
+            console.log(parsedProduct);
 
             if (Object.values(parsedProduct).some(elem => !elem)) return; // Cancel if the product contains invalid fields
             if (cart.find(elem => elem.id === parsedProduct.id)) return; // Cancel if the product is already in the cart
@@ -44,20 +56,29 @@ export default createStore({
 
             if (targetProduct) {
                 targetProduct.count += Number(count);
+                
+                if (targetProduct.count > targetProduct.countAvailable) {
+                    targetProduct.count = targetProduct.countAvailable;
+                }
                 if (targetProduct.count <= 0) {
                     cart.splice(targetIndex, 1);
                 }
-
                 localStorage.setItem('cart', JSON.stringify(cart));
             }
         },
 
-        cartSetCount({cart}, {id, count}) {
+        cartSetCount({cart}, {id, target}) {
             const targetIndex = cart.findIndex(elem => elem.id === id);
             const targetProduct = cart[targetIndex];
+            const targetCount = parseInt(target.value) || 0;
 
             if (targetProduct) {
-                targetProduct.count = parseInt(count) || 0;
+                if (targetCount > targetProduct.countAvailable) {
+                    targetProduct.count = target.value = targetProduct.countAvailable;
+                } else {
+                    targetProduct.count = target.value = targetCount;
+                }
+
                 if (targetProduct.count <= 0) {
                     cart.splice(targetIndex, 1);
                 }
@@ -68,13 +89,13 @@ export default createStore({
 
         addProducts({productList}, newProducts) {
             productList.push(
-                ...newProducts.map(({id, title, description, price, store, picture}) => {
+                ...newProducts.map(({id, title, description, price, count_available, picture}) => {
                     return {
                         id: id,
                         title: title,
                         description: description,
                         price: price,
-                        store: store,
+                        countAvailable: count_available,
                         picture: picture
                     };
                 })

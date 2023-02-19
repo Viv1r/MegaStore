@@ -17,12 +17,18 @@
                         {{ '$' + Number(product.price).toFixed(2) }}
                     </div>
 
-                    <div v-if="cart.some(elem => elem.id == product.id)" class="count_selector" @click.stop>
+                    <div v-if="cartGetCount(product.id)" class="count_selector" @click.stop>
                         <button class="btn_decrease"
-                            @click="cartAddCount({id: product.id, count: -1})">-</button>
-                        <input type="text" @input="cartSetCount({id: product.id, count: parseInt($event.target.value)})" :value="cart[cart.findIndex(elem => elem.id === product.id)].count">
+                            @click="cartAddCount({id: product.id, count: -1})"
+                        >-</button>
+                        <input type="text"
+                            @keydown.enter="cartSetCount({id: product.id, target: $event.target})"
+                            @focusout="cartSetCount({id: product.id, target: $event.target})"
+                            :value="cartGetCount(product.id)"
+                        >
                         <button class="btn_increase"
-                            @click="cartAddCount({id: product.id, count: 1})">+</button>
+                            @click="cartAddCount({id: product.id, count: 1})"
+                        >+</button>
                     </div>
 
                     <div v-else class="btn_add_item" @click.stop="addToCart(product)">Add to cart</div>
@@ -33,7 +39,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 
 export default {
     props: {
@@ -52,6 +58,7 @@ export default {
     },
     computed: {
         ...mapState(['productList', 'cart']),
+        ...mapGetters(['cartGetCount']),
 
         products() {
             const list = this.productList
@@ -65,7 +72,7 @@ export default {
         ...mapMutations(['addToCart', 'cartAddCount', 'cartSetCount']),
 
         openProduct(product) {
-            console.log(`Get ${product.title} details.`);
+            return;
         }
     }
 }

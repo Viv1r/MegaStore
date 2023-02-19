@@ -10,13 +10,20 @@ interface Store {
     title: string
 }
 
+interface Category {
+    name: string
+}
+
 interface Product {
     id: number,
     title: string,
     description?: string,
     price: Decimal,
+    attributes?: string | object,
+    count_available?: number,
     picture?: string,
-    store?: Store
+    store?: Store,
+    category?: Category
 }
 
 const mainFolder = './dist/public/';
@@ -35,6 +42,7 @@ export class ProductsController {
                 id: true,
                 title: true,
                 price: true,
+                count_available: true,
                 store: {
                     select: {
                         title: true
@@ -73,11 +81,18 @@ export class ProductsController {
 
     @Get('/:id')
     async getProduct(@Param() params: { id: number }): Promise<object> {
-        const result: Product[] = await this.products.findMany({
+        const targetID = Number(params.id);
+        if (!targetID) {
+            return { statusCode: 'error', statusMessage: 'Wrong ID specified' }
+        }
+
+        const result: Product = await this.products.findFirst({
             select: {
                 id: true,
                 title: true,
+                description: true,
                 price: true,
+                attributes: true,
                 store: {
                     select: {
                         title: true
@@ -88,7 +103,12 @@ export class ProductsController {
                 id: Number(params.id) || 0
             }
         });
-        return result;
+
+        if (result) {
+            result.attributes = JSON.parse(result.attributes.toString()) || {};
+            return { statusCode: 'ok', product: result };
+        }
+        return { statusCode: 'error', statusMessage: 'Could not get product' };
     }
 
 	@Post('/create')
