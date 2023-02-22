@@ -33,6 +33,7 @@ async function main() {
 				title: 'iPhone XR',
 				description: 'Test product №1',
 				category_id: 3,
+				store_id: 1,
 				price: 499.90,
 				count_available: 7
 			},
@@ -40,6 +41,7 @@ async function main() {
 				title: 'iPhone 11',
 				description: 'Test product №2',
 				category_id: 3,
+				store_id: 1,
 				price: 549.90,
 				count_available: 24
 			},
@@ -47,6 +49,7 @@ async function main() {
 				title: 'iPhone 12',
 				description: 'Test product №3',
 				category_id: 3,
+				store_id: 1,
 				attributes: JSON.stringify({
 					'Screen resolution': '1170x2532 pixels',
 					'Size': '6.06 inches'
@@ -58,6 +61,7 @@ async function main() {
 				title: 'MacBook Air',
 				description: 'Test product №4',
 				category_id: 3,
+				store_id: 1,
 				attributes: JSON.stringify({
 					'Screen resolution': '2560x1600 pixels',
 					'Screen size': '13.3 inches'
@@ -69,6 +73,7 @@ async function main() {
 				title: 'MacBook Air M2',
 				description: 'Test product №5',
 				category_id: 3,
+				store_id: 1,
 				attributes: JSON.stringify({
 					'RAM': '16GB DDR5',
 					'Weight': '1.24kg'

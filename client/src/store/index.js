@@ -6,6 +6,7 @@ export default createStore({
         cart: [],
         productList: [],
         categories: [],
+        detailedViewProduct: null,
         loggedIn: false
     },
 
@@ -28,8 +29,6 @@ export default createStore({
                 count: count || 1,
                 countAvailable: countAvailable
             };
-
-            console.log(parsedProduct);
 
             if (Object.values(parsedProduct).some(elem => !elem)) return; // Cancel if the product contains invalid fields
             if (cart.find(elem => elem.id === parsedProduct.id)) return; // Cancel if the product is already in the cart
@@ -104,6 +103,10 @@ export default createStore({
 
         setCategories(store, newCategories) {
             store.categories = newCategories;
+        },
+
+        openDetailedView(store, product) {
+            store.detailedViewProduct = product;
         }
     },
 

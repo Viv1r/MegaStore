@@ -24,8 +24,11 @@
             </div>
         </div>
     </header>
+    <Transition name="grow">
+        <DetailedView v-if="detailedViewActive"/>
+    </Transition>
     <Transition name="sidebar">
-        <Sidebar v-if="sidebarActive" @close="hideOverlay()"/>
+        <Sidebar v-if="sidebarActive" @close="switchSidebar()"/>
     </Transition>
     <Transition>
         <div v-if="blackoutActive" class="blackout" @click="hideOverlay()"></div>
@@ -37,14 +40,16 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import Cart from './components/Cart/Cart.vue';
 import Sidebar from './components/Sidebar/Sidebar.vue';
+import DetailedView from './components/DetailedView/DetailedView.vue';
 
 export default {
     components: {
         Cart,
-        Sidebar
+        Sidebar,
+        DetailedView
     },
 
     data() {
@@ -55,16 +60,23 @@ export default {
     },
 
     computed: {
-        ...mapState(['cart']),
+        ...mapState(['cart', 'detailedViewProduct']),
 
         blackoutActive() {
-            return this.cartActive || this.sidebarActive;
+            return this.cartActive || this.sidebarActive || this.detailedViewActive;
+        },
+
+        detailedViewActive() {
+            return !!this.detailedViewProduct;
         }
     },
 
     methods: {
+        ...mapMutations(['openDetailedView']),
+
         hideOverlay() {
             this.cartActive = this.sidebarActive = false;
+            this.openDetailedView(null);
         },
         
         switchCart() {

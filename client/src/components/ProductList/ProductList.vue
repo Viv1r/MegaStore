@@ -2,11 +2,11 @@
     <template v-for="product in products">
         <div
             class="product_card"
-            @click="openProduct(product)"
+            @click="openDetailedView(product)"
         >
             <div class="product_card__picture">
                 <img
-                    :src="product.picture ? `api/${product.picture}` : 'src/assets/pictures/no_picture.jpg'"
+                    :src="product.picture ? product.picture : 'src/assets/pictures/no_picture.jpg'"
                     :alt="product.title"
                 >
             </div>
@@ -57,7 +57,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['productList', 'cart']),
+        ...mapState(['productList']),
         ...mapGetters(['cartGetCount']),
 
         products() {
@@ -69,11 +69,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['addToCart', 'cartAddCount', 'cartSetCount']),
-
-        openProduct(product) {
-            return;
-        }
+        ...mapMutations(['addToCart', 'cartAddCount', 'cartSetCount', 'openDetailedView'])
     }
 }
 </script>

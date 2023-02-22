@@ -27,13 +27,37 @@ interface Product {
 }
 
 const mainFolder = './dist/public/';
-const itemsFolder = 'assets/items';
+const itemsFolder = 'api/assets/items';
 
 @Controller('products')
 export class ProductsController {
     constructor(private readonly sqlService: SqlService) {}
 
     private readonly products = this.sqlService.client.products;
+
+    private async parseImage(productId: number): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            try {
+                const regex = /^.*\.(jpg|png|jpeg)$/;
+                const folder = itemsFolder + `/${productId}/`;
+    
+                const fileCheck = fs.readdirSync(mainFolder + folder).some(file => {
+                    if (regex.test(file)) {
+                        resolve(folder + file);
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (!fileCheck) {
+                    resolve(null);
+                }
+            } catch (err) {
+                console.log(err);
+                resolve(null);
+            }
+        })
+    }
 
     @Get()
     async getProducts(@Param('count') count: string): Promise<object> {
@@ -42,36 +66,16 @@ export class ProductsController {
                 id: true,
                 title: true,
                 price: true,
-                count_available: true,
-                store: {
-                    select: {
-                        title: true
-                    }
-                },
-                category: {
-                    select: {
-                        name: true
-                    }
-                }
+                count_available: true
             },
             take: Number(count) || 10
         });
         
         if (result) {
             for (const elem of result) {
-                try {
-                    const regex = /^.*\.(jpg|png|jpeg)$/;
-                    const folder = itemsFolder + `/${elem.id}/`;
-
-                    fs.readdirSync(mainFolder + folder).some(file => {
-                        if (regex.test(file)) {
-                            elem.picture = folder + file;
-                            return true;
-                        }
-                        return false;
-                    });
-                } catch (err) {
-                    console.log(err);
+                const parsedImg = await this.parseImage(elem.id);
+                if (parsedImg) {
+                    elem.picture = parsedImg;
                 }
             }
 
@@ -97,6 +101,11 @@ export class ProductsController {
                     select: {
                         title: true
                     }
+                },
+                category: {
+                    select: {
+                        name: true
+                    }
                 }
             },
             where: {
@@ -105,7 +114,11 @@ export class ProductsController {
         });
 
         if (result) {
-            result.attributes = JSON.parse(result.attributes.toString()) || {};
+            if (result.attributes) {
+                result.attributes = JSON.parse(result.attributes.toString()) || {};
+            }
+            result.picture = await this.parseImage(result.id);
+
             return { statusCode: 'ok', product: result };
         }
         return { statusCode: 'error', statusMessage: 'Could not get product' };
