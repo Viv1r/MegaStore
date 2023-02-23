@@ -66,6 +66,11 @@ export class ProductsController {
                 id: true,
                 title: true,
                 price: true,
+                store: {
+                    select: {
+                        title: true
+                    }
+                },
                 count_available: true
             },
             take: Number(count) || 10

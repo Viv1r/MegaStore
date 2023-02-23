@@ -29,13 +29,14 @@ export default createStore({
     },
 
     mutations: {
-        addToCart({cart}, {id, title, price, picture, count, countAvailable}) {
+        addToCart({cart}, {id, title, price, picture, count, countAvailable, store}) {
             const parsedProduct = {
                 id: id,
                 title: title,
                 price: price,
                 count: count || 1,
-                countAvailable: countAvailable
+                countAvailable: countAvailable,
+                store: store
             };
 
             if (Object.values(parsedProduct).some(elem => !elem)) return; // Cancel if the product contains invalid fields
@@ -96,13 +97,14 @@ export default createStore({
 
         addProducts({productList}, newProducts) {
             productList.push(
-                ...newProducts.map(({id, title, description, price, count_available, picture}) => {
+                ...newProducts.map(({id, title, description, price, count_available, store, picture}) => {
                     return {
                         id: id,
                         title: title,
                         description: description,
                         price: price,
                         countAvailable: count_available,
+                        store: store,
                         picture: picture
                     };
                 })

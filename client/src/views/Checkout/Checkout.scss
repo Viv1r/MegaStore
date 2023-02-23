@@ -39,8 +39,15 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 4px 24px;
+        padding: 12px 24px;
         font-size: 22px;
+        cursor: pointer;
+        transition: all .2s ease-in-out;
+
+        &:hover {
+            background-color: rgba($color: #000000, $alpha: .03);
+            box-shadow: 0px 0px 5px rgba($color: #000000, $alpha: .03);
+        }
 
         .picture {
             width: 100px;
@@ -63,7 +70,7 @@
             display: flex;
             flex-direction: column;
 
-            .count {
+            .seller {
                 font-size: 16px;
                 color: rgba($color: #000000, $alpha: .6);
             }
@@ -74,6 +81,41 @@
             align-items: center;
             gap: 16px;
             margin-left: auto;
+
+            .price_wrapper {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .price_calc {
+                font-size: 16px;
+                color: rgba($color: #000000, $alpha: .6);
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                    color: #0085FF;
+                }
+
+                input {
+                    width: 60px;
+                    border-radius: 5px;
+                }
+            }
+
+            .price_total {
+                font-family: 'Kulim Park';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 19px;
+                line-height: 23px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+                color: #000000;
+                user-select: none;
+            }
         }
 
         .btn_remove {
@@ -150,5 +192,35 @@
             color: white;
             background-color: #0085FF;
         }
+    }
+}
+
+@media (min-width: 900px) and (max-width: 1300px) {
+    .checkout_page {
+        padding: 30px calc(130px - 10vw);
+    }
+}
+
+@media (max-width: 900px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main_title {
+        text-align: center;
+    }
+
+    .product_list,
+    .checkout_counter {
+        border-radius: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .product_list .product .right_side .price_wrapper {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
     }
 }
