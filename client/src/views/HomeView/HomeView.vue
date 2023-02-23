@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import ProductList from "../components/ProductList/ProductList.vue";
+import ProductList from "@/components/ProductList/ProductList.vue";
 
 export default {
     components: {

@@ -6,7 +6,9 @@
                     <img src="./assets/svg/menu.svg" alt="menu" @click="switchSidebar()">
                 </div>
             </div>
-            <div class="logo">MegaStore</div>
+            <div class="logo" @click="navigate('/')">
+                MegaStore
+            </div>
             <div class="right_side">
                 <div
                     class="btn_cart"
@@ -14,11 +16,13 @@
                 >
                     <img src="./assets/svg/cart.svg" alt="cart">
                     <Transition name="grow">
-                        <div v-if="cart.length > 0" class="btn_cart__counter">{{ cart.length }}</div>
+                        <div v-if="cart.length > 0" class="btn_cart__counter">{{ cartSize }}</div>
                     </Transition>
                 </div>
                 <Transition name="dropdown">
-                    <Cart v-if="cartActive"/>
+                    <Cart v-if="cartActive"
+                        @checkout="navigate('/checkout')"
+                    />
                 </Transition>
                 <div class="btn_auth">Log in</div>
             </div>
@@ -40,7 +44,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 import Cart from './components/Cart/Cart.vue';
 import Sidebar from './components/Sidebar/Sidebar.vue';
 import DetailedView from './components/DetailedView/DetailedView.vue';
@@ -61,6 +65,7 @@ export default {
 
     computed: {
         ...mapState(['cart', 'detailedViewProduct']),
+        ...mapGetters(['cartSize']),
 
         blackoutActive() {
             return this.cartActive || this.sidebarActive || this.detailedViewActive;
@@ -87,6 +92,11 @@ export default {
         switchSidebar() {
             this.cartActive = false;
             this.sidebarActive = !this.sidebarActive;
+        },
+
+        navigate(route) {
+            this.$router.push(route);
+            this.hideOverlay();
         }
     },
 

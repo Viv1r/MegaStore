@@ -23,8 +23,8 @@
             <div class="attributes_block" v-if="product.attributes">
                 <table class="attributes">
                     <tr v-for="(attribute, key) in product.attributes">
-                        <td>{{ key }}</td>
-                        <td>{{ attribute }}</td>
+                        <td class="attribute_name">{{ key }}</td>
+                        <td class="attribute_value">{{ attribute }}</td>
                     </tr>
                 </table>
             </div>
@@ -92,8 +92,21 @@ export default {
 
             const result = await axios.get(URL);
             const data = result.data;
+            
             if (data && data.product) {
-                this.loadedProduct = data.product;
+                const product = data.product;
+
+                this.loadedProduct = {
+                    id: product.id,
+                    title: product.title,
+                    description: product.description,
+                    price: product.price,
+                    attributes: product.attributes,
+                    countAvailable: product.count_available,
+                    store: product.store,
+                    category: product.category,
+                    picture: product.picture
+                };
             }
         }
     },

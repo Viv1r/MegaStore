@@ -17,6 +17,14 @@ export default createStore({
                 return target.count;
             }
             return 0;
+        },
+
+        cartSize(state) {
+            return state.cart.reduce((prev, product) => prev + product.count, 0);
+        },
+
+        cartTotal(state) {
+            return state.cart.reduce((accum, product) => accum + product.price * product.count, 0);
         }
     },
 
@@ -107,6 +115,7 @@ export default createStore({
 
         openDetailedView(store, product) {
             store.detailedViewProduct = product;
+            window.scrollTo(0, 0);
         }
     },
 

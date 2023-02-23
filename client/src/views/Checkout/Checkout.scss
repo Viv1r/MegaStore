@@ -1,0 +1,154 @@
+.checkout_page {
+    width: 100%;
+    height: fit-content;
+    min-height: 92vh;
+    padding-top: 30px;
+}
+
+.main_title {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: auto 250px;
+    margin-top: 30px;
+    gap: 40px;
+}
+
+.product_list {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 0;
+    border-radius: 20px;
+    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.35);
+
+    .message {
+        font-size: 22px;
+        padding: 4px 24px;
+    }
+
+    .product {
+        width: 100%;
+        height: fit-content;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 4px 24px;
+        font-size: 22px;
+
+        .picture {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            user-select: none;
+
+            img {
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+
+        .left_side {
+            display: flex;
+            flex-direction: column;
+
+            .count {
+                font-size: 16px;
+                color: rgba($color: #000000, $alpha: .6);
+            }
+        }
+
+        .right_side {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-left: auto;
+        }
+
+        .btn_remove {
+            width: 36px;
+            height: 36px;
+            margin-right: 8px;
+            padding: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            border-radius: 50%;
+            user-select: none;
+            cursor: pointer;
+            transition: all .1s ease-out;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, .05);
+                box-shadow: 0 0 3px rgba(0, 0, 0, .075);
+            }
+        }
+    }
+}
+
+.checkout_counter {
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-radius: 20px;
+    box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.25);
+
+    .header {
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 32px;
+    }
+
+    .btn_proceed {
+        width: 110px;
+        height: 30px;
+        margin: auto auto 0 0;
+        padding: 2px 0;
+        border: 1px solid rgba(0, 133, 255, 0.75);
+        border-radius: 8px;
+        font-family: 'Kulim Park';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        color: #0085FF;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: all .2s ease-out;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover {
+            color: white;
+            background-color: #0085FF;
+        }
+    }
+}

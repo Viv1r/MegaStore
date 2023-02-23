@@ -97,6 +97,7 @@ export class ProductsController {
                 description: true,
                 price: true,
                 attributes: true,
+                count_available: true,
                 store: {
                     select: {
                         title: true

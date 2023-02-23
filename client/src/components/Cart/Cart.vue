@@ -22,27 +22,33 @@
         </template>
     </div>
     <div v-if="cart.length" class="checkout_wrapper">
-        Total: ${{ cart.reduce((accum, product) => accum + product.price * product.count, 0).toFixed(2) }}
-        <div class="btn_checkout">Checkout</div>
+        Total: ${{ cartTotal.toFixed(2) }}
+        <div class="btn_checkout" @click="$emit('checkout')">
+            Checkout
+        </div>
     </div>
 </div>
 
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['cart'])
+        ...mapState(['cart']),
+        ...mapGetters(['cartTotal'])
     },
+
     methods: {
         ...mapMutations(['addToCart', 'removeFromCart']),
 
         Number(num) {
             return Number(num);
         }
-    }
+    },
+
+    emits: ['checkout']
 }
 </script>
 
