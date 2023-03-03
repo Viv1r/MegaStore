@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Req, Res, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Req, Res, Get, Post, Param } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { SqlService } from 'src/sql/sql.service';
+import { SqlService } from 'src/services/sql/sql.service';
 
 import fs from 'fs';
 import { Decimal } from '@prisma/client/runtime';
@@ -52,8 +52,7 @@ export class ProductsController {
                 if (!fileCheck) {
                     resolve(null);
                 }
-            } catch (err) {
-                console.log(err);
+            } catch {
                 resolve(null);
             }
         })

@@ -80,7 +80,12 @@ header {
     gap: 24px;
 }
 
-.btn_auth {
+.btn_auth,
+.btn_profile {
+    max-width: 20vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     font-size: 20px;
     cursor: pointer;
     user-select: none;
@@ -131,7 +136,8 @@ footer {
         top: 2px;
     }
 
-    .btn_auth {
+    .btn_auth,
+    .btn_profile {
         display: none;
     }
 }

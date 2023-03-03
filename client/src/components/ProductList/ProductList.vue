@@ -6,7 +6,7 @@
         >
             <div class="product_card__picture">
                 <img
-                    :src="product.picture ? product.picture : 'src/assets/pictures/no_picture.jpg'"
+                    :src="product.picture || 'src/assets/pictures/no_picture.jpg'"
                     :alt="product.title"
                 >
             </div>

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Get } from '@nestjs/common';
-import { SqlService } from 'src/sql/sql.service';
+import { SqlService } from 'src/services/sql/sql.service';
 
 @Controller('categories')
 export class CategoriesController {

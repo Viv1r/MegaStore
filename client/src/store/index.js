@@ -1,13 +1,37 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 
+const api = axios.create({
+    baseURL: 'api/'
+});
+
+class User {
+    name;
+    email;
+    profilePicture;
+    loggedIn = false;
+
+    auth(name, email) {
+        this.name = name;
+        this.email = email;
+        this.loggedIn = true;
+    };
+
+    logout() {
+        this.name = this.email = undefined;
+        this.loggedIn = false;
+    };
+}
+
 export default createStore({
     state: {
         cart: [],
         productList: [],
         categories: [],
         detailedViewProduct: null,
-        loggedIn: false
+        user: new User(),
+        processingAuth: false,
+        authError: null
     },
 
     getters: {
@@ -118,6 +142,14 @@ export default createStore({
         openDetailedView(store, product) {
             store.detailedViewProduct = product;
             window.scrollTo(0, 0);
+        },
+
+        setAuthStatus(store, status) {
+            store.processingAuth = !!status;
+        },
+
+        pushAuthError(store, error) {
+            store.authError = error;
         }
     },
 
@@ -125,14 +157,14 @@ export default createStore({
         async loadProducts(store, count) {
             store.productList = [];
 
-            const URL = 'api/products';
+            const action = 'products';
             const params = {
                 count: count || 10
             };
 
             let data;
             try {
-                const response = await axios.get(URL, {
+                const response = await api.get(action, {
                     params: params
                 });
                 data = response.data;
@@ -144,16 +176,78 @@ export default createStore({
         },
 
         async loadCategories({commit}) {
-            const URL = 'api/categories';
-            
+            const action = 'categories';
             let data;
             try {
-                const response = await axios.get(URL);
+                const response = await api.get(action);
                 data = response.data;
             } finally {
                 if (data && data.categories) {
                     commit('setCategories', data.categories);
                 }
+            }
+        },
+
+        async loadUser({state}) {
+            const action = 'token-auth';
+            let data;
+            try {
+                const response = await api.post(action);
+                data = response.data;
+            } finally {
+                if (data && data.user) {
+                    const user = data.user;
+                    state.user.auth(user.name, user.email);
+                }
+            }
+        },
+
+        async register({state, commit}, authData) {
+            commit('setAuthStatus', true);
+            commit('pushAuthError', null);
+
+            const action = 'register';
+            let data;
+            try {
+                const response = await api.post(action, authData);
+                data = response.data;
+            } finally {
+                if (data && data.user) {
+                    const user = data.user;
+                    state.user.auth(user.name, user.email);
+                } else if (data && data.statusMessage) {
+                    commit('pushAuthError', data.statusMessage);
+                }
+                commit('setAuthStatus', false);
+            }
+        },
+
+        async login({state, commit}, authData) {
+            commit('setAuthStatus', true);
+            commit('pushAuthError', null);
+
+            const action = 'login';
+            let data;
+            try {
+                const response = await api.post(action, authData);
+                data = response.data;
+            } finally {
+                if (data && data.user) {
+                    const user = data.user;
+                    state.user.auth(user.name, user.email);
+                } else if (data && data.statusMessage) {
+                    commit('pushAuthError', data.statusMessage);
+                }
+                commit('setAuthStatus', false);
+            }
+        },
+
+        logout({state}) {
+            const action = 'logout';
+            try {
+                api.post(action);
+            } finally {
+                state.user.logout();
             }
         },
 

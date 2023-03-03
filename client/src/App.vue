@@ -19,20 +19,30 @@
                         <div v-if="cart.length > 0" class="btn_cart__counter">{{ cartSize }}</div>
                     </Transition>
                 </div>
+
                 <Transition name="dropdown">
                     <Cart v-if="cartActive"
                         @checkout="navigate('/checkout')"
                     />
                 </Transition>
-                <div class="btn_auth">Log in</div>
+
+                <Transition name="dropdown">
+                    <UserCard v-if="userCardActive"/>
+                </Transition>
+
+                <div v-if="user.loggedIn" class="btn_profile" @click="switchUserCard()">Welcome, {{ user.name }}!</div>
+                <div v-else class="btn_auth" @click="switchAuthWindow()">Log in</div>
             </div>
         </div>
     </header>
     <Transition name="grow">
         <DetailedView v-if="detailedViewActive"/>
     </Transition>
+    <Transition name="dropdown">
+        <AuthWindow v-if="authWindowActive" @close="hideOverlay()"/>
+    </Transition>
     <Transition name="sidebar">
-        <Sidebar v-if="sidebarActive" @close="switchSidebar()"/>
+        <Sidebar v-if="sidebarActive" @close="hideOverlay()"/>
     </Transition>
     <Transition>
         <div v-if="blackoutActive" class="blackout" @click="hideOverlay()"></div>
@@ -48,27 +58,33 @@ import { mapState, mapMutations, mapGetters } from 'vuex';
 import Cart from './components/Cart/Cart.vue';
 import Sidebar from './components/Sidebar/Sidebar.vue';
 import DetailedView from './components/DetailedView/DetailedView.vue';
+import AuthWindow from './components/AuthWindow/AuthWindow.vue';
+import UserCard from './components/UserCard/UserCard.vue';
 
 export default {
     components: {
         Cart,
         Sidebar,
-        DetailedView
+        DetailedView,
+        AuthWindow,
+        UserCard
     },
 
     data() {
         return {
             cartActive: false,
-            sidebarActive: false
+            sidebarActive: false,
+            authWindowActive: false,
+            userCardActive: false
         }
     },
 
     computed: {
-        ...mapState(['cart', 'detailedViewProduct']),
+        ...mapState(['cart', 'detailedViewProduct', 'user']),
         ...mapGetters(['cartSize']),
 
         blackoutActive() {
-            return this.cartActive || this.sidebarActive || this.detailedViewActive;
+            return this.cartActive || this.sidebarActive || this.authWindowActive || this.userCardActive || this.detailedViewActive;
         },
 
         detailedViewActive() {
@@ -76,22 +92,38 @@ export default {
         }
     },
 
+    watch: {
+        'user.loggedIn'() {
+            this.hideOverlay();
+        }
+    },
+
     methods: {
         ...mapMutations(['openDetailedView']),
 
         hideOverlay() {
-            this.cartActive = this.sidebarActive = false;
+            this.cartActive = this.sidebarActive = this.authWindowActive = this.userCardActive = false;
             this.openDetailedView(null);
         },
         
         switchCart() {
-            this.sidebarActive = false;
+            this.sidebarActive = this.authWindowActive = this.userCardActive = false;
             this.cartActive = !this.cartActive;
         },
         
         switchSidebar() {
-            this.cartActive = false;
+            this.cartActive = this.authWindowActive = this.userCardActive = false;
             this.sidebarActive = !this.sidebarActive;
+        },
+        
+        switchAuthWindow() {
+            this.cartActive = this.sidebarActive = this.userCardActive = false;
+            this.authWindowActive = !this.authWindowActive;
+        },
+
+        switchUserCard() {
+            this.cartActive = this.sidebarActive = this.authWindowActive = false;
+            this.userCardActive = !this.userCardActive;
         },
 
         navigate(route) {
@@ -104,6 +136,7 @@ export default {
         this.$store.dispatch('loadProducts', 5);
         this.$store.dispatch('loadCategories');
         this.$store.dispatch('loadCart');
+        this.$store.dispatch('loadUser');
     }
 }
 </script>

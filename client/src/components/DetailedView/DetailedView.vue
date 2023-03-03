@@ -38,26 +38,26 @@
             </div>
 
             <div class="actions_block">
-                    <div class="price">
-                        {{ '$' + Number(product.price).toFixed(2) }}
-                    </div>
-
-                    <div v-if="cartGetCount(product.id)" class="count_selector" @click.stop>
-                        <button class="btn_decrease"
-                            @click="cartAddCount({id: product.id, count: -1})"
-                        >-</button>
-                        <input type="text"
-                            @keydown.enter="cartSetCount({id: product.id, target: $event.target})"
-                            @focusout="cartSetCount({id: product.id, target: $event.target})"
-                            :value="cartGetCount(product.id)"
-                        >
-                        <button class="btn_increase"
-                            @click="cartAddCount({id: product.id, count: 1})"
-                        >+</button>
-                    </div>
-
-                    <div v-else class="btn_add_item" @click.stop="addToCart(product)">Add to cart</div>
+                <div class="price">
+                    {{ '$' + Number(product.price).toFixed(2) }}
                 </div>
+
+                <div v-if="cartGetCount(product.id)" class="count_selector" @click.stop>
+                    <button class="btn_decrease"
+                        @click="cartAddCount({id: product.id, count: -1})"
+                    >-</button>
+                    <input type="text"
+                        @keydown.enter="cartSetCount({id: product.id, target: $event.target})"
+                        @focusout="cartSetCount({id: product.id, target: $event.target})"
+                        :value="cartGetCount(product.id)"
+                    >
+                    <button class="btn_increase"
+                        @click="cartAddCount({id: product.id, count: 1})"
+                    >+</button>
+                </div>
+
+                <div v-else class="btn_add_item" @click.stop="addToCart(product)">Add to cart</div>
+            </div>
         </div>
     </div>
 </div>
