@@ -2,9 +2,9 @@
 
 <div class="cart">
     <div class="cart__content">
-        <template v-if="cart.length">
+        <template v-if="products.length">
             <div
-                v-for="product in cart"
+                v-for="product in products"
                 class="cart__product"
                 :key="product.id"
             >
@@ -21,7 +21,7 @@
             <div class="message">Your cart is empty!</div>
         </template>
     </div>
-    <div v-if="cart.length" class="checkout_wrapper">
+    <div v-if="products.length" class="checkout_wrapper">
         Total: ${{ cartTotal.toFixed(2) }}
         <div class="btn_checkout" @click="$emit('checkout')">
             Checkout
@@ -36,12 +36,12 @@ import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['cart']),
-        ...mapGetters(['cartTotal'])
+        ...mapState('cart', ['products']),
+        ...mapGetters('cart', ['cartTotal'])
     },
 
     methods: {
-        ...mapMutations(['addToCart', 'removeFromCart']),
+        ...mapMutations('cart', ['addToCart', 'removeFromCart']),
 
         Number(num) {
             return Number(num);

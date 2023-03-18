@@ -77,7 +77,7 @@ export default {
 
     computed: {
         ...mapState(['detailedViewProduct']),
-        ...mapGetters(['cartGetCount']),
+        ...mapGetters('cart', ['cartGetCount']),
 
         product() {
             return this.loadedProduct || this.detailedViewProduct;
@@ -85,7 +85,8 @@ export default {
     },
 
     methods: {
-        ...mapMutations(['addToCart', 'cartAddCount', 'cartSetCount', 'openDetailedView']),
+        ...mapMutations('cart', ['addToCart', 'cartAddCount', 'cartSetCount']),
+        ...mapMutations(['openDetailedView']),
 
         async loadProduct() {
             const URL = 'api/products/' + this.detailedViewProduct.id;

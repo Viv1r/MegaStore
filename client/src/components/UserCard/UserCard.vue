@@ -20,10 +20,10 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapState(['user'])
+    ...mapState('user', ['user'])
   },
   methods: {
-    ...mapActions(['logout'])
+    ...mapActions('user', ['logout'])
   }
 }
 </script>

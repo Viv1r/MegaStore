@@ -4,9 +4,9 @@
     <div class="main_title">Checkout</div>
     <div class="container">
         <div class="product_list">
-            <template v-if="cart.length">
+            <template v-if="products.length">
                 <div
-                    v-for="product in cart"
+                    v-for="product in products"
                     class="product"
                     :key="product.id"
                     @click="openDetailedView(product)"
@@ -69,12 +69,13 @@ export default {
     },
 
     computed: {
-        ...mapState(['cart']),
-        ...mapGetters(['cartTotal', 'cartGetCount'])
+        ...mapState('cart', ['products']),
+        ...mapGetters('cart', ['cartTotal', 'cartGetCount'])
     },
 
     methods: {
-        ...mapMutations(['removeFromCart', 'cartSetCount', 'openDetailedView']),
+        ...mapMutations('cart', ['removeFromCart', 'cartSetCount']),
+        ...mapMutations(['openDetailedView']),
 
         editProduct(product) {
             this.editableProductId = product.id;

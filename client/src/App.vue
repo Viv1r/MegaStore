@@ -80,8 +80,12 @@ export default {
     },
 
     computed: {
-        ...mapState(['cart', 'detailedViewProduct', 'user']),
-        ...mapGetters(['cartSize']),
+        ...mapState({
+            cart: state => state.cart.products,
+            user: state => state.user.user
+        }),
+        ...mapState(['detailedViewProduct']),
+        ...mapGetters('cart', ['cartSize']),
 
         blackoutActive() {
             return this.cartActive || this.sidebarActive || this.authWindowActive || this.userCardActive || this.detailedViewActive;
@@ -135,8 +139,8 @@ export default {
     created() {
         this.$store.dispatch('loadProducts', 5);
         this.$store.dispatch('loadCategories');
-        this.$store.dispatch('loadCart');
-        this.$store.dispatch('loadUser');
+        this.$store.dispatch('cart/loadCart');
+        this.$store.dispatch('user/loadUser');
     }
 }
 </script>

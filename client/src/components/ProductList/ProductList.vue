@@ -58,7 +58,7 @@ export default {
     },
     computed: {
         ...mapState(['productList']),
-        ...mapGetters(['cartGetCount']),
+        ...mapGetters('cart', ['cartGetCount']),
 
         products() {
             const list = this.productList
@@ -69,7 +69,8 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['addToCart', 'cartAddCount', 'cartSetCount', 'openDetailedView'])
+        ...mapMutations('cart', ['addToCart', 'cartAddCount', 'cartSetCount']),
+        ...mapMutations(['openDetailedView'])
     }
 }
 </script>
