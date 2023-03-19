@@ -1,9 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView/HomeView.vue';
+import Catalog from '@/views/Catalog/Catalog.vue';
 import Checkout from '@/views/Checkout/Checkout.vue';
 
 export default createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
+    scrollBehavior() {
+        return { top: 0 }
+    },
     routes: [
         {
             path: '/',
@@ -14,6 +18,11 @@ export default createRouter({
             path: '/checkout',
             name: 'checkout',
             component: Checkout
+        },
+        {
+            path: '/catalog',
+            name: 'catalog',
+            component: Catalog
         },
     ]
 });

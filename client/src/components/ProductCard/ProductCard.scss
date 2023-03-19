@@ -1,0 +1,251 @@
+.product_card {
+    width: 186px;
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    background-color: #FFFFFF;
+    box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all .15s ease-in-out;
+
+    &:hover {
+        box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.3);
+    }
+
+    .picture {
+        width: 100%;
+        height: 150px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+
+    .info {
+        width: 100%;
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .title {
+        font-family: 'Kulim Park', serif;
+        font-size: 20px;
+    }
+
+    .price {
+        font-family: 'Kulim Park', serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #000000;
+        user-select: none;
+    }
+}
+
+.actions_wrapper {
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
+    gap: 12px;
+}
+
+.btn_add_item {
+    width: 76px;
+    height: 23px;
+    padding: 2px 0;
+    border: 1px solid rgba(0, 133, 255, 0.75);
+    border-radius: 5px;
+    font-family: 'Kulim Park', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: #0085FF;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all .2s ease-out;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+        color: white;
+        background-color: #0085FF;
+    }
+}
+
+.count_selector {
+    width: 76px;
+    height: 23px;
+    padding: 2px 0;
+    user-select: none;
+    display: grid;
+    grid-template-columns: 20px 32px 20px;
+
+    input {
+        width: auto;
+        max-width: 100%;
+        border: 1px solid rgba(0, 133, 255, 0.75);
+        border-left: none;
+        border-right: none;
+        text-align: center;
+    }
+
+    .btn_decrease,
+    .btn_increase {
+        border: 1px solid rgba(0, 133, 255, 0.75);
+        font-family: 'Kulim Park', serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        color: #0085FF;
+        transition: all .2s ease-out;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover {
+            color: white;
+            background-color: #0085FF;
+        }
+    }
+
+    .btn_decrease {
+        border-radius: 5px 0 0 5px;
+    }
+
+    .btn_increase {
+        border-radius: 0 5px 5px 0;
+    }
+}
+
+
+.product_card.vertical {
+    width: 100%;
+    height: 180px;
+    flex-direction: row;
+
+    .picture {
+        width: 200px;
+    }
+
+    .info {
+        height: 100%;
+        padding-left: 16px;
+    }
+
+    .description {
+        width: 100%;
+        word-break: break-word;
+    }
+
+    .title {
+        width: 100%;
+        font-size: 28px;
+        line-height: 32px;
+    }
+
+    .price {
+        font-size: 21px;
+    }
+
+    .actions_wrapper {
+        width: 100%;
+        justify-content: flex-end;
+        margin: auto 0 0 auto;
+    }
+
+    .btn_decrease {
+        border-radius: 10px 0 0 10px;
+    }
+
+    .btn_increase {
+        border-radius: 0 10px 10px 0;
+    }
+
+    .btn_add_item {
+        width: 112px;
+        height: 32px;
+        border-radius: 10px;
+    }
+
+    .count_selector {
+        width: auto;
+        height: 36px;
+        grid-template-columns: 32px 48px 32px;
+    }
+}
+
+@media (max-width: 600px) {
+    .product_card {
+        width: 100%;
+        height: 180px;
+        flex-direction: row;
+
+        .picture {
+            width: 200px;
+        }
+
+        .info {
+            height: 100%;
+            padding-left: 16px;
+        }
+
+        .title {
+            width: 100%;
+            font-size: 28px;
+            line-height: 32px;
+        }
+
+        .price {
+            font-size: 21px;
+        }
+
+        .actions_wrapper {
+            width: 100%;
+            justify-content: flex-end;
+            margin: auto 0 0 auto;
+        }
+
+        .btn_decrease {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .btn_increase {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .btn_add_item {
+            width: 112px;
+            height: 32px;
+            border-radius: 10px;
+        }
+
+        .count_selector {
+            width: auto;
+            height: 36px;
+            grid-template-columns: 32px 48px 32px;
+        }
+    }
+}

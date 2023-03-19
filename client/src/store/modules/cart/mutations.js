@@ -9,7 +9,10 @@ export default {
             store: store
         };
 
-        if (Object.values(parsedProduct).some(elem => !elem)) return; // Отмена если есть пустые поля
+        if (Object.values(parsedProduct).some(elem => !elem)) {
+            console.log(parsedProduct);
+            return;
+        }; // Отмена если есть пустые поля
         if (state.products.find(elem => elem.id === parsedProduct.id)) return; // Отмена если продукт уже в корзине
 
         parsedProduct.picture = picture;

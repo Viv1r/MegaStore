@@ -87,6 +87,35 @@ export class ProductsController {
         }
     }
 
+    @Get('/catalog')
+    async getCatalog(): Promise<object> {
+        const result: Product[] = await this.products.findMany({
+            select: {
+                id: true,
+                title: true,
+                price: true,
+                description: true,
+                store: {
+                    select: {
+                        title: true
+                    }
+                },
+                count_available: true
+            }
+        });
+        
+        if (result) {
+            for (const elem of result) {
+                const parsedImg = await this.parseImage(elem.id);
+                if (parsedImg) {
+                    elem.picture = parsedImg;
+                }
+            }
+
+            return { statusCode: 'ok', products: result };
+        }
+    }
+
     @Get('/:id')
     async getProduct(@Param() params: { id: number }): Promise<object> {
         const targetID = Number(params.id);

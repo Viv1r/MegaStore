@@ -9,7 +9,7 @@
                 :endIndex="4"
             />
         </div>
-        <div class="btn_more">More products</div>
+        <router-link to="/catalog" class="btn_more">More products</router-link>
     </div>
     <div class="container_recommended">
         <div class="header_main">Recommended for you</div>
@@ -24,7 +24,7 @@
     <div class="container_catalog_reference">
         <div class="container_catalog_reference__content">
             <div class="header_bigger">Looking for something else?</div>
-            <div class="btn_catalog">Open the catalog</div>
+            <router-link to="/catalog" class="btn_catalog">Open the catalog</router-link>
         </div>
     </div>
 </div>

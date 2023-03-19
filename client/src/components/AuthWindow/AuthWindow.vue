@@ -98,12 +98,12 @@ export default {
     methods: {
         register() {
             if (!this.canSubmit) return;
-            this.$store.dispatch('register', this.form);
+            this.$store.dispatch('user/register', this.form);
         },
 
         login() {
             if (!this.canSubmit) return;
-            this.$store.dispatch('login', {
+            this.$store.dispatch('user/login', {
                 email: this.form.email,
                 password: this.form.password
             });

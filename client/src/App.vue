@@ -137,7 +137,7 @@ export default {
     },
 
     created() {
-        this.$store.dispatch('loadProducts', 5);
+        this.$store.dispatch('loadProducts', 20);
         this.$store.dispatch('loadCategories');
         this.$store.dispatch('cart/loadCart');
         this.$store.dispatch('user/loadUser');

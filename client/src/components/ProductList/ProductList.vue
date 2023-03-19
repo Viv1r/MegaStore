@@ -1,47 +1,13 @@
 <template>
-    <template v-for="product in products">
-        <div
-            class="product_card"
-            @click="openDetailedView(product)"
-        >
-            <div class="product_card__picture">
-                <img
-                    :src="product.picture || 'src/assets/pictures/no_picture.jpg'"
-                    :alt="product.title"
-                >
-            </div>
-            <div class="product_card__info">
-                <div class="product_card__title">{{ product.title || 'Product' }}</div>
-                <div class="actions_wrapper">
-                    <div class="product_card__price">
-                        {{ '$' + Number(product.price).toFixed(2) }}
-                    </div>
-
-                    <div v-if="cartGetCount(product.id)" class="count_selector" @click.stop>
-                        <button class="btn_decrease"
-                            @click="cartAddCount({id: product.id, count: -1})"
-                        >-</button>
-                        <input type="text"
-                            @keydown.enter="cartSetCount({id: product.id, target: $event.target})"
-                            @focusout="cartSetCount({id: product.id, target: $event.target})"
-                            :value="cartGetCount(product.id)"
-                        >
-                        <button class="btn_increase"
-                            @click="cartAddCount({id: product.id, count: 1})"
-                        >+</button>
-                    </div>
-
-                    <div v-else class="btn_add_item" @click.stop="addToCart(product)">Add to cart</div>
-                </div>
-            </div>
-        </div>
-    </template>
+    <ProductCard v-for="product in products" :product="product"/>
 </template>
 
 <script>
 import { mapState, mapMutations, mapGetters } from 'vuex';
+import ProductCard from "../ProductCard/ProductCard.vue";
 
 export default {
+    components: { ProductCard },
     props: {
         startIndex: {
             type: Number,
@@ -58,7 +24,6 @@ export default {
     },
     computed: {
         ...mapState(['productList']),
-        ...mapGetters('cart', ['cartGetCount']),
 
         products() {
             const list = this.productList
@@ -67,10 +32,6 @@ export default {
                 ? list.reverse()
                 : list;
         }
-    },
-    methods: {
-        ...mapMutations('cart', ['addToCart', 'cartAddCount', 'cartSetCount']),
-        ...mapMutations(['openDetailedView'])
     }
 }
 </script>
