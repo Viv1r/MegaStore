@@ -15,16 +15,23 @@ async function main() {
 							title: 'EShop-1'
 						},
 						{
-							title: 'Fresh Bread'
+							title: 'Fresh Foods'
 						}
 					]
 				}
 			}
-		}
+		},
 	});
 
 	await prisma.categories.createMany({
-		data: [{name: 'Clothes'}, {name: 'Accessories'}, {name: 'Electronics'}, {name: 'Household appliances'}, {name: 'Pet toys'}]
+		data: [
+			{name: 'Clothes'},
+			{name: 'Accessories'},
+			{name: 'Electronics'},
+			{name: 'Household appliances'},
+			{name: 'Pet toys'},
+			{name: 'Food'}
+		]
 	});
 
 	await prisma.products.createMany({
@@ -80,6 +87,34 @@ async function main() {
 				}),
 				price: 679.90,
 				count_available: 4712
+			},
+			{
+				title: 'Fresh bread',
+				description: 'Delicious',
+				category_id: 6,
+				store_id: 2,
+				attributes: JSON.stringify({
+					'Flour': 'The best wheat flour we have',
+					'Tasty': 'Very tasty lol',
+					'Crunchy': 'Of course',
+					'Goes with butter': 'YES'
+				}),
+				price: 15,
+				price_postfix: 'per oz',
+				count_available: 47
+			},
+			{
+				title: 'Potatoes',
+				description: 'Good as nothing else, hot and fresh',
+				category_id: 6,
+				store_id: 2,
+				attributes: JSON.stringify({
+					'Tasty': 'Are you really asking? Heck yeah',
+					'Mashed': 'No but you can mash'
+				}),
+				price: 50,
+				price_postfix: 'per kg',
+				count_available: 47
 			}
 		]
 	});

@@ -1,8 +1,10 @@
 $max-width: 1200px;
+$header-height: 64px;
+$footer-height: 128px;
 
 header {
     width: 100%;
-    height: 64px;
+    height: $header-height;
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
 }
@@ -52,15 +54,17 @@ header {
     }
 
     &__counter {
-        width: 19px;
-        height: 19px;
+        min-width: 20px;
+        max-width: fit-content;
+        height: 20px;
+        padding: 3px;
         display: flex;
         justify-content: center;
         align-items: center;
         position: absolute;
-        right: 0px;
-        bottom: 0px;
-        border-radius: 50%;
+        right: 0;
+        bottom: 0;
+        border-radius: 10px;
         background: #236af2;
         color: white;
         font-size: 11px;
@@ -98,13 +102,15 @@ header {
 .container {
     margin: 0 auto;
     width: auto;
+    min-height: calc(100vh - $header-height - $footer-height);
     max-width: $max-width;
+    transition: all .2s ease-in-out;
 }
 
 footer {
     margin-top: 48px;
     width: 100%;
-    height: 128px;
+    height: $footer-height;
     display: flex;
     justify-content: center;
     align-items: center;

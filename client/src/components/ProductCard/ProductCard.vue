@@ -17,6 +17,7 @@
             <div class="actions_wrapper">
                 <div class="price">
                     {{ '$' + Number(product.price).toFixed(2) }}
+                    <div class="postfix" v-if="product.pricePostfix">{{ product.pricePostfix }}</div>
                 </div>
 
                 <div v-if="cartGetCount(product.id)" class="count_selector" @click.stop>

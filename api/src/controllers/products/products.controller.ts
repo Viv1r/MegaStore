@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Req, Res, Get, Post, Param } from '@nestjs/common';
+import {Controller, Req, Res, Get, Post, Param, Query} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
 
@@ -34,9 +34,10 @@ export class ProductsController {
     constructor(private readonly sqlService: SqlService) {}
 
     private readonly products = this.sqlService.client.products;
+    private readonly productsPerPage = 5;
 
     private async parseImage(productId: number): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
+        return new Promise<string>((resolve) => {
             try {
                 const regex = /^.*\.(jpg|png|jpeg)$/;
                 const folder = itemsFolder + `/${productId}/`;
@@ -59,7 +60,7 @@ export class ProductsController {
     }
 
     @Get()
-    async getProducts(@Param('count') count: string): Promise<object> {
+    async getProducts(@Query('count') count?: number): Promise<object> {
         const result: Product[] = await this.products.findMany({
             select: {
                 id: true,
@@ -88,12 +89,13 @@ export class ProductsController {
     }
 
     @Get('/catalog')
-    async getCatalog(): Promise<object> {
+    async getCatalog(@Query('offset') offset?: number): Promise<object> {
         const result: Product[] = await this.products.findMany({
             select: {
                 id: true,
                 title: true,
                 price: true,
+                price_postfix: true,
                 description: true,
                 store: {
                     select: {
@@ -101,7 +103,16 @@ export class ProductsController {
                     }
                 },
                 count_available: true
-            }
+            },
+            take: this.productsPerPage,
+            skip: Number(offset) || 0
+        });
+
+        const lastOne = await this.products.findFirst({
+            select: {
+                id: true
+            },
+            take: -1
         });
         
         if (result) {
@@ -112,8 +123,14 @@ export class ProductsController {
                 }
             }
 
-            return { statusCode: 'ok', products: result };
+            const response = { statusCode: 'ok', products: result, end: false };
+            if (lastOne.id <= result[result.length-1].id) {
+                response.end = true; // Сигнал клиенту, что больше грузить нечего
+            }
+
+            return response;
         }
+        return { statusCode: 'error', statusMessage: 'Try again' };
     }
 
     @Get('/:id')
@@ -129,6 +146,7 @@ export class ProductsController {
                 title: true,
                 description: true,
                 price: true,
+                price_postfix: true,
                 attributes: true,
                 count_available: true,
                 store: {

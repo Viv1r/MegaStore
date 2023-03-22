@@ -14,14 +14,20 @@
 .item_card {
     width: 900px;
     height: fit-content;
-    padding: 40px;
-    display: grid;
-    grid-template-columns: 240px auto;
-    gap: 40px;
     border-radius: 32px;
     overflow: hidden;
     background-color: white;
     box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.25);
+
+    .content {
+        width: 100%;
+        height: fit-content;
+        padding: 30px;
+        display: grid;
+        grid-template-columns: 240px auto;
+        gap: 40px;
+        overflow: hidden;
+    }
 
     .btn_close {
         position: absolute;
@@ -32,6 +38,7 @@
         text-align: center;
         user-select: none;
         cursor: pointer;
+        z-index: 20;
     }
 }
 
@@ -57,7 +64,14 @@
     min-height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 8px;
+
+    .divider {
+        width: 100%;
+        height: 12px;
+        border-bottom: 1px solid #ececec;
+        margin-bottom: 8px;
+    }
 
     .info_block {
         display: flex;
@@ -81,23 +95,30 @@
     
     .attributes_block {
         width: 100%;
+
+        .title {
+            font-size: 18px;
+        }
         
         .attributes {
             width: 100%;
             border-collapse: collapse;
 
             td {
-                border: 1px solid rgba($color: #000000, $alpha: .25);
+                border: none;
                 height: 26px;
                 padding: 2px 6px;
                 font-size: 16px;
 
                 &.attribute_name {
+                    padding-left: 0;
+                    font-weight: bold;
                     max-width: fit-content;
                 }
 
                 &.attribute_value {
                     width: auto;
+                    padding-left: 0;
                 }
             }
         }
@@ -119,13 +140,12 @@
     
     .actions_block {
         width: fit-content;
-        margin: 0 auto;
         display: flex;
         gap: 12px;
         margin: auto auto 0 0;
 
         .price {
-            font-family: 'Kulim Park';
+            font-family: 'Kulim Park', serif;
             font-style: normal;
             font-weight: 400;
             font-size: 19px;
@@ -135,6 +155,11 @@
             text-align: center;
             color: #000000;
             user-select: none;
+
+            .postfix {
+                font-size: 16px;
+                margin-left: 8px;
+            }
         }
     }
 }
@@ -145,7 +170,7 @@
     padding: 2px 0;
     border: 1px solid rgba(0, 133, 255, 0.75);
     border-radius: 5px;
-    font-family: 'Kulim Park';
+    font-family: 'Kulim Park', serif;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -187,7 +212,7 @@
     .btn_decrease,
     .btn_increase {
         border: 1px solid rgba(0, 133, 255, 0.75);
-        font-family: 'Kulim Park';
+        font-family: 'Kulim Park', serif;
         font-style: normal;
         font-weight: 400;
         font-size: 12px;
@@ -213,5 +238,32 @@
 
     .btn_increase {
         border-radius: 0 5px 5px 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .item_card .content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .left_side {
+            width: 100%;
+            height: 240px;
+
+            .picture {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+
+                img {
+                    width: auto;
+                    height: 100%;
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+            }
+        }
     }
 }

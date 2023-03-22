@@ -48,7 +48,7 @@
         <div v-if="blackoutActive" class="blackout" @click="hideOverlay()"></div>
     </Transition>
     <div class="container">
-        <RouterView/>
+        <RouterView @navigate="route => navigate(route)"/>
     </div>
     <footer>MegaStore © 2022 (by viv1r)</footer>
 </template>

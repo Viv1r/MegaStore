@@ -9,6 +9,16 @@
     display: grid;
     grid-template-columns: 326px auto;
     gap: 37px;
+    transition: all .2s ease-in-out;
+}
+
+.loading_indicator {
+    position: absolute;
+    width: 100%;
+    color: #6d6d6d;
+    font-size: 24px;
+    text-align: center;
+    margin: 20px auto;
 }
 
 .search_block {
@@ -66,8 +76,65 @@
     }
 }
 
-.products_wrapper {
+.products_block {
+    width: 100%;
+    height: fit-content;
     display: flex;
     flex-direction: column;
+}
+
+.products_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 27px;
+}
+
+.btn_more {
+    margin: 40px auto 0 auto;
+    width: 170px;
+    height: 37px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .2s ease-out;
+    cursor: pointer;
+    user-select: none;
+    line-height: 16px;
+    border: 1.5px solid #003BD1;
+    border-radius: 10px;
+    background-color: white;
+    color: #003BD1;
+    font-family: 'Kulim Park', serif;
+    font-style: normal;
+    font-size: 14px;
+
+    &:hover {
+        color: white;
+        background-color: #003BD1;
+    }
+
+    &[disabled] {
+        color: #757575;
+        border-color: #a8a8a8;
+        background-color: #e0e0e0;
+        cursor: default;
+    }
+}
+
+@media (max-width: 900px) {
+    .container {
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .main_title {
+        font-size: 30px;
+        text-align: center;
+        margin: 20px 0;
+    }
 }

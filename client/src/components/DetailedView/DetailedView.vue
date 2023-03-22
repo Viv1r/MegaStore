@@ -3,60 +3,72 @@
 <div class="detailed_view_wrapper" @click="openDetailedView(null)">
     <div class="item_card" @click.stop>
         <div class="btn_close" @click="openDetailedView(null)">✕</div>
-        <div class="left_side">
-            <div class="picture">
-                <img
-                    :src="product.picture ? product.picture : 'src/assets/pictures/no_picture.jpg'"
-                    :alt="product.title"
-                >
-            </div>
-        </div>
-        <div class="right_side">
-            <div class="info_block">
-                <div class="title">{{ product.title }}</div>
-                <div v-if="product.category" class="category">{{ product.category.name }}</div>
-                <div class="description">{{ product.description }}</div>
-            </div>
-
-            <div v-if="!loadedProduct" class="loading_indicator">Loading...</div>
-
-            <div class="attributes_block" v-if="product.attributes">
-                <table class="attributes">
-                    <tr v-for="(attribute, key) in product.attributes">
-                        <td class="attribute_name">{{ key }}</td>
-                        <td class="attribute_value">{{ attribute }}</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="seller_block" v-if="product.store">
-                <div class="title">Seller:</div> {{ product.store.title }}
-            </div>
-
-            <div class="reviews_block" v-if="product.reviews">
-                <!-- Отзывы -->
-            </div>
-
-            <div class="actions_block">
-                <div class="price">
-                    {{ '$' + Number(product.price).toFixed(2) }}
-                </div>
-
-                <div v-if="cartGetCount(product.id)" class="count_selector" @click.stop>
-                    <button class="btn_decrease"
-                        @click="cartAddCount({id: product.id, count: -1})"
-                    >-</button>
-                    <input type="text"
-                        @keydown.enter="cartSetCount({id: product.id, target: $event.target})"
-                        @focusout="cartSetCount({id: product.id, target: $event.target})"
-                        :value="cartGetCount(product.id)"
+        <div class="content">
+            <div class="left_side">
+                <div class="picture">
+                    <img
+                        :src="product.picture ? product.picture : 'src/assets/pictures/no_picture.jpg'"
+                        :alt="product.title"
                     >
-                    <button class="btn_increase"
-                        @click="cartAddCount({id: product.id, count: 1})"
-                    >+</button>
+                </div>
+            </div>
+            <div class="right_side">
+                <div class="info_block">
+                    <div class="title">{{ product.title }}</div>
+                    <div v-if="product.category" class="category">{{ product.category.name }}</div>
+                    <div class="description">{{ product.description }}</div>
                 </div>
 
-                <div v-else class="btn_add_item" @click.stop="addToCart(product)">Add to cart</div>
+                <div v-if="!loadedProduct" class="loading_indicator">Loading...</div>
+
+                <template v-if="product.attributes">
+                    <div class="divider"></div>
+                    <div class="attributes_block">
+                        <div class="title">Attributes</div>
+                        <table class="attributes">
+                            <tr v-for="(attribute, key) in product.attributes">
+                                <td class="attribute_name">{{ key }}</td>
+                                <td class="attribute_value">{{ attribute }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </template>
+
+                <template v-if="product.reviews">
+                    <div class="divider"></div>
+                    <div class="reviews_block">
+                        <!-- Отзывы -->
+                    </div>
+                </template>
+
+                <div class="divider"></div>
+
+                <div class="seller_block" v-if="product.store">
+                    <div class="title">Seller:</div> {{ product.store.title }}
+                </div>
+
+                <div class="actions_block">
+                    <div class="price">
+                        {{ '$' + Number(product.price).toFixed(2) }}
+                        <div class="postfix" v-if="product.pricePostfix">{{ product.pricePostfix }}</div>
+                    </div>
+
+                    <div v-if="cartGetCount(product.id)" class="count_selector" @click.stop>
+                        <button class="btn_decrease"
+                                @click="cartAddCount({id: product.id, count: -1})"
+                        >-</button>
+                        <input type="text"
+                               @keydown.enter="cartSetCount({id: product.id, target: $event.target})"
+                               @focusout="cartSetCount({id: product.id, target: $event.target})"
+                               :value="cartGetCount(product.id)"
+                        >
+                        <button class="btn_increase"
+                                @click="cartAddCount({id: product.id, count: 1})"
+                        >+</button>
+                    </div>
+
+                    <div v-else class="btn_add_item" @click.stop="addToCart(product)">Add to cart</div>
+                </div>
             </div>
         </div>
     </div>
@@ -104,6 +116,7 @@ export default {
                     price: product.price,
                     attributes: product.attributes,
                     countAvailable: product.count_available,
+                    pricePostfix: product.price_postfix,
                     store: product.store,
                     category: product.category,
                     picture: product.picture

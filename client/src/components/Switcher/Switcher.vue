@@ -26,7 +26,7 @@ export default {
     .switcher {
         width: 36px;
         height: 22px;
-        border-radius: 10px;
+        border-radius: 11px;
         background-color: #acacac;
         box-shadow: inset 0 0 5px rgba($color: #000000, $alpha: .5);
         transition: all .15s ease-in-out;
@@ -37,19 +37,17 @@ export default {
             background-color: lime;
 
             .switch {
-                transform: translateX(28px);
+                transform: translateX(14px);
             }
         }
     }
 
     .switch {
         position: absolute;
-        width: 20px;
-        height: 28px;
-        top: -3px;
-        left: -6px;
+        width: 22px;
+        height: 22px;
         border: 1px solid #7f7f7f;
-        border-radius: 8px;
+        border-radius: 50%;
         background-color: #ffffff;
         transition: all .15s ease-in-out;
     }
