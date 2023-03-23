@@ -51,7 +51,8 @@
             <div class="header">
                 <div class="title">Total:</div> ${{ cartTotal.toFixed(2) }}
             </div>
-            <div class="btn_proceed" @click="checkout()">Proceed</div>
+            <div v-if="user.loggedIn" class="btn_proceed" @click="checkout()">Proceed</div>
+            <div v-else class="info" @click="$emit('auth')">Log in to proceed</div>
         </div>
     </div>
 </div>
@@ -70,6 +71,7 @@ export default {
 
     computed: {
         ...mapState('cart', ['products']),
+        ...mapState('user', ['user']),
         ...mapGetters('cart', ['cartTotal', 'cartGetCount'])
     },
 
@@ -87,6 +89,8 @@ export default {
             this.editableProductId = null;
         }
     },
+
+    emits: ['auth'],
 
     updated() {
         const targetArr = this.$refs[`edit_${this.editableProductId}`];
