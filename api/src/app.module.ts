@@ -7,7 +7,7 @@ import { TokenAuthController } from './controllers/token-auth/token-auth.control
 import { SqlService } from 'src/services/sql/sql.service';
 import { LoginController } from './controllers/login/login.controller';
 import { LogoutController } from './controllers/logout/logout.controller';
-import { PurchaseController } from './controllers/purchase/purchase/purchase.controller';
+import { PurchaseController } from './controllers/purchase/purchase.controller';
 
 @Module({
   imports: [],

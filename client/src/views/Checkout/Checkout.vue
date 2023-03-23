@@ -13,7 +13,7 @@
                 >
                     <div class="picture">
                         <img
-                            :src="product.picture ? product.picture : 'src/assets/pictures/no_picture.jpg'"
+                            :src="product.picture ? product.picture : '../../assets/pictures/no_picture.jpg'"
                             :alt="product.title"
                         >
                     </div>
