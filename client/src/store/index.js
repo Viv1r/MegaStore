@@ -16,9 +16,7 @@ export default createStore({
     state: {
         productList: [],
         categories: [],
-        detailedViewProduct: null,
-        processingAuth: false,
-        authError: null
+        detailedViewProduct: null
     },
 
     mutations: {
@@ -45,14 +43,6 @@ export default createStore({
         openDetailedView(store, product) {
             store.detailedViewProduct = product;
             window.scrollTo(0, 0);
-        },
-
-        setAuthStatus(store, status) {
-            store.processingAuth = !!status;
-        },
-
-        pushAuthError(store, error) {
-            store.authError = error;
         }
     },
 

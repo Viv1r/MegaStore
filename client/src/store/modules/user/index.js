@@ -26,7 +26,19 @@ export default {
     namespaced: true,
 
     state: {
-        user: new User()
+        user: new User(),
+        processingAuth: false,
+        authError: null
+    },
+
+    mutations: {
+        setAuthStatus(store, status) {
+            store.processingAuth = !!status;
+        },
+
+        pushAuthError(store, error) {
+            store.authError = error;
+        }
     },
 
     actions: {

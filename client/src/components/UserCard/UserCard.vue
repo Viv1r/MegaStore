@@ -2,7 +2,7 @@
   <div class="user_card">
     <div class="user_info">
       <div class="profile_picture">
-        <img :src="user.profilePicture || '../../assets/pictures/no_picture.jpg'" alt="picture">
+        <img :src="user.profilePicture || 'src/assets/pictures/no_picture.jpg'" alt="picture">
       </div>
       <div class="name">{{ user.name }}</div>
       <div class="email">{{ user.email }}</div>

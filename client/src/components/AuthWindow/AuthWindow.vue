@@ -78,7 +78,7 @@ export default {
     },
 
     computed: {
-        ...mapState(['authError', 'processingAuth']),
+        ...mapState('user', ['authError', 'processingAuth']),
 
         formValid() {
             if (this.registerMode) {
