@@ -1,10 +1,11 @@
 import { Controller, Post, Body, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
+import {UsersService} from "../../services/users/users.service";
 
 @Controller('login')
 export class LoginController {
-    constructor(private readonly sqlService: SqlService) {}
+    constructor(private sqlService: SqlService, private usersService: UsersService ) {}
 
     private readonly users = this.sqlService.client.users;
 
@@ -18,30 +19,30 @@ export class LoginController {
             email: body.email,
             password: body.password
         };
+
         if (!(authData.email && authData.password)) {
             return { statusCode: 'error', statusMessage: 'Bad details!' }
         }
         
-        let user;
+        let token;
         try {
-            user = await this.users.findFirst({
-                select: {
-                    name: true,
-                    email: true,
-                    auth_token: true
-                },
-                where: authData
-            });
+            token = await this.usersService.getToken(authData.email, authData.password);
         } catch(error) {
             console.log(error);
-        } finally {
-            if (user) {
-                response.cookie('token', user.auth_token);
-                delete user.auth_token;
-                return { statusCode: 'ok', user: user };
-            }
-            response.clearCookie('token');
-            return { statusCode: 'error', statusMessage: 'Wrong email or password!' };
         }
+
+        if (token) {
+            response.cookie('token', token);
+            const user = await this.usersService.get(token);
+            await this.usersService.updateLastLogin(user);
+
+            return {
+                statusCode: 'ok',
+                user: user
+            };
+        }
+        
+        response.clearCookie('token');
+        return { statusCode: 'error', statusMessage: 'Wrong email or password!' };
     }
 }

@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `users` ADD COLUMN `is_admin` BOOLEAN NOT NULL DEFAULT false,
+    ADD COLUMN `last_login` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    ADD COLUMN `profile_picture` VARCHAR(256) NULL;

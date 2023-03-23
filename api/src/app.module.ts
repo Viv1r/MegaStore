@@ -8,10 +8,12 @@ import { SqlService } from 'src/services/sql/sql.service';
 import { LoginController } from './controllers/login/login.controller';
 import { LogoutController } from './controllers/logout/logout.controller';
 import { PurchaseController } from './controllers/purchase/purchase.controller';
+import { UsersService } from './services/users/users.service';
+import { PurchasesService } from './services/purchases/purchases.service';
 
 @Module({
   imports: [],
   controllers: [AppController, ProductsController, RegisterController, CategoriesController, TokenAuthController, LoginController, LogoutController, PurchaseController],
-  providers: [SqlService],
+  providers: [SqlService, UsersService, PurchasesService],
 })
 export class AppModule {};

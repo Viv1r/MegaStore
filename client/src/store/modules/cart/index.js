@@ -59,10 +59,12 @@ export default {
                 data = response.data;
             } finally {
                 console.log(data);
-                if (data.status === 'ok') {
-                    alert(`Thanks for your purchase! Total paid: $${data.total}`);
+                if (data.statusCode === 'ok') {
+                    alert(`Thanks for your purchase! Total paid: $${data.purchase.sum}`);
                     state.products = [];
                     commit('clearCart');
+                } else if (data.statusCode === 'error' ) {
+                    alert(data.statusMessage);
                 }
             }
         }

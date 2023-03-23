@@ -12,31 +12,34 @@ model categories {
   name                String                @db.VarChar(64)
 
   products            products[]
-}         
+}
 
-model products {          
+model products {
   id                  Int                   @id @default(autoincrement())
   title               String                @db.VarChar(256)
   category_id         Int?
   description         String?
-  attributes          String?
+  attributes          String?               @db.VarChar(8192)
   price               Decimal               @default(0.00) @db.Decimal(16, 2)
   price_postfix       String?
   count_available     Int?                  @default(0)
   store_id            Int?
+  is_deleted          Boolean               @db.TinyInt @default(false)
 
   category            categories?           @relation(fields: [category_id], references: [id])
   store               stores?               @relation(fields: [store_id], references: [id])
+  sales               sales[]
 }         
 
-model stores {          
+model stores {
   id                  Int                   @id @default(autoincrement())
   title               String?               @db.VarChar(128) @default("Store")
   owner_id            Int
 
   owner               users                 @relation(fields: [owner_id], references: [id])
   managers            managersOnStores[]
-  products            products[] 
+  products            products[]
+  sales               sales[]
 }
 
 model users {
@@ -45,10 +48,38 @@ model users {
   email               String                @db.VarChar(256) @unique
   password            String?               @db.VarChar(128)
   auth_token          String?               @db.VarChar(64)
-  is_admin            Boolean               @db.TinyInt
+  is_admin            Boolean               @db.TinyInt @default(false)
+  last_login          DateTime              @default(now())
+  profile_picture     String?               @db.VarChar(256)
+  is_banned           Boolean               @db.TinyInt @default(false)
 
   managed_stores      managersOnStores[]
   owned_stores        stores[]
+  purchases           purchases[]
+}
+
+model purchases {
+  id                  Int                   @id @default(autoincrement())
+  buyer_id            Int
+  sum                 Decimal               @db.Decimal(16, 2)
+  datetime            DateTime              @default(now())
+
+  buyer               users                 @relation(fields: [buyer_id], references: [id])
+  sales               sales[]
+}
+
+model sales {
+  id                  Int                   @id @default(autoincrement())
+  seller_id           Int
+  purchase_id         Int
+  product_id          Int
+  product_count       Int
+  datetime            DateTime              @default(now())
+  sum                 Decimal               @db.Decimal(16, 2)
+
+  seller              stores                @relation(fields: [seller_id], references: [id])
+  purchase            purchases             @relation(fields: [purchase_id], references: [id])
+  product             products              @relation(fields: [product_id], references: [id])
 }
 
 model managersOnStores {

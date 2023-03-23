@@ -9,8 +9,9 @@
     </div>
     <div class="actions_list">
       <div class="link">Edit profile</div>
-      <div class="link">Add product</div>
-      <div class="link" @click="logout()">Logout</div>
+      <div class="link">Purchases history</div>
+      <div class="link">Control panel</div>
+      <div class="link huge" @click="logout()">Logout</div>
     </div>
   </div>
 </template>

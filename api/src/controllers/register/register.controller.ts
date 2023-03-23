@@ -3,6 +3,7 @@ import { Controller, Post, Body, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
 import validate from 'src/modules/validate';
+import {UsersService} from "../../services/users/users.service";
 
 
 function generateHash(length): string {
@@ -19,7 +20,7 @@ function generateHash(length): string {
 
 @Controller('register')
 export class RegisterController {
-    constructor(private readonly sqlService: SqlService) {}
+    constructor(private sqlService: SqlService) {}
 
     private readonly users = this.sqlService.client.users;
 
