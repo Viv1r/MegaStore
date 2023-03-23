@@ -9,11 +9,8 @@ export default {
             store: store
         };
 
-        if (Object.values(parsedProduct).some(elem => !elem)) {
-            console.log(parsedProduct);
-            return;
-        }; // Отмена если есть пустые поля
-        if (state.products.find(elem => elem.id === parsedProduct.id)) return; // Отмена если продукт уже в корзине
+        if (Object.values(parsedProduct).some(elem => !elem)) return;           // Отмена если есть пустые поля
+        if (state.products.find(elem => elem.id === parsedProduct.id)) return;  // Отмена если продукт уже в корзине
 
         parsedProduct.picture = picture;
         state.products.push(parsedProduct);
@@ -31,6 +28,11 @@ export default {
         }
     },
 
+    clearCart(state) {
+        state.products = [];
+        localStorage.setItem('cart', JSON.stringify(state.products));
+    },
+
     cartAddCount(state, {id, count}) {
         const targetIndex = state.products.findIndex(elem => elem.id === id);
         const targetProduct = state.products[targetIndex];
@@ -44,6 +46,7 @@ export default {
             if (targetProduct.count <= 0) {
                 state.products.splice(targetIndex, 1);
             }
+
             localStorage.setItem('cart', JSON.stringify(state.products));
         }
     },

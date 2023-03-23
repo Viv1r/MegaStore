@@ -1,4 +1,9 @@
 import mutations from "./mutations";
+import axios from "axios";
+
+const api = axios.create({
+    baseURL: 'api/'
+});
 
 export default {
     namespaced: true,
@@ -37,6 +42,28 @@ export default {
                 data.forEach(product => commit('addToCart', product));
             } else {
                 localStorage.removeItem('cart');
+            }
+        },
+
+        async checkout({state, commit}) {
+            const action = 'purchase';
+            const body = {
+                products: state.products.map(({id, title, count}) => {
+                    return { id: id, title: title, count: count };
+                })
+            }
+
+            let data;
+            try {
+                const response = await api.post(action, body);
+                data = response.data;
+            } finally {
+                console.log(data);
+                if (data.status === 'ok') {
+                    alert(`Thanks for your purchase! Total paid: $${data.total}`);
+                    state.products = [];
+                    commit('clearCart');
+                }
             }
         }
     }

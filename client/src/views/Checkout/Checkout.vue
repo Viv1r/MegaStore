@@ -13,7 +13,7 @@
                 >
                     <div class="picture">
                         <img
-                            :src="product.picture ? product.picture : '../../assets/pictures/no_picture.jpg'"
+                            :src="product.picture ? product.picture : 'src/assets/pictures/no_picture.jpg'"
                             :alt="product.title"
                         >
                     </div>
@@ -51,7 +51,7 @@
             <div class="header">
                 <div class="title">Total:</div> ${{ cartTotal.toFixed(2) }}
             </div>
-            <div class="btn_proceed">Proceed</div>
+            <div class="btn_proceed" @click="checkout()">Proceed</div>
         </div>
     </div>
 </div>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
     data() {
@@ -76,6 +76,7 @@ export default {
     methods: {
         ...mapMutations('cart', ['removeFromCart', 'cartSetCount']),
         ...mapMutations(['openDetailedView']),
+        ...mapActions('cart', ['checkout']),
 
         editProduct(product) {
             this.editableProductId = product.id;
