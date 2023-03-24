@@ -62,7 +62,7 @@ export default createStore({
                 });
                 data = response.data;
             } finally {
-                if (data && data.products) {
+                if (data?.products) {
                     store.commit('addProducts', data.products);
                 }
             }
@@ -75,7 +75,7 @@ export default createStore({
                 const response = await api.get(action);
                 data = response.data;
             } finally {
-                if (data && data.categories) {
+                if (data?.categories) {
                     commit('setCategories', data.categories);
                 }
             }

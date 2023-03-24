@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { SqlService } from "../sql/sql.service";
 import { Prisma } from "@prisma/client";
 
-type User = {
+type UserResponse = {
     id?: number;
     name?: string;
     email: string;
+    auth_token?: string;
+    is_admin?: boolean;
 }
 
 @Injectable()
@@ -14,20 +16,22 @@ export class UsersService {
 
     private readonly users = this.sqlService.client.users;
 
-    async get(token: string): Promise<User|null> {
+    async get(token: string): Promise<UserResponse|null> {
         if (!token) return null;
         const user = await this.users.findFirst({
             select: {
                 id: true,
                 name: true,
-                email: true
+                email: true,
+                auth_token: true,
+                is_admin: true
             },
             where: {
                 auth_token: token
             }
         });
 
-        return user || null;
+        return user ?? null;
     }
 
     async getToken(email: string, password: string): Promise<string|null> {
@@ -49,7 +53,7 @@ export class UsersService {
         return null;
     }
 
-    async updateLastLogin(user: User): Promise<void> {
+    async updateLastLogin(user: UserResponse): Promise<void> {
         if (!user || !user.id) return;
         await this.users.update({
             where: {

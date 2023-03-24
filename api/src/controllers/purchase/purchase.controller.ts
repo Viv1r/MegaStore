@@ -1,14 +1,24 @@
-import {Controller, Post, Body, Req, Get} from '@nestjs/common';
+import { Controller, Post, Body, Req, Get, UseGuards } from '@nestjs/common';
 import { SqlService } from "../../services/sql/sql.service";
 import { Prisma } from "@prisma/client";
 import { Request } from "express";
-import {UsersService} from "../../services/users/users.service";
-import {PurchasesService} from "../../services/purchases/purchases.service";
+import { UsersService } from "../../services/users/users.service";
+import { PurchasesService } from "../../services/purchases/purchases.service";
+import { UserGuard } from "../../guards/user/user.guard";
+import { AdminGuard } from "../../guards/admin/admin.guard";
 
-interface ProductInfo {
+type ProductInfo = {
     title?: string;
     id: number;
     count: number;
+}
+
+type UserInfo = {
+    id?: number;
+    name?: string;
+    email: string;
+    auth_token?: string;
+    is_admin?: boolean;
 }
 
 interface PurchaseInfo {
@@ -27,20 +37,17 @@ export class PurchaseController {
 
     readonly products = this.sqlService.client.products;
 
+    @UseGuards(AdminGuard)
     @Get()
     async getPurchases(): Promise<object> {
         const purchases = await this.purchasesService.getPurchasesAdmin();
         return { statusCode: 'ok', purchases: purchases };
     }
 
+    @UseGuards(UserGuard)
     @Post()
     async makePurchase(@Req() request: Request, @Body() info: PurchaseInfo): Promise<object> {
-        const token = request.cookies['token'];
-        const user = await this.usersService.get(token);
-
-        if (!user) {
-            return { statusCode: 'error', statusMessage: 'Bad token!' };
-        }
+        const user = (request as { user?: UserInfo }).user;
 
         if (!info || !info.products) {
             return { statusCode: 'error', statusMessage: 'Bad request!' };

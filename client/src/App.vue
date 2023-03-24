@@ -3,7 +3,7 @@
         <div class="header__content">
             <div class="left_side">
                 <div class="btn_menu">
-                    <img src="./assets/svg/menu.svg" alt="menu" @click="switchSidebar()">
+                    <img src="./assets/svg/menu.svg" alt="menu" @click="switchModule('sidebar')">
                 </div>
             </div>
             <div class="logo" @click="navigate('/')">
@@ -12,7 +12,7 @@
             <div class="right_side">
                 <div
                     class="btn_cart"
-                    @click="switchCart()"
+                    @click="switchModule('cart')"
                 >
                     <img src="./assets/svg/cart.svg" alt="cart">
                     <Transition name="grow">
@@ -21,17 +21,17 @@
                 </div>
 
                 <Transition name="dropdown">
-                    <Cart v-if="cartActive"
+                    <Cart v-if="modules.cart.active"
                         @checkout="navigate('/checkout')"
                     />
                 </Transition>
 
                 <Transition name="dropdown">
-                    <UserCard v-if="userCardActive"/>
+                    <UserCard v-if="modules.userCard.active"/>
                 </Transition>
 
-                <div v-if="user.loggedIn" class="btn_profile" @click="switchUserCard()">Welcome, {{ user.name }}!</div>
-                <div v-else class="btn_auth" @click="switchAuthWindow()">Log in</div>
+                <div v-if="user.loggedIn" class="btn_profile" @click="switchModule('userCard')">Welcome, {{ user.name }}!</div>
+                <div v-else class="btn_auth" @click="switchModule('authWindow')">Log in</div>
             </div>
         </div>
     </header>
@@ -39,16 +39,16 @@
         <DetailedView v-if="detailedViewActive"/>
     </Transition>
     <Transition name="dropdown">
-        <AuthWindow v-if="authWindowActive" @close="hideOverlay()"/>
+        <AuthWindow v-if="modules.authWindow.active" @close="hideOverlay()"/>
     </Transition>
     <Transition name="sidebar">
-        <Sidebar v-if="sidebarActive" @close="hideOverlay()"/>
+        <Sidebar v-if="modules.sidebar.active" @close="hideOverlay()"/>
     </Transition>
     <Transition>
         <div v-if="blackoutActive" class="blackout" @click="hideOverlay()"></div>
     </Transition>
     <div class="container">
-        <RouterView @auth="switchAuthWindow()"/>
+        <RouterView @auth="switchModule('authWindow')"/>
     </div>
     <footer>MegaStore © 2022 (by viv1r)</footer>
 </template>
@@ -72,10 +72,12 @@ export default {
 
     data() {
         return {
-            cartActive: false,
-            sidebarActive: false,
-            authWindowActive: false,
-            userCardActive: false
+            modules: {
+              cart: { active: false },
+              sidebar: { active: false },
+              authWindow: { active: false },
+              userCard: { active: false }
+            }
         }
     },
 
@@ -88,7 +90,7 @@ export default {
         ...mapGetters('cart', ['cartSize']),
 
         blackoutActive() {
-            return this.cartActive || this.sidebarActive || this.authWindowActive || this.userCardActive || this.detailedViewActive;
+            return Object.values(this.modules).some(elem => elem.active) || this.detailedViewActive;
         },
 
         detailedViewActive() {
@@ -106,28 +108,15 @@ export default {
         ...mapMutations(['openDetailedView']),
 
         hideOverlay() {
-            this.cartActive = this.sidebarActive = this.authWindowActive = this.userCardActive = false;
+            Object.keys(this.modules).forEach(key => this.modules[key].active = false);
             this.openDetailedView(null);
         },
-        
-        switchCart() {
-            this.sidebarActive = this.authWindowActive = this.userCardActive = false;
-            this.cartActive = !this.cartActive;
-        },
-        
-        switchSidebar() {
-            this.cartActive = this.authWindowActive = this.userCardActive = false;
-            this.sidebarActive = !this.sidebarActive;
-        },
-        
-        switchAuthWindow() {
-            this.cartActive = this.sidebarActive = this.userCardActive = false;
-            this.authWindowActive = !this.authWindowActive;
-        },
 
-        switchUserCard() {
-            this.cartActive = this.sidebarActive = this.authWindowActive = false;
-            this.userCardActive = !this.userCardActive;
+        switchModule(name) {
+            if (this.modules[name]) {
+                this.hideOverlay();
+                this.modules[name].active = !this.modules[name].active;
+            }
         },
 
         navigate(route) {

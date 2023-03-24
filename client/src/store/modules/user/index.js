@@ -8,16 +8,16 @@ class User {
     name;
     email;
     profilePicture;
+    token;
     loggedIn = false;
 
-    auth(name, email) {
-        this.name = name;
-        this.email = email;
+    auth({name, email, token, profilePicture}) {
+        [this.name, this.email, this.token, this.profilePicture] = [name, email, token, profilePicture];
         this.loggedIn = true;
     };
 
     logout() {
-        this.name = this.email = undefined;
+        this.name = this.email = this.token = undefined;
         this.loggedIn = false;
     };
 }
@@ -49,9 +49,14 @@ export default {
                 const response = await api.post(action);
                 data = response.data;
             } finally {
-                if (data && data.user) {
+                if (data?.user) {
                     const user = data.user;
-                    state.user.auth(user.name, user.email);
+                    state.user?.auth({
+                        name: user.name,
+                        email: user.email,
+                        token: user.auth_token,
+                        profilePicture: user.profilePicture
+                    });
                 }
             }
         },
@@ -66,10 +71,15 @@ export default {
                 const response = await api.post(action, authData);
                 data = response.data;
             } finally {
-                if (data && data.user) {
+                if (data?.user) {
                     const user = data.user;
-                    state.user.auth(user.name, user.email);
-                } else if (data && data.statusMessage) {
+                    state.user?.auth({
+                        name: user.name,
+                        email: user.email,
+                        token: user.auth_token,
+                        profilePicture: user.profilePicture
+                    });
+                } else if (data?.statusMessage) {
                     commit('pushAuthError', data.statusMessage);
                 }
                 commit('setAuthStatus', false);
@@ -86,10 +96,15 @@ export default {
                 const response = await api.post(action, authData);
                 data = response.data;
             } finally {
-                if (data && data.user) {
+                if (data?.user) {
                     const user = data.user;
-                    state.user.auth(user.name, user.email);
-                } else if (data && data.statusMessage) {
+                    state.user?.auth({
+                        name: user.name,
+                        email: user.email,
+                        token: user.auth_token,
+                        profilePicture: user.profilePicture
+                    });
+                } else if (data?.statusMessage) {
                     commit('pushAuthError', data.statusMessage);
                 }
                 commit('setAuthStatus', false);

@@ -1,5 +1,6 @@
 import mutations from "./mutations";
 import axios from "axios";
+import user from "../user";
 
 const api = axios.create({
     baseURL: 'api/'
@@ -46,19 +47,28 @@ export default {
         },
 
         async checkout({state, commit}) {
+            if (!user.state.user.loggedIn) return alert('Please log in!');
+
             const action = 'purchase';
             const body = {
                 products: state.products.map(({id, title, count}) => {
                     return { id: id, title: title, count: count };
                 })
+            };
+
+            const headers = {
+                Authorization: user.state.user.token
+                    ? 'Bearer ' + user.state.user.token
+                    : ''
             }
 
             let data;
             try {
-                const response = await api.post(action, body);
+                const response = await api.post(action, body, {
+                    headers: headers
+                });
                 data = response.data;
             } finally {
-                console.log(data);
                 if (data.statusCode === 'ok') {
                     alert(`Thanks for your purchase! Total paid: $${data.purchase.sum}`);
                     state.products = [];

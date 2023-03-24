@@ -106,7 +106,7 @@ export default {
             const result = await axios.get(URL);
             const data = result.data;
             
-            if (data && data.product) {
+            if (data?.product) {
                 const product = data.product;
 
                 this.loadedProduct = {
