@@ -113,10 +113,10 @@ export default {
         },
 
         switchModule(name) {
-            if (this.modules[name]) {
-                this.hideOverlay();
-                this.modules[name].active = !this.modules[name].active;
-            }
+            this.modules[name].active = !this.modules[name].active;
+            Object.keys(this.modules).forEach(key => {
+                if (key !== name) this.modules[key].active = false;
+            });
         },
 
         navigate(route) {
