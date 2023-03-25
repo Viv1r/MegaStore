@@ -9,8 +9,8 @@
     </div>
     <div class="actions_list">
       <div class="link">Edit profile</div>
-      <div class="link">Purchases history</div>
-      <div class="link">Control panel</div>
+      <div class="link" @click="$emit('purchases')">Purchases history</div>
+      <a class="link" href="api/crm">Manage stores</a>
       <div class="link huge" @click="logout()">Logout</div>
     </div>
   </div>
@@ -25,7 +25,8 @@ export default {
   },
   methods: {
     ...mapActions('user', ['logout'])
-  }
+  },
+  emits: ['navigate']
 }
 </script>
 

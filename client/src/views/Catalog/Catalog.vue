@@ -3,23 +3,8 @@
         <div class="main_title">Catalog</div>
         <Transition>
             <div v-if="catalog.length" class="container">
-                <div class="search_block">
-                    <div class="title">Filters</div>
-                    <div class="filter_wrapper">
-                        <label>Keywords</label>
-                        <input type="text">
-                    </div>
-                    <div class="filter_wrapper">
-                        <label>Manufacturer</label>
-                        <div class="checkbox_wrapper">
-                            <input type="checkbox" id="val1">
-                            <label for="val1">Value 1</label>
-                        </div>
-                        <div class="checkbox_wrapper">
-                            <input type="checkbox" id="val2">
-                            <label for="val2">Value 2</label>
-                        </div>
-                    </div>
+                <div class="filters_block">
+                    <ProductsFiltering/>
                 </div>
                 <div class="products_block">
                     <div class="products_wrapper">
@@ -49,11 +34,15 @@
 
 <script>
 import ProductCard from "../../components/ProductCard/ProductCard.vue";
+import ProductsFiltering from "../../components/ProductsFiltering/ProductsFiltering.vue";
 import { mapState } from "vuex";
 import axios from "axios";
 
 export default {
-    components: { ProductCard },
+    components: {
+        ProductCard,
+        ProductsFiltering
+    },
     data() {
         return {
             catalog: [],

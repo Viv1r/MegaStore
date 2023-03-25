@@ -27,7 +27,7 @@
                 </Transition>
 
                 <Transition name="dropdown">
-                    <UserCard v-if="modules.userCard.active"/>
+                    <UserCard v-if="modules.userCard.active" @purchases="navigate('/purchases')"/>
                 </Transition>
 
                 <div v-if="user.loggedIn" class="btn_profile" @click="switchModule('userCard')">Welcome, {{ user.name }}!</div>

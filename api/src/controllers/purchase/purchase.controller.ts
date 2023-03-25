@@ -37,9 +37,17 @@ export class PurchaseController {
 
     readonly products = this.sqlService.client.products;
 
-    @UseGuards(AdminGuard)
+    @UseGuards(UserGuard)
     @Get()
-    async getPurchases(): Promise<object> {
+    async getPurchases(@Req() request: Request): Promise<object> {
+        const userID = (request as { user?: UserInfo }).user?.id;
+        const purchases = await this.purchasesService.getPurchases(userID);
+        return { statusCode: 'ok', purchases: purchases };
+    }
+
+    @UseGuards(AdminGuard)
+    @Get('/admin')
+    async getAllPurchases(): Promise<object> {
         const purchases = await this.purchasesService.getPurchasesAdmin();
         return { statusCode: 'ok', purchases: purchases };
     }

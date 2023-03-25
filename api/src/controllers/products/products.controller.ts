@@ -5,6 +5,8 @@ import { SqlService } from 'src/services/sql/sql.service';
 
 import fs from 'fs';
 import { Decimal } from '@prisma/client/runtime';
+import {PurchasesService} from "../../services/purchases/purchases.service";
+import {ProductsService} from "../../services/products/products.service";
 
 interface Store {
     title: string
@@ -26,38 +28,12 @@ interface Product {
     category?: Category
 }
 
-const mainFolder = './dist/public/';
-const itemsFolder = 'api/assets/items';
-
 @Controller('products')
 export class ProductsController {
-    constructor(private readonly sqlService: SqlService) {}
+    constructor(private sqlService: SqlService, private productsService: ProductsService) {}
 
     private readonly products = this.sqlService.client.products;
     private readonly productsPerPage = 5;
-
-    private async parseImage(productId: number): Promise<string> {
-        return new Promise<string>((resolve) => {
-            try {
-                const regex = /^.*\.(jpg|png|jpeg)$/;
-                const folder = itemsFolder + `/${productId}/`;
-    
-                const fileCheck = fs.readdirSync(mainFolder + folder).some(file => {
-                    if (regex.test(file)) {
-                        resolve(folder + file);
-                        return true;
-                    }
-                    return false;
-                });
-
-                if (!fileCheck) {
-                    resolve(null);
-                }
-            } catch {
-                resolve(null);
-            }
-        })
-    }
 
     @Get()
     async getProducts(@Query('count') count?: number): Promise<object> {
@@ -78,7 +54,7 @@ export class ProductsController {
         
         if (result) {
             for (const elem of result) {
-                const parsedImg = await this.parseImage(elem.id);
+                const parsedImg = await this.productsService.parseImage(elem.id);
                 if (parsedImg) {
                     elem.picture = parsedImg;
                 }
@@ -117,7 +93,7 @@ export class ProductsController {
         
         if (result) {
             for (const elem of result) {
-                const parsedImg = await this.parseImage(elem.id);
+                const parsedImg = await this.productsService.parseImage(elem.id);
                 if (parsedImg) {
                     elem.picture = parsedImg;
                 }
@@ -169,7 +145,7 @@ export class ProductsController {
             if (result.attributes) {
                 result.attributes = JSON.parse(result.attributes.toString()) || {};
             }
-            result.picture = await this.parseImage(result.id);
+            result.picture = await this.productsService.parseImage(result.id);
 
             return { statusCode: 'ok', product: result };
         }

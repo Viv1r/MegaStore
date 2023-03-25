@@ -10,10 +10,11 @@ import { LogoutController } from './controllers/logout/logout.controller';
 import { PurchaseController } from './controllers/purchase/purchase.controller';
 import { UsersService } from './services/users/users.service';
 import { PurchasesService } from './services/purchases/purchases.service';
+import { ProductsService } from './services/products/products.service';
 
 @Module({
   imports: [],
   controllers: [AppController, ProductsController, RegisterController, CategoriesController, TokenAuthController, LoginController, LogoutController, PurchaseController],
-  providers: [SqlService, UsersService, PurchasesService],
+  providers: [SqlService, UsersService, PurchasesService, ProductsService],
 })
 export class AppModule {};

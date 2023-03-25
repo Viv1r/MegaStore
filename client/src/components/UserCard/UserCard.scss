@@ -26,6 +26,9 @@
         border-radius: 50%;
         overflow: hidden;
         margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         img {
             width: auto;
