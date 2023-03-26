@@ -1,45 +1,47 @@
 <template>
 
-<div v-if="!user.loggedIn" class="message">Please log in!</div>
+<TransitionGroup name="grow">
+    <div v-if="!user.loggedIn" class="message">Please log in!</div>
 
-<template v-else-if="purchases.length">
-    <div
-        v-for="purchase in purchases"
-        class="purchase"
-        :key="purchase.id"
-    >
-        <div class="info">
-            #{{ purchase.id }}
-        </div>
-        <div class="purchase_wrapper">
-            <div class="products_list">
-                <div
-                    v-for="sale in purchase.sales"
-                    class="product"
-                    @click="openDetailedView(sale.product)"
-                >
-                    <div class="picture">
-                        <img :src="sale.product?.picture || 'src/assets/pictures/no_picture.jpg'" alt="product picture">
-                    </div>
-                    <div class="info">
-                        <div class="title">{{ sale.product?.title }}</div>
-                        <div class="attributes">
-                            Seller: {{ sale.seller?.title }}<br>
-                            Count: {{ sale.product_count }}<br>
-                            Total: ${{ sale.sum }}
+    <template v-else-if="purchases.length">
+        <div
+            v-for="purchase in purchases"
+            class="purchase"
+            :key="purchase.id"
+        >
+            <div class="info">
+                #{{ purchase.id }}
+            </div>
+            <div class="purchase_wrapper">
+                <div class="products_list">
+                    <div
+                        v-for="sale in purchase.sales"
+                        class="product"
+                        @click="openDetailedView(sale.product)"
+                    >
+                        <div class="picture">
+                            <img :src="sale.product?.picture || 'src/assets/pictures/no_picture.jpg'" alt="product picture">
+                        </div>
+                        <div class="info">
+                            <div class="title">{{ sale.product?.title }}</div>
+                            <div class="attributes">
+                                Seller: {{ sale.seller?.title }}<br>
+                                Count: {{ sale.product_count }}<br>
+                                Total: ${{ sale.sum }}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="summary">
-                <div class="total">Total: {{ purchase.sum }}</div>
-                <div class="date">{{ toDate(purchase.datetime) }}</div>
+                <div class="summary">
+                    <div class="total">Total: {{ purchase.sum }}</div>
+                    <div class="date">{{ toDate(purchase.datetime) }}</div>
+                </div>
             </div>
         </div>
-    </div>
-</template>
+    </template>
 
-<div v-else class="message">No purchases!</div>
+    <div v-else class="message">No purchases!</div>
+</TransitionGroup>
 
 </template>
 

@@ -1,4 +1,5 @@
 .message {
+    position: absolute;
     width: 100%;
     font-size: 22px;
     padding: 4px 24px;
@@ -17,9 +18,11 @@
     height: fit-content;
     min-height: 50px;
     display: flex;
+    flex-direction: column;
     transition: all .2s ease-in-out;
 
     .info {
+        margin-bottom: 4px;
         width: 50px;
         height: auto;
         font-size: 18px;
@@ -30,7 +33,6 @@
         width: 100%;
         height: fit-content;
         display: flex;
-        flex-direction: column;
 
         .product {
             width: 100%;
@@ -106,15 +108,11 @@
 }
 
 @media (max-width: 600px) {
-    .purchase {
-        flex-direction: column;
-
-        .info {
-            margin: 0 0 4px 8px;
-        }
-    }
-
     .purchase_wrapper {
         border-radius: 0;
+    }
+
+    .purchase .info {
+        margin-left: 8px;
     }
 }
