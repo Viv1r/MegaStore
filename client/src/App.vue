@@ -48,7 +48,9 @@
         <div v-if="blackoutActive" class="blackout" @click="hideOverlay()"></div>
     </Transition>
     <div class="container">
-        <RouterView @auth="switchModule('authWindow')"/>
+        <Transition>
+            <RouterView @auth="switchModule('authWindow')"/>
+        </Transition>
     </div>
     <footer>MegaStore © 2022 (by viv1r)</footer>
 </template>
