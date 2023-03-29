@@ -1,0 +1,11 @@
+<form class="loginForm" [formGroup]="loginForm">
+  <div class="inp_wrapper">
+    <label>Email</label>
+    <input type="text" name="email" [formControlName]="'email'">
+  </div>
+  <div class="inp_wrapper">
+    <label>Password</label>
+    <input type="text" name="email" [formControlName]="'password'">
+  </div>
+  <button (click)="login()">Log in</button>
+</form>
