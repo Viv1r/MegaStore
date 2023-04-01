@@ -17,12 +17,26 @@ export class ProductsService {
   public get(data?: any): Observable<any> {
     const URL = this.apiBasePath + 'products/crm';
 
-    return this.http.get(URL, {
+    const body = {
+      category: data?.category ?? []
+    };
+
+    return this.http.post(URL, body, {
       headers: {
         Authorization: 'Bearer ' + this.user.auth_token
       },
       params: {
         count: data?.count ?? 100
+      }
+    });
+  }
+
+  public getCategories(): Observable<any> {
+    const URL = this.apiBasePath + 'categories';
+
+    return this.http.get(URL, {
+      headers: {
+        Authorization: 'Bearer ' + this.user.auth_token
       }
     });
   }

@@ -11,15 +11,18 @@ import { MatInputModule } from "@angular/material/input";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { MainComponent } from './components/main/main.component';
+import { LoginComponent } from './components/views/login/login.component';
+import { RegisterComponent } from './components/views/register/register.component';
+import { MainComponent } from './components/views/main/main.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemsTableComponent } from './components/items-table/items-table.component';
-import { ProductsComponent } from './components/products/products.component';
+import { ProductsComponent } from './components/views/main/products/products.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { UsersComponent } from './components/users/users.component';
-import { DetailedViewComponent } from './components/detailed-view/detailed-view.component';
+import { UsersComponent } from './components/views/main/users/users.component';
+import { DetailedViewComponent } from './components/views/detailed-view/detailed-view.component';
+import { SelectOneComponent } from './components/fields/select-one/select-one.component';
+import { SelectMultipleComponent } from './components/fields/select-multiple/select-multiple.component';
+import { InputRangeComponent } from './components/fields/input-range/input-range.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { DetailedViewComponent } from './components/detailed-view/detailed-view.
     ProductsComponent,
     SidebarComponent,
     UsersComponent,
-    DetailedViewComponent
+    DetailedViewComponent,
+    SelectOneComponent,
+    SelectMultipleComponent,
+    InputRangeComponent
   ],
   imports: [
     BrowserModule,

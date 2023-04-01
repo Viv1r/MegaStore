@@ -4,6 +4,8 @@
     <app-items-table
       [columns]="columns"
       [items]="products"
+      [filtersFields]="filters"
+      (pushFilters)="loadProducts($event)"
     ></app-items-table>
   </div>
 </div>

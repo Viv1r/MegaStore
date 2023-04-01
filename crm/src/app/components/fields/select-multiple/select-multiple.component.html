@@ -1,0 +1,24 @@
+<div class="dropdown">
+
+  <button
+    class="button_toggle"
+    [class]="{active: active}"
+    type="button"
+    (click)="toggleActive()"
+  >
+    {{ value.length }} selected
+    <span *ngIf="value.length > 0" class="btn_clear" (click)="value = []">✖</span>
+  </button>
+
+  <div *ngIf="active" class="dropdown_menu">
+    <div
+      *ngFor="let option of options"
+      class="item"
+      [class]="{selected: value.includes(option.id)}"
+      (click)="selectOption(option.id)"
+    >
+      {{ option.name }}
+    </div>
+  </div>
+
+</div>

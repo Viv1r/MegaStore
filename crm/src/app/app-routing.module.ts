@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainComponent } from "./components/main/main.component";
-import { RegisterComponent } from "./components/register/register.component";
-import { LoginComponent } from "./components/login/login.component";
-import { ProductsComponent } from "./components/products/products.component";
-import {UsersComponent} from "./components/users/users.component";
+import { MainComponent } from "./components/views/main/main.component";
+import { RegisterComponent } from "./components/views/register/register.component";
+import { LoginComponent } from "./components/views/login/login.component";
+import { ProductsComponent } from "./components/views/main/products/products.component";
+import { UsersComponent } from "./components/views/main/users/users.component";
+import { DetailedViewComponent } from "./components/views/detailed-view/detailed-view.component";
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
       {
         path: 'products',
         component: ProductsComponent
+      },
+      {
+        path: 'products/:id',
+        component: DetailedViewComponent
       },
       {
         path: 'users',

@@ -1,24 +1,94 @@
+<div class="filters_container">
+  <div class="title">Filters</div>
+  <form class="filters" [formGroup]="filtersForm">
+    <div *ngFor="let field of filtersFields" class="field_wrapper">
+      <label>{{ field.name ?? field.key | titlecase }}</label>
+
+      <app-select-one
+        *ngIf="field.type === 'select-one'"
+        [formControlName]="field.key"
+        [options]="field.options"
+        placeholder="Select"
+      ></app-select-one>
+
+      <app-select-multiple
+        *ngIf="field.type === 'select-multiple'"
+        [formControlName]="field.key"
+        [options]="field.options"
+        placeholder="Select"
+      ></app-select-multiple>
+
+      <app-input-range
+        *ngIf="field.type === 'range'"
+      ></app-input-range>
+
+      <input
+        *ngIf="field.type === 'text'"
+        type="text"
+        [formControlName]="field.key"
+      >
+
+      <input
+        *ngIf="field.type === 'number'"
+        type="number"
+        [formControlName]="field.key"
+      >
+
+    </div>
+  </form>
+  <div class="buttons">
+    <button class="btn_apply" (click)="applyFilters()">Apply</button>
+    <button class="btn_reset" (click)="filtersForm.reset()">Reset</button>
+  </div>
+</div>
+
 <div class="container">
   <table class="items-table" *ngIf="items.length">
     <tr class="headers">
+      <th *ngIf="selectMode" class="pseudo_cl"></th>
+
       <th *ngFor="let cl of columns">
         {{ cl.name }}
       </th>
+
       <th class="pseudo_cl"></th>
       <th class="pseudo_cl"></th>
     </tr>
-    <tr class="item" *ngFor="let item of items">
+    <tr
+      class="item"
+      *ngFor="let item of items; let i = index"
+      (click)="selectItem(item.id)"
+      [class]="{selected: selectedItems.includes(item.id)}"
+    >
+
+      <td *ngIf="selectMode" class="checkbox">
+        <img
+          *ngIf="selectedItems.includes(item.id)"
+          src="assets/svg/item-selected.svg"
+          alt="check"
+        >
+      </td>
+
       <ng-template ngFor let-cl [ngForOf]="columns">
         <td [class]="{ marked: cl.important && !item[cl.tag] }">
           {{ item[cl.tag] ?? cl.default ?? '' }}
         </td>
       </ng-template>
-      <td class="btn_edit">
-        <img src="assets/svg/edit-item.svg" alt="edit">
+
+      <td class="btn_edit" (click)="$event.stopPropagation()">
+        <a [routerLink]="item.id">
+          <img src="assets/svg/edit-item.svg" alt="edit">
+        </a>
       </td>
-      <td class="btn_delete">
+
+      <td class="btn_delete" (click)="$event.stopPropagation()">
         <img src="assets/svg/delete-item.svg" alt="delete">
       </td>
+
     </tr>
   </table>
+  <div *ngIf="selectMode" class="actions">
+    {{ selectedItems.length }} selected
+    <div class="btn_cancel" (click)="selectMode = false">✖</div>
+  </div>
 </div>

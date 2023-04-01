@@ -1,0 +1,16 @@
+.input_range {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  input {
+    width: auto;
+    max-width: 45%;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 12px;
+    border: 1px solid #b6b6b6;
+  }
+}

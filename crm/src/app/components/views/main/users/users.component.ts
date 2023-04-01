@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService } from '../../services/users.service';
+import { UsersService } from '../../../../services/users.service';
+import {FilterField} from "../../../../types/FilterField";
 
 @Component({
   selector: 'app-users',
@@ -40,6 +41,38 @@ export class UsersComponent implements OnInit {
       name: 'Is banned'
     }
   ];
+
+  readonly filters: FilterField[] = [
+    {
+      key: 'id',
+      name: 'ID',
+      type: 'number'
+    },
+    {
+      key: 'email',
+      name: 'E-mail',
+      type: 'text'
+    },
+    {
+      key: 'name',
+      type: 'text'
+    },
+    {
+      key: 'is_banned',
+      name: 'Status',
+      type: 'select-one',
+      options: [
+        {
+          id: 1,
+          name: 'Banned'
+        },
+        {
+          id: 0,
+          name: 'Not banned'
+        }
+      ]
+    }
+  ]
 
   ngOnInit(): void {
     this.usersService.get()

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {Controller, Req, Res, Get, Post, Param, Query, UseGuards} from '@nestjs/common';
+import { Controller, Req, Res, Get, Post, Param, Query, UseGuards, Body } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
 
@@ -67,9 +67,20 @@ export class ProductsController {
     }
 
     // @UseGuards(UserGuard)
-    @Get('/crm')
-    async getProductsCrm(@Query('count') count?: number): Promise<object> {
-        const result: Product[] = await this.products.findMany({
+    @Post('/crm')
+    async getProductsCrm(@Query('count') count: number, @Body() body: any): Promise<object> {
+        const selectQuery = [];
+
+        if (Array.isArray(body?.category)) {
+            for (const id of body.category) {
+                if ( isNaN(Number(id)) ) continue;
+                selectQuery.push({
+                    category_id: Number(id)
+                });
+            }
+        }
+
+        const requestParams = {
             select: {
                 id: true,
                 title: true,
@@ -88,8 +99,15 @@ export class ProductsController {
                     }
                 }
             },
+            where: {},
             take: Number(count) || 10
-        });
+        };
+
+        if (selectQuery.length) {
+            requestParams.where['OR'] = selectQuery;
+        }
+
+        const result: Product[] = await this.products.findMany(requestParams);
 
         if (result) {
             return { statusCode: 'ok', products: result };
