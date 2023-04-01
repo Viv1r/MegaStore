@@ -1,0 +1,82 @@
+.container,
+.items-table {
+  width: 100%;
+  height: fit-content;
+}
+
+.items-table {
+  background-color: white;
+  border-radius: 30px;
+  border-collapse: collapse;
+  box-shadow: 2px 2px 7px rgba($color: black, $alpha: .15);
+  overflow: hidden;
+
+  .headers {
+    background: #f7f7f7;
+  }
+}
+
+.items-table tr {
+
+  td, th {
+    padding: 20px;
+    text-align: start;
+    font-family: "Kufam", serif;
+    max-width: 300px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  th {
+    height: auto;
+    max-height: 60px;
+    font-weight: bold;
+    cursor: pointer;
+    background: transparent;
+
+    &:hover {
+      background: rgba($color: black, $alpha: .025);
+    }
+  }
+
+  .pseudo_cl:hover {
+    background: transparent;
+    cursor: default;
+  }
+
+  .btn_edit,
+  .btn_delete {
+    padding: 10px;
+    max-width: 40px;
+    user-select: none;
+
+    img {
+      margin-left: auto;
+      width: auto;
+      height: 40px;
+      padding: 8px;
+      border-radius: 50%;
+
+      &:hover {
+        padding: 6px;
+        box-shadow: 0 0 5px rgba($color: black, $alpha: .05);
+        background: rgba($color: black, $alpha: .05);
+      }
+    }
+  }
+}
+
+.item {
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+
+  td.marked {
+    color: red;
+  }
+
+  &:hover {
+    background: rgba($color: black, $alpha: .025);
+  }
+}

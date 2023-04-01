@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  src: url('assets/fonts/Raleway.ttf');
+}
+
+@font-face {
+  font-family: 'Kufam';
+  src: url('assets/fonts/Kufam-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Kulim Park';
+  src: url('assets/fonts/KulimPark-Regular.ttf');
+}

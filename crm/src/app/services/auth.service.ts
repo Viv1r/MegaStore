@@ -7,26 +7,52 @@ import { User } from "../types/User";
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.tokenAuth();
+  }
 
   private readonly apiBasePath = environment.API_BASE_PATH;
-  public user = new User();
+  public readonly user = new User();
 
-  public login(email?: string, password?: string): void {
-    if (!email || !password) return;
+  private tokenAuth(): void {
+    const URL = this.apiBasePath + 'token-auth';
 
-    const URL = this.apiBasePath + 'login';
-    const body = {
-      email: email,
-      password: password
-    };
-
-    this.http.post(URL, body)
-      .subscribe(data => {
-        const user = (data as { user?: User }).user;
+    this.http.post(URL, {})
+      .subscribe(response => {
+        const user = (response as { user?: User }).user;
         if (user) {
           this.user.auth(user);
         }
-      })
+      });
+  }
+
+  public login(data: any): void {
+    if ( !(data.email && data.password) ) return;
+
+    const URL = this.apiBasePath + 'login';
+
+    this.http.post(URL, data)
+      .subscribe(response => {
+        const user = (response as { user?: User }).user;
+        if (user) {
+          this.user.auth(user);
+        }
+      });
+  }
+
+  public register(data: any): void {
+    if ( !(data.email && data.password && data.confirmPassword && data.name) ) return;
+    if (data.password !== data.confirmPassword) return;
+    delete data.confirmPassword;
+
+    const URL = this.apiBasePath + 'register';
+
+    this.http.post(URL, data)
+      .subscribe(response => {
+        const user = (response as { user?: User }).user;
+        if (user) {
+          this.user.auth(user);
+        }
+      });
   }
 }

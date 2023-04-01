@@ -64,4 +64,24 @@ export class UsersService {
             }
         });
     }
+
+    async getAllUsers(): Promise<any[]> {
+        const result = await this.users.findMany({
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                password: true,
+                owned_stores: true,
+                is_banned: true
+            },
+            take: 100
+        });
+
+        return result.map(item => {
+            item['stores_count'] = item.owned_stores?.length;
+            delete item.owned_stores;
+            return item;
+        });
+    }
 }

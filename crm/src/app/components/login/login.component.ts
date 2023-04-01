@@ -10,14 +10,15 @@ import { AuthService } from "../../services/auth.service";
 export class LoginComponent {
   constructor(public authService: AuthService) { }
 
+  hidePassword = true;
+
   loginForm = new FormGroup({
     email: new FormControl(''),
     password: new FormControl('')
   });
 
-  login() {
-    const {email, password} = this.loginForm.value;
-    this.authService.login(email ?? '', password ?? '');
+  login(): void {
+    this.authService.login(this.loginForm.value);
   }
 
 }

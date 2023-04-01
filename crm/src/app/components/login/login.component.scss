@@ -1,0 +1,26 @@
+mat-card {
+  max-width: 400px;
+  margin: 30px auto;
+}
+
+.header {
+  text-align: center;
+}
+
+mat-card-title {
+  padding-bottom: 12px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  min-width: 250px;
+}

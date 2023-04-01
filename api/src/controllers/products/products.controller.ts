@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {Controller, Req, Res, Get, Post, Param, Query} from '@nestjs/common';
+import {Controller, Req, Res, Get, Post, Param, Query, UseGuards} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
 
@@ -7,6 +7,8 @@ import fs from 'fs';
 import { Decimal } from '@prisma/client/runtime';
 import {PurchasesService} from "../../services/purchases/purchases.service";
 import {ProductsService} from "../../services/products/products.service";
+import {UserGuard} from "../../guards/user/user.guard";
+import {AdminGuard} from "../../guards/admin/admin.guard";
 
 interface Store {
     title: string
@@ -64,6 +66,36 @@ export class ProductsController {
         }
     }
 
+    // @UseGuards(UserGuard)
+    @Get('/crm')
+    async getProductsCrm(@Query('count') count?: number): Promise<object> {
+        const result: Product[] = await this.products.findMany({
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                price: true,
+                price_postfix: true,
+                count_available: true,
+                store: {
+                    select: {
+                        title: true
+                    }
+                },
+                category: {
+                    select: {
+                        name: true
+                    }
+                }
+            },
+            take: Number(count) || 10
+        });
+
+        if (result) {
+            return { statusCode: 'ok', products: result };
+        }
+    }
+
     @Get('/catalog')
     async getCatalog(@Query('offset') offset?: number): Promise<object> {
         const result: Product[] = await this.products.findMany({
@@ -73,12 +105,12 @@ export class ProductsController {
                 price: true,
                 price_postfix: true,
                 description: true,
+                count_available: true,
                 store: {
                     select: {
                         title: true
                     }
-                },
-                count_available: true
+                }
             },
             take: this.productsPerPage,
             skip: Number(offset) || 0

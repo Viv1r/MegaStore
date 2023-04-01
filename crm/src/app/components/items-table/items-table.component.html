@@ -1,0 +1,24 @@
+<div class="container">
+  <table class="items-table" *ngIf="items.length">
+    <tr class="headers">
+      <th *ngFor="let cl of columns">
+        {{ cl.name }}
+      </th>
+      <th class="pseudo_cl"></th>
+      <th class="pseudo_cl"></th>
+    </tr>
+    <tr class="item" *ngFor="let item of items">
+      <ng-template ngFor let-cl [ngForOf]="columns">
+        <td [class]="{ marked: cl.important && !item[cl.tag] }">
+          {{ item[cl.tag] ?? cl.default ?? '' }}
+        </td>
+      </ng-template>
+      <td class="btn_edit">
+        <img src="assets/svg/edit-item.svg" alt="edit">
+      </td>
+      <td class="btn_delete">
+        <img src="assets/svg/delete-item.svg" alt="delete">
+      </td>
+    </tr>
+  </table>
+</div>

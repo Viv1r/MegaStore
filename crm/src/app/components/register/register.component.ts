@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, } from '@angular/core';
+import { AuthService } from "../../services/auth.service";
+import { FormControl, FormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
+  constructor(public authService: AuthService) { }
 
-  constructor() { }
+  hidePassword = true;
+  hideConfirmPassword = true;
 
-  ngOnInit(): void {
+  registerForm = new FormGroup({
+    name: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+    confirmPassword: new FormControl('')
+  });
+
+  register(): void {
+    this.authService.register(this.registerForm.value);
   }
-
 }
