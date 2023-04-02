@@ -32,8 +32,10 @@ export class SelectMultipleComponent implements ControlValueAccessor {
   set value(val: number[]) {
     if (Array.isArray(val)) {
       this._value = val;
-      this.onChange(this._value);
+    } else {
+      this._value = [];
     }
+    this.onChange(this._value);
   }
 
   writeValue(newVal: number[]): void {

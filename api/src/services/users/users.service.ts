@@ -65,8 +65,8 @@ export class UsersService {
         });
     }
 
-    async getAllUsers(): Promise<any[]> {
-        const result = await this.users.findMany({
+    async getAllUsers(data): Promise<any[]> {
+        const requestParams = {
             select: {
                 id: true,
                 name: true,
@@ -75,8 +75,29 @@ export class UsersService {
                 owned_stores: true,
                 is_banned: true
             },
+            where: {
+                AND: []
+            },
             take: 100
+        };
+
+        if (data?.id) requestParams.where.AND.push({
+            id: data.id
         });
+
+        if (data?.is_banned) requestParams.where.AND.push({
+            is_banned: !!data.is_banned
+        });
+
+        if (data?.email) requestParams.where.AND.push({
+            email: { contains: data.email }
+        });
+
+        if (data?.name) requestParams.where.AND.push({
+            name: { contains: data.name }
+        });
+
+        const result = await this.users.findMany(requestParams);
 
         return result.map(item => {
             item['stores_count'] = item.owned_stores?.length;

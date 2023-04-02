@@ -3,8 +3,11 @@
     <mat-card-title>Log in</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form class="loginForm" [formGroup]="loginForm">
-
+    <form
+      class="login_form"
+      [formGroup]="loginForm"
+      (keydown.enter)="login()"
+    >
       <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
         <input matInput [formControlName]="'email'">
@@ -25,8 +28,8 @@
           <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>
-
     </form>
+    <div class="error_message">{{ error }}</div>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="login()">Log in</button>

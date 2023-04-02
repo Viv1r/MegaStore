@@ -95,13 +95,26 @@
   border-radius: 20px;
   box-shadow: 2px 2px 7px rgba($color: black, $alpha: .15);
   overflow: hidden;
+
+  .message {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+    font-family: "Kulim Park", serif;
+    font-size: 20px;
+    font-style: italic;
+    color: #bfbfbf;
+    user-select: none;
+  }
 }
 
 .items-table {
   border-collapse: collapse;
 
   .headers {
-    background: #f7f7f7;
+    background: #eaeaea;
   }
 }
 
@@ -207,5 +220,17 @@ th {
   .btn_cancel {
     font-size: 15px;
     cursor: pointer;
+  }
+}
+
+.loading_indicator {
+  width: 100%;
+  height: fit-content;
+
+  img {
+    display: block;
+    width: auto;
+    height: 70px;
+    margin: 24px auto;
   }
 }

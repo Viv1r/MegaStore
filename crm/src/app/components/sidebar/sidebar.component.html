@@ -4,13 +4,6 @@
   </div>
 
   <div class="container">
-    <a class="sidebar-link" routerLinkActive="selected">
-      <img src="assets/svg/tab-account.svg" alt="icon">
-      My Account
-    </a>
-  </div>
-
-  <div class="container">
     <a class="sidebar-link" [routerLink]="'users'" routerLinkActive="selected">
       <img src="assets/svg/tab-users.svg" alt="icon">
       Users
@@ -31,12 +24,30 @@
 
   <div class="container">
     <a class="sidebar-link" routerLinkActive="selected">
+      <img src="assets/svg/tab-sales.svg" alt="icon">
+      Sales
+    </a>
+  </div>
+
+  <div class="container">
+    <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-tickets.svg" alt="icon">
       Tickets
     </a>
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-support.svg" alt="icon">
       Support
+    </a>
+  </div>
+
+  <div class="container">
+    <a class="sidebar-link" routerLinkActive="selected">
+      <img src="assets/svg/tab-account.svg" alt="icon">
+      My Account
+    </a>
+    <a class="sidebar-link" (click)="logout()">
+      <img src="assets/svg/tab-logout.svg" alt="icon">
+      Logout
     </a>
   </div>
 

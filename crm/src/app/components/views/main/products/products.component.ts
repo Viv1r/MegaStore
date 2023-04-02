@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from "../../../../services/products.service";
 import { FilterField } from "../../../../types/FilterField";
+import {StoresService} from "../../../../services/stores.service";
 
 @Component({
   selector: 'app-products',
@@ -9,9 +10,10 @@ import { FilterField } from "../../../../types/FilterField";
 })
 export class ProductsComponent implements OnInit {
 
-  constructor(protected productsService: ProductsService) { }
+  constructor(protected productsService: ProductsService, protected storesService: StoresService) { }
 
   products: any[] = [];
+  loading = false;
 
   readonly columns = [
     {
@@ -80,7 +82,7 @@ export class ProductsComponent implements OnInit {
       type: 'range'
     },
     {
-      key: 'seller',
+      key: 'store',
       name: 'Sellers',
       type: 'select-multiple',
       options: []
@@ -90,7 +92,7 @@ export class ProductsComponent implements OnInit {
   parseProducts(products: any[]): any[] {
     return products.map(product => {
         const result = product;
-        result.store = result.store.title || null;
+        result.store = result.store.name || null;
         result.category = result.category.name || null;
         return result;
       }
@@ -98,11 +100,11 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProducts(data?: any): void {
+    this.loading = true;
     this.productsService.get(data)
       .subscribe(response => {
-        if (response?.products) {
-          this.products = this.parseProducts(response.products);
-        }
+        this.products = this.parseProducts(response.products ?? []);
+        this.loading = false;
       });
   }
 
@@ -118,9 +120,22 @@ export class ProductsComponent implements OnInit {
       })
   }
 
+  loadStores(): void {
+    this.storesService.get()
+      .subscribe(data => {
+        if (data?.stores) {
+          const target = this.filters.find(item => item.key === 'store');
+          if (target) {
+            target.options = data.stores;
+          }
+        }
+      })
+  }
+
   ngOnInit(): void {
     this.loadProducts();
     this.loadCategories();
+    this.loadStores();
   }
 
 }

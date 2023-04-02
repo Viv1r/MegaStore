@@ -23,6 +23,7 @@ import { DetailedViewComponent } from './components/views/detailed-view/detailed
 import { SelectOneComponent } from './components/fields/select-one/select-one.component';
 import { SelectMultipleComponent } from './components/fields/select-multiple/select-multiple.component';
 import { InputRangeComponent } from './components/fields/input-range/input-range.component';
+import { PageNotFoundComponent } from './components/views/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { InputRangeComponent } from './components/fields/input-range/input-range
     DetailedViewComponent,
     SelectOneComponent,
     SelectMultipleComponent,
-    InputRangeComponent
+    InputRangeComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

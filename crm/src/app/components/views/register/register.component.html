@@ -3,7 +3,11 @@
     <mat-card-title>Register</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form class="loginForm" [formGroup]="registerForm">
+    <form
+      class="register_form"
+      [formGroup]="registerForm"
+      (keydown.enter)="register()"
+    >
 
       <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
@@ -49,6 +53,7 @@
       </mat-form-field>
 
     </form>
+    <div class="error_message">{{ error }}</div>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="register()">Register</button>

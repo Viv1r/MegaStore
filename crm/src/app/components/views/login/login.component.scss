@@ -11,7 +11,7 @@ mat-card-title {
   padding-bottom: 12px;
 }
 
-.loginForm {
+.login_form {
   display: flex;
   flex-direction: column;
 }
@@ -23,4 +23,10 @@ mat-card-actions {
 
 .button {
   min-width: 250px;
+}
+
+.error_message {
+  width: 100%;
+  color: red;
+  text-align: center;
 }

@@ -13,13 +13,9 @@ export class UsersService {
   private readonly apiBasePath = environment.API_BASE_PATH;
   private readonly user = this.authService.user;
 
-  public get(data?: any): Observable<any> {
+  public get(data: any = {}): Observable<any> {
     const URL = this.apiBasePath + 'users';
 
-    return this.http.get(URL, {
-      headers: {
-        Authorization: 'Bearer ' + this.user.auth_token
-      }
-    });
+    return this.http.post(URL, data);
   }
 }

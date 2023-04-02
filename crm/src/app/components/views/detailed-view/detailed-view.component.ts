@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-detailed-view',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./detailed-view.component.scss']
 })
 export class DetailedViewComponent implements OnInit {
-
   constructor() { }
 
+  readonly newItem = new FormGroup({});
+
   ngOnInit(): void {
+
   }
 
 }

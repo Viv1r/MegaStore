@@ -11,7 +11,7 @@ import {UserGuard} from "../../guards/user/user.guard";
 import {AdminGuard} from "../../guards/admin/admin.guard";
 
 interface Store {
-    title: string
+    name: string
 }
 
 interface Category {
@@ -46,7 +46,7 @@ export class ProductsController {
                 price: true,
                 store: {
                     select: {
-                        title: true
+                        name: true
                     }
                 },
                 count_available: true
@@ -66,54 +66,6 @@ export class ProductsController {
         }
     }
 
-    // @UseGuards(UserGuard)
-    @Post('/crm')
-    async getProductsCrm(@Query('count') count: number, @Body() body: any): Promise<object> {
-        const selectQuery = [];
-
-        if (Array.isArray(body?.category)) {
-            for (const id of body.category) {
-                if ( isNaN(Number(id)) ) continue;
-                selectQuery.push({
-                    category_id: Number(id)
-                });
-            }
-        }
-
-        const requestParams = {
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                price: true,
-                price_postfix: true,
-                count_available: true,
-                store: {
-                    select: {
-                        title: true
-                    }
-                },
-                category: {
-                    select: {
-                        name: true
-                    }
-                }
-            },
-            where: {},
-            take: Number(count) || 10
-        };
-
-        if (selectQuery.length) {
-            requestParams.where['OR'] = selectQuery;
-        }
-
-        const result: Product[] = await this.products.findMany(requestParams);
-
-        if (result) {
-            return { statusCode: 'ok', products: result };
-        }
-    }
-
     @Get('/catalog')
     async getCatalog(@Query('offset') offset?: number): Promise<object> {
         const result: Product[] = await this.products.findMany({
@@ -126,7 +78,7 @@ export class ProductsController {
                 count_available: true,
                 store: {
                     select: {
-                        title: true
+                        name: true
                     }
                 }
             },
@@ -177,7 +129,7 @@ export class ProductsController {
                 count_available: true,
                 store: {
                     select: {
-                        title: true
+                        name: true
                     }
                 },
                 category: {

@@ -1,6 +1,10 @@
 <div class="filters_container">
   <div class="title">Filters</div>
-  <form class="filters" [formGroup]="filtersForm">
+  <form
+    class="filters"
+    [formGroup]="filtersForm"
+    (keydown.enter)="applyFilters()"
+  >
     <div *ngFor="let field of filtersFields" class="field_wrapper">
       <label>{{ field.name ?? field.key | titlecase }}</label>
 
@@ -38,12 +42,12 @@
   </form>
   <div class="buttons">
     <button class="btn_apply" (click)="applyFilters()">Apply</button>
-    <button class="btn_reset" (click)="filtersForm.reset()">Reset</button>
+    <button class="btn_reset" (click)="resetForm()">Reset</button>
   </div>
 </div>
 
-<div class="container">
-  <table class="items-table" *ngIf="items.length">
+<div class="container" *ngIf="!loading; else loadingIndicator">
+  <table class="items-table">
     <tr class="headers">
       <th *ngIf="selectMode" class="pseudo_cl"></th>
 
@@ -54,41 +58,58 @@
       <th class="pseudo_cl"></th>
       <th class="pseudo_cl"></th>
     </tr>
-    <tr
-      class="item"
-      *ngFor="let item of items; let i = index"
-      (click)="selectItem(item.id)"
-      [class]="{selected: selectedItems.includes(item.id)}"
-    >
+    <ng-template [ngIf]="items.length">
+      <tr
+        class="item"
+        *ngFor="let item of items; let i = index"
+        (click)="selectItem(item.id)"
+        [class]="{selected: selectedItems.includes(item.id)}"
+      >
 
-      <td *ngIf="selectMode" class="checkbox">
-        <img
-          *ngIf="selectedItems.includes(item.id)"
-          src="assets/svg/item-selected.svg"
-          alt="check"
-        >
-      </td>
-
-      <ng-template ngFor let-cl [ngForOf]="columns">
-        <td [class]="{ marked: cl.important && !item[cl.tag] }">
-          {{ item[cl.tag] ?? cl.default ?? '' }}
+        <td *ngIf="selectMode" class="checkbox">
+          <img
+            *ngIf="selectedItems.includes(item.id)"
+            src="assets/svg/item-selected.svg"
+            alt="check"
+          >
         </td>
-      </ng-template>
 
-      <td class="btn_edit" (click)="$event.stopPropagation()">
-        <a [routerLink]="item.id">
-          <img src="assets/svg/edit-item.svg" alt="edit">
-        </a>
-      </td>
+        <ng-template ngFor let-cl [ngForOf]="columns">
+          <td [class]="{ marked: cl.important && !item[cl.tag] }">
+            {{ item[cl.tag] ?? cl.default ?? '' }}
+          </td>
+        </ng-template>
 
-      <td class="btn_delete" (click)="$event.stopPropagation()">
-        <img src="assets/svg/delete-item.svg" alt="delete">
-      </td>
+        <td class="btn_edit" (click)="$event.stopPropagation()">
+          <a [routerLink]="item.id">
+            <img src="assets/svg/edit-item.svg" alt="edit">
+          </a>
+        </td>
 
-    </tr>
+        <td class="btn_delete" (click)="$event.stopPropagation()">
+          <img src="assets/svg/delete-item.svg" alt="delete">
+        </td>
+
+      </tr>
+    </ng-template>
   </table>
+
+  <div
+    *ngIf="!items.length && !loading"
+    class="message"
+  >
+    Nothing found!
+  </div>
+
   <div *ngIf="selectMode" class="actions">
     {{ selectedItems.length }} selected
     <div class="btn_cancel" (click)="selectMode = false">✖</div>
   </div>
+
 </div>
+
+<ng-template #loadingIndicator>
+  <div *ngIf="loading" class="loading_indicator">
+    <img src="assets/svg/loading.svg" alt="loading...">
+  </div>
+</ng-template>

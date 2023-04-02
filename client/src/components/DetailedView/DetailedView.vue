@@ -44,7 +44,7 @@
                 <div class="divider"></div>
 
                 <div class="seller_block" v-if="product.store">
-                    <div class="title">Seller:</div> {{ product.store.title }}
+                    <div class="title">Seller:</div> {{ product.store.name }}
                 </div>
 
                 <div class="actions_block">

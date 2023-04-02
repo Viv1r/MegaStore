@@ -15,15 +15,42 @@ interface Range {
 export class ItemsTableComponent implements OnInit {
 
   @Input() columns: any[] = [{ tag: 'id', name: 'ID' }, { tag: 'title', name: 'Title' }];
-  @Input() items: any[] = [];
   @Input() filtersFields: FilterField[] = [];
+  @Input() itemsPerPage = 10;
+  @Input() loading = false;
 
   @Output() pushFilters = new EventEmitter<any>();
 
   filtersForm = new FormGroup({});
 
-  private SelectMode = false;
+  private _items: any[] = [];
+
+  @Input()
+  set items(newItems: any[]) {
+    // Убираем выделение при изменении списка предметов
+    if (JSON.stringify(this.items) !== JSON.stringify(newItems)) {
+      this.selectMode = false;
+    }
+    this._items = newItems;
+  }
+
+  get items() {
+    return this._items;
+  }
+
+  private _selectMode = false;
   selectedItems: number[] = [];
+
+  get selectMode(): boolean {
+    return this._selectMode;
+  }
+
+  set selectMode(val: boolean) {
+    this._selectMode = val;
+    if (val === false) {
+      this.selectedItems = [];
+    }
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -52,17 +79,6 @@ export class ItemsTableComponent implements OnInit {
     this.filtersForm.reset();
   }
 
-  get selectMode(): boolean {
-    return this.SelectMode;
-  }
-
-  set selectMode(val: boolean) {
-    this.SelectMode = val;
-    if (val === false) {
-      this.selectedItems = [];
-    }
-  }
-
   selectItem(id: number): void {
     this.selectMode = true;
 
@@ -80,6 +96,12 @@ export class ItemsTableComponent implements OnInit {
 
   applyFilters(): void {
     this.pushFilters.emit(this.filtersForm.value);
+  }
+
+  resetForm(): void {
+    if (Object.values(this.filtersForm.value).every(item => !item)) return;
+    this.filtersForm.reset();
+    this.applyFilters();
   }
 
 }

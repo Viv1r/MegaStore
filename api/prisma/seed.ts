@@ -12,10 +12,10 @@ async function main() {
 				createMany: {
 					data: [
 						{
-							title: 'EShop-1'
+							name: 'EShop-1'
 						},
 						{
-							title: 'Fresh Foods'
+							name: 'Fresh Foods'
 						}
 					]
 				}
@@ -25,12 +25,14 @@ async function main() {
 
 	await prisma.categories.createMany({
 		data: [
-			{name: 'Clothes'},
+			{name: 'Outfit'},
 			{name: 'Accessories'},
 			{name: 'Electronics'},
+			{name: 'Toys'},
+			{name: 'Building materials'},
+			{name: 'Food'},
 			{name: 'Household appliances'},
-			{name: 'Pet toys'},
-			{name: 'Food'}
+			{name: 'Pet toys'}
 		]
 	});
 

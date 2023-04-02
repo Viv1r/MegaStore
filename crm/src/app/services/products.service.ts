@@ -15,16 +15,9 @@ export class ProductsService {
   private readonly user = this.authService.user;
 
   public get(data?: any): Observable<any> {
-    const URL = this.apiBasePath + 'products/crm';
+    const URL = this.apiBasePath + 'crm/products';
 
-    const body = {
-      category: data?.category ?? []
-    };
-
-    return this.http.post(URL, body, {
-      headers: {
-        Authorization: 'Bearer ' + this.user.auth_token
-      },
+    return this.http.post(URL, data, {
       params: {
         count: data?.count ?? 100
       }
@@ -34,11 +27,7 @@ export class ProductsService {
   public getCategories(): Observable<any> {
     const URL = this.apiBasePath + 'categories';
 
-    return this.http.get(URL, {
-      headers: {
-        Authorization: 'Bearer ' + this.user.auth_token
-      }
-    });
+    return this.http.get(URL);
   }
 
 }

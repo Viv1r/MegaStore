@@ -5,6 +5,8 @@
       [columns]="columns"
       [items]="users"
       [filtersFields]="filters"
+      [loading]="loading"
+      (pushFilters)="loadUsers($event)"
     ></app-items-table>
   </div>
 </div>

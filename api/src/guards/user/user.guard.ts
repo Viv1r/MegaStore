@@ -22,12 +22,8 @@ export class UserGuard implements CanActivate {
   }
 
   protected getToken(request: {
-    headers: Record<string, string | string[]>;
+    cookies: any
   }): string | null {
-    const authorization = request.headers['authorization'];
-    if (!authorization || Array.isArray(authorization)) {
-      return null;
-    }
-    return authorization.split(' ')[1];
+    return request.cookies['token'];
   }
 }

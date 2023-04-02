@@ -12,6 +12,7 @@ export class UsersComponent implements OnInit {
   constructor(protected usersService: UsersService) { }
 
   users: any[] = [];
+  loading = false;
 
   columns = [
     {
@@ -72,14 +73,18 @@ export class UsersComponent implements OnInit {
         }
       ]
     }
-  ]
+  ];
+
+  loadUsers(data?: any): void {
+    this.loading = true;
+    this.usersService.get(data)
+      .subscribe(response => {
+        this.users = response.users ?? [];
+        this.loading = false;
+      });
+  }
 
   ngOnInit(): void {
-    this.usersService.get()
-      .subscribe(response => {
-        if (response?.users) {
-          this.users = response.users;
-        }
-      });
+    this.loadUsers();
   }
 }

@@ -19,7 +19,7 @@
                     </div>
                     <div class="left_side">
                         <div class="title">{{ product.title }}</div>
-                        <div class="seller">Seller: {{ product.store.title }}</div>
+                        <div class="seller">Seller: {{ product.store.name }}</div>
                     </div>
                     <div class="right_side">
                         <div class="price_wrapper">
