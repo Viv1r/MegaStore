@@ -145,7 +145,11 @@ export class ProductsController {
 
         if (result) {
             if (result.attributes) {
-                result.attributes = JSON.parse(result.attributes.toString()) || {};
+                try {
+                    result.attributes = JSON.parse(result.attributes.toString());
+                } catch {
+                    result.attributes = {} as any;
+                }
             }
             result.picture = await this.productsService.parseImage(result.id);
 

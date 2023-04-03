@@ -8,16 +8,15 @@ class User {
     name;
     email;
     profilePicture;
-    token;
     loggedIn = false;
 
-    auth({name, email, token, profilePicture}) {
-        [this.name, this.email, this.token, this.profilePicture] = [name, email, token, profilePicture];
+    auth({name, email, profilePicture}) {
+        [this.name, this.email, this.profilePicture] = [name, email, token, profilePicture];
         this.loggedIn = true;
     };
 
     logout() {
-        this.name = this.email = this.token = undefined;
+        this.name = this.email = undefined;
         this.loggedIn = false;
     };
 }

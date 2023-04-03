@@ -56,17 +56,9 @@ export default {
                 })
             };
 
-            const headers = {
-                Authorization: user.state.user.token
-                    ? 'Bearer ' + user.state.user.token
-                    : ''
-            }
-
             let data;
             try {
-                const response = await api.post(action, body, {
-                    headers: headers
-                });
+                const response = await api.post(action, body);
                 data = response.data;
             } finally {
                 if (data.statusCode === 'ok') {

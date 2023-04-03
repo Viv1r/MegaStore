@@ -13,10 +13,11 @@ import { PurchasesService } from './services/purchases/purchases.service';
 import { ProductsService } from './services/products/products.service';
 import { UsersController } from './controllers/users/users.controller';
 import { CrmController } from './controllers/crm/crm.controller';
+import { StoresService } from './services/stores/stores.service';
 
 @Module({
   imports: [],
   controllers: [AppController, ProductsController, RegisterController, CategoriesController, TokenAuthController, LoginController, LogoutController, PurchaseController, UsersController, CrmController],
-  providers: [SqlService, UsersService, PurchasesService, ProductsService],
+  providers: [SqlService, UsersService, PurchasesService, ProductsService, StoresService],
 })
 export class AppModule {};

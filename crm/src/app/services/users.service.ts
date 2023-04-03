@@ -11,11 +11,9 @@ export class UsersService {
   constructor(protected http: HttpClient, protected authService: AuthService) {}
 
   private readonly apiBasePath = environment.API_BASE_PATH;
-  private readonly user = this.authService.user;
 
   public get(data: any = {}): Observable<any> {
     const URL = this.apiBasePath + 'users';
-
     return this.http.post(URL, data);
   }
 }

@@ -15,6 +15,7 @@ export class UsersService {
     constructor(private sqlService: SqlService) {}
 
     private readonly users = this.sqlService.client.users;
+    private readonly stores = this.sqlService.client.stores;
 
     async get(token: string): Promise<UserResponse|null> {
         if (!token) return null;

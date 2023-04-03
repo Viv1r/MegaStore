@@ -68,20 +68,9 @@ export default {
         },
 
         async getPurchases() {
-            const token = this.user.token;
-            if (!token) {
-                this.purchases = [];
-                return;
-            }
-
             const URL = 'api/purchase';
-            const headers = {
-                Authorization: 'Bearer ' + token
-            }
 
-            const response = await axios.get(URL, {
-                headers: headers
-            });
+            const response = await axios.get(URL);
             const data = response.data;
             if (data?.purchases) {
                 this.purchases = data.purchases;
