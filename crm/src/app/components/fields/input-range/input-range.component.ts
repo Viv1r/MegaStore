@@ -24,8 +24,44 @@ export class InputRangeComponent implements ControlValueAccessor {
   }
 
   @Input()
-  set value(val) {
-    this._value = val;
+  set value(val: any) {
+    if (val?.min && val?.max) {
+      this._value = val;
+    } else {
+      this._value = null;
+    }
+    this.onChange(this._value);
+  }
+
+  get valMin() {
+    return this._value?.min;
+  }
+
+  set valMin(newVal: any) {
+    this._value = this._value || {};
+    newVal = Number(newVal);
+    if (newVal >= 0) {
+      this._value.min = newVal;
+    } else {
+      this._value.min = null;
+    }
+
+    this.onChange(this._value);
+  }
+
+  get valMax() {
+    return this._value?.max;
+  }
+
+  set valMax(newVal: any) {
+    this._value = this._value || {};
+    newVal = Number(newVal);
+    if (newVal >= 0) {
+      this._value.max = newVal;
+    } else {
+      this._value.max = null;
+    }
+
     this.onChange(this._value);
   }
 

@@ -37,14 +37,20 @@ export class ProductsService {
     public async deleteProducts(products: number[]): Promise<any> {
         const productsQuery = products.map(id => { return { id: Number(id) } });
 
-        const response = await this.products.updateMany({
-            data: {
-                is_deleted: true
-            },
-            where: {
-                OR: productsQuery
-            }
-        });
+        let response;
+
+        try {
+            response = await this.products.updateMany({
+                data: {
+                    is_deleted: true
+                },
+                where: {
+                    OR: productsQuery
+                }
+            });
+        } catch {
+            return { statusCode: 'error', statusMessage: 'Could not delete, try again later' };
+        }
 
         if (response) {
             return { statusCode: 'ok' };
@@ -99,6 +105,7 @@ export class ProductsService {
             price: data.price,
             price_postfix: data.price_postfix,
             count_available: data.count_available,
+            store_id: data.store_id,
             category_id: data.category_id,
             attributes: JSON.stringify(data.attributes)
         };

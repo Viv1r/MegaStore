@@ -48,7 +48,7 @@ export class CrmController {
             }
         });
         if (result) {
-            return { statusCode: 'ok', stores: result };
+            return { statusCode: 'ok', items: result };
         }
         return { statusCode: 'error' };
     }
@@ -91,6 +91,7 @@ export class CrmController {
                 }
             },
             where: {
+                is_deleted: false,
                 AND: []
             },
             take: count,
@@ -121,15 +122,29 @@ export class CrmController {
             id: body.id
         });
 
-        if (body?.id) requestParams.where.AND.push({
-            id: body.id
+        if (body?.price) requestParams.where.AND.push({
+            price: {
+                gte: body.price.min ?? undefined,
+                lte: body.price.max ?? undefined
+            }
         });
 
-        const result: Product[] = await this.products.findMany(requestParams);
+        if (body?.count_available) requestParams.where.AND.push({
+            count_available: {
+                gte: body.count_available.min ?? undefined,
+                lte: body.count_available.max ?? undefined
+            }
+        });
 
-        if (result) {
-            return { statusCode: 'ok', products: result };
+        let result: Product[];
+
+        try {
+            result = await this.products.findMany(requestParams);
+        } catch {
+            return { statusCode: 'error', statusMessage: 'Wrong data!' };
         }
+
+        return { statusCode: 'ok', products: result };
     }
 
     @UseGuards(UserGuard)
@@ -167,9 +182,14 @@ export class CrmController {
             return { statusCode: 'error', statusMessage: 'Product not found!' };
         }
 
+        const targetStores = [target.store_id];
+        if (body.store_id && (body.store_id != target.store_id)) {
+            targetStores.push(body.store_id);
+        }
+
         // Проверка доступа к магазину
         const hasAccess = request.user?.is_admin
-            || await this.storesService.checkAccess(request.user?.id, [target.store_id]);
+            || await this.storesService.checkAccess(request.user?.id, targetStores);
         if (!hasAccess) {
             return { statusCode: 'error', statusMessage: 'No access to this store!' };
         }
@@ -186,18 +206,6 @@ export class CrmController {
         }
 
         const product = await this.products.findFirst({
-            include: {
-                category: {
-                    select: {
-                        name: true
-                    }
-                },
-                store: {
-                    select: {
-                        name: true
-                    }
-                }
-            },
             where: {
                 id: targetID,
                 is_deleted: false

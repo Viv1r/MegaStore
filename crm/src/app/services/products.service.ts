@@ -12,7 +12,6 @@ export class ProductsService {
   constructor(protected http: HttpClient, protected authService: AuthService) {}
 
   private readonly apiBasePath = environment.API_BASE_PATH;
-  private readonly user = this.authService.user;
 
   public get(data?: any): Observable<any> {
     const URL = this.apiBasePath + 'crm/products';
@@ -24,10 +23,25 @@ export class ProductsService {
     });
   }
 
+  public getOne(id: number): Observable<any> {
+    const URL = this.apiBasePath + 'crm/products/' + id;
+    return this.http.get(URL);
+  }
+
+  public update(id: number, data: any): Observable<any> {
+    const URL = this.apiBasePath + 'crm/products/update/' + id;
+    return this.http.post(URL, data);
+  }
+
+
   public getCategories(): Observable<any> {
     const URL = this.apiBasePath + 'categories';
-
     return this.http.get(URL);
+  }
+
+  public delete(id: number): Observable<any> {
+    const URL = this.apiBasePath + 'crm/products/' + id;
+    return this.http.delete(URL);
   }
 
 }

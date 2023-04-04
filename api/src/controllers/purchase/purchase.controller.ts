@@ -71,7 +71,8 @@ export class PurchaseController {
 
             const targetProduct = await this.products.findFirst({
                 where: {
-                    id: item.id
+                    id: item.id,
+                    is_deleted: false
                 }
             })
             if (!targetProduct) {

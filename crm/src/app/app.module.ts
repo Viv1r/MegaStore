@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from "@angular/common/http";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,11 +19,11 @@ import { ItemsTableComponent } from './components/items-table/items-table.compon
 import { ProductsComponent } from './components/views/main/products/products.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { UsersComponent } from './components/views/main/users/users.component';
-import { DetailedViewComponent } from './components/views/detailed-view/detailed-view.component';
 import { SelectOneComponent } from './components/fields/select-one/select-one.component';
 import { SelectMultipleComponent } from './components/fields/select-multiple/select-multiple.component';
 import { InputRangeComponent } from './components/fields/input-range/input-range.component';
 import { PageNotFoundComponent } from './components/views/page-not-found/page-not-found.component';
+import { PopupFormComponent } from './components/popup-form/popup-form.component';
 
 @NgModule({
   declarations: [
@@ -35,25 +35,26 @@ import { PageNotFoundComponent } from './components/views/page-not-found/page-no
     ProductsComponent,
     SidebarComponent,
     UsersComponent,
-    DetailedViewComponent,
     SelectOneComponent,
     SelectMultipleComponent,
     InputRangeComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    PopupFormComponent
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatSlideToggleModule,
-    MatInputModule,
-    MatIconModule
-  ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatSlideToggleModule,
+        MatInputModule,
+        MatIconModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

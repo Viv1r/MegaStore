@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
-import {FilterField} from "../../../../types/FilterField";
+import { FilterField } from "../../../../types/FilterField";
+import { columns, filters } from "../../../../forms/users";
 
 @Component({
   selector: 'app-users',
@@ -14,66 +15,8 @@ export class UsersComponent implements OnInit {
   users: any[] = [];
   loading = false;
 
-  columns = [
-    {
-      tag: 'id',
-      name: 'ID'
-    },
-    {
-      tag: 'email',
-      name: 'E-mail'
-    },
-    {
-      tag: 'password',
-      name: 'Password'
-    },
-    {
-      tag: 'name',
-      name: 'Name',
-      default: 'Anonymous'
-    },
-    {
-      tag: 'stores_count',
-      name: 'Owned stores',
-      default: 0
-    },
-    {
-      tag: 'is_banned',
-      name: 'Is banned'
-    }
-  ];
-
-  readonly filters: FilterField[] = [
-    {
-      key: 'id',
-      name: 'ID',
-      type: 'number'
-    },
-    {
-      key: 'email',
-      name: 'E-mail',
-      type: 'text'
-    },
-    {
-      key: 'name',
-      type: 'text'
-    },
-    {
-      key: 'is_banned',
-      name: 'Status',
-      type: 'select-one',
-      options: [
-        {
-          id: 1,
-          name: 'Banned'
-        },
-        {
-          id: 0,
-          name: 'Not banned'
-        }
-      ]
-    }
-  ];
+  columns = columns;
+  filters = filters;
 
   loadUsers(data?: any): void {
     this.loading = true;

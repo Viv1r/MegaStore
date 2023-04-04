@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import { ProductsService } from "../../../../services/products.service";
 import { FilterField } from "../../../../types/FilterField";
-import {StoresService} from "../../../../services/stores.service";
+import { StoresService } from "../../../../services/stores.service";
+import { PopupFormService } from "../../../../services/popup-form.service";
+import { columns, filters, constructor } from "../../../../forms/products";
 
 @Component({
   selector: 'app-products',
@@ -10,84 +12,21 @@ import {StoresService} from "../../../../services/stores.service";
 })
 export class ProductsComponent implements OnInit {
 
-  constructor(protected productsService: ProductsService, protected storesService: StoresService) { }
+  constructor(
+    protected productsService: ProductsService,
+    protected storesService: StoresService,
+    protected popupFormService: PopupFormService
+  ) {
+    this.updateEmitter.subscribe((data: any) => this.updateProduct(data.id, data.item));
+  }
 
   products: any[] = [];
   loading = false;
 
-  readonly columns = [
-    {
-      tag: 'id',
-      name: 'ID'
-    },
-    {
-      tag: 'category',
-      name: 'Category'
-    },
-    {
-      tag: 'title',
-      name: 'Title'
-    },
-    {
-      tag: 'description',
-      name: 'Description'
-    },
-    {
-      tag: 'price',
-      name: 'Price'
-    },
-    {
-      tag: 'price_postfix',
-      name: 'Unit',
-      default: 'per pc.'
-    },
-    {
-      tag: 'count_available',
-      name: 'In stock',
-      important: true
-    },
-    {
-      tag: 'store',
-      name: 'Seller'
-    }
-  ];
+  columns = columns;
+  filters = filters;
 
-  readonly filters: FilterField[] = [
-    {
-      key: 'id',
-      name: 'ID',
-      type: 'number'
-    },
-    {
-      key: 'category',
-      name: 'Categories',
-      type: 'select-multiple',
-      options: []
-    },
-    {
-      key: 'title',
-      type: 'text'
-    },
-    {
-      key: 'description',
-      type: 'text'
-    },
-    {
-      key: 'price',
-      type: 'range'
-    },
-    {
-      key: 'count_available',
-      name: 'In Stock',
-      type: 'range'
-    },
-    {
-      key: 'store',
-      name: 'Sellers',
-      type: 'select-multiple',
-      options: []
-    }
-  ];
+  protected updateEmitter = new EventEmitter<any>();
 
   parseProducts(products: any[]): any[] {
     return products.map(product => {
@@ -99,37 +38,85 @@ export class ProductsComponent implements OnInit {
     );
   }
 
-  loadProducts(data?: any): void {
-    this.loading = true;
-    this.productsService.get(data)
-      .subscribe(response => {
-        this.products = this.parseProducts(response.products ?? []);
-        this.loading = false;
+  // Своеобразная страховка. В аргумент ничего не прилетает - используем предыдущие данные
+  protected productLoader() {
+    let storedData: any;
+
+    return (data?: any) => {
+      if (!data) {
+        data = storedData;
+      }
+      storedData = data;
+
+      this.loading = true;
+      this.productsService.get(data)
+        .subscribe(response => {
+          this.products = this.parseProducts(response.products ?? []);
+          this.loading = false;
+        });
+    }
+  }
+
+  public loadProducts = this.productLoader();
+
+  updateProduct(id: number, newData: any): void {
+    this.productsService.update(id, newData)
+      .subscribe(data => {
+        if (data.statusCode === 'ok') {
+          this.popupFormService.clear();
+          this.loadProducts();
+        } else if (data.statusCode === 'error') {
+          alert(data.statusMessage);
+        }
+      });
+  }
+
+  deleteProduct(id: number): void {
+    if (!confirm(`Are you sure you want to delete product #${id}?`))
+      return;
+    this.productsService.delete(id)
+      .subscribe(data => {
+        if (data.statusCode === 'ok') {
+          const index = this.products.findIndex(item => item.id === id);
+          this.products.splice(index, 1);
+        } else if (data.statusCode === 'error') {
+          alert(data.statusMessage);
+        }
       });
   }
 
   loadCategories(): void {
     this.productsService.getCategories()
       .subscribe(data => {
-        if (data?.categories) {
+        if (data?.items) {
           const target = this.filters.find(item => item.key === 'category');
           if (target) {
-            target.options = data.categories;
+            target.options = data.items;
           }
         }
-      })
+      });
   }
 
   loadStores(): void {
     this.storesService.get()
       .subscribe(data => {
-        if (data?.stores) {
+        if (data?.items) {
           const target = this.filters.find(item => item.key === 'store');
           if (target) {
-            target.options = data.stores;
+            target.options = data.items;
           }
         }
-      })
+      });
+  }
+
+  async showPopup(itemID: number): Promise<void> {
+    await this.popupFormService.load({
+      id: itemID,
+      source: this.productsService.getOne(itemID),
+      constructor: constructor,
+      emitter: this.updateEmitter
+    });
+    this.popupFormService.active = true;
   }
 
   ngOnInit(): void {

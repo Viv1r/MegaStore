@@ -12,7 +12,7 @@ export class CategoriesController {
     async getCategories() {
         const data = await this.categories.findMany();
         if (data) {
-            return {statusCode: 'ok', categories: data};
+            return {statusCode: 'ok', items: data};
         }
     }
 }

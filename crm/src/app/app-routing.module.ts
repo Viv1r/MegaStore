@@ -5,7 +5,6 @@ import { RegisterComponent } from "./components/views/register/register.componen
 import { LoginComponent } from "./components/views/login/login.component";
 import { ProductsComponent } from "./components/views/main/products/products.component";
 import { UsersComponent } from "./components/views/main/users/users.component";
-import { DetailedViewComponent } from "./components/views/detailed-view/detailed-view.component";
 import { PageNotFoundComponent } from "./components/views/page-not-found/page-not-found.component";
 
 const routes: Routes = [
@@ -16,14 +15,6 @@ const routes: Routes = [
       {
         path: 'products',
         component: ProductsComponent
-      },
-      {
-        path: 'products/:id',
-        component: DetailedViewComponent
-      },
-      {
-        path: 'products/new',
-        component: DetailedViewComponent
       },
       {
         path: 'users',

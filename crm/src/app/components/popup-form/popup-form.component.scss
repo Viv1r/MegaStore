@@ -1,0 +1,118 @@
+.popup_bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba($color: #000, $alpha: .25);
+  z-index: 30;
+}
+
+.popup_wrapper {
+  position: absolute;
+  width: 100%;
+  height: fit-content;
+  margin-top: 30px;
+  z-index: 31;
+  left: 0;
+  right: 0;
+}
+
+.popup_window {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 720px;
+  height: fit-content;
+  padding: 20px 35px;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 3px 3px 6px rgba($color: #000, $alpha: .3);
+
+  .title {
+    width: 100%;
+    font-family: "Raleway", serif;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+}
+
+.field_wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-grow: 1;
+
+  label {
+    font-family: "Kulim Park", serif;
+    margin-left: 2px;
+  }
+
+  input {
+    min-width: 100px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #b6b6b6;
+    border-radius: 12px;
+  }
+
+  textarea {
+    width: 100%;
+    height: 160px;
+    resize: none;
+    padding: 5px;
+    border: 1px solid #b6b6b6;
+    border-radius: 12px;
+  }
+}
+
+.buttons_wrapper {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn {
+  width: 140px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 12px;
+  transition: all .1s ease-out;
+  cursor: pointer;
+
+  &-apply {
+    background-color: white;
+    color: #0aa900;
+    border: 1px solid #0aa900;
+
+    &:hover {
+      background-color: #0aa900;
+      color: white;
+    }
+  }
+
+  &-discard {
+    background-color: white;
+    color: #e12900;
+    border: 1px solid #e12900;
+
+    &:hover {
+      background-color: #e12900;
+      color: white;
+    }
+  }
+}

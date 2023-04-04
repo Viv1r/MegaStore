@@ -119,7 +119,7 @@
 }
 
 td, th {
-  padding: 20px;
+  padding: 20px 10px 20px 16px;
   text-align: start;
   font-family: "Kufam", serif;
   max-width: 300px;
@@ -185,14 +185,14 @@ th {
 
   .btn_edit,
   .btn_delete {
-    padding: 12px 20px;
-    max-width: 54px;
+    padding: 12px 20px 12px 8px;
+    width: 60px;
     user-select: none;
 
     img {
       margin-left: auto;
-      width: auto;
-      height: 40px;
+      width: 40px;
+      height: auto;
       padding: 8px;
       border-radius: 50%;
 

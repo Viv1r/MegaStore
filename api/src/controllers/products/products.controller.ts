@@ -51,6 +51,9 @@ export class ProductsController {
                 },
                 count_available: true
             },
+            where: {
+                is_deleted: false
+            },
             take: Number(count) || 10
         });
         
@@ -82,6 +85,9 @@ export class ProductsController {
                     }
                 }
             },
+            where: {
+                is_deleted: false
+            },
             take: this.productsPerPage,
             skip: Number(offset) || 0
         });
@@ -89,6 +95,9 @@ export class ProductsController {
         const lastOne = await this.products.findFirst({
             select: {
                 id: true
+            },
+            where: {
+                is_deleted: false
             },
             take: -1
         });
@@ -139,7 +148,8 @@ export class ProductsController {
                 }
             },
             where: {
-                id: Number(params.id) || 0
+                id: Number(params.id) || 0,
+                is_deleted: false
             }
         });
 

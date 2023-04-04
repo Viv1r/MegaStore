@@ -29,6 +29,7 @@ export class SelectMultipleComponent implements ControlValueAccessor {
     return this._value;
   }
 
+  @Input()
   set value(val: number[]) {
     if (Array.isArray(val)) {
       this._value = val;

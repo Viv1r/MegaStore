@@ -16,15 +16,27 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 export class SelectOneComponent implements ControlValueAccessor {
   constructor(private eRef: ElementRef) {}
 
-  @Input() options?: any[] = [];
   @Input() placeholder?: string;
 
+  private _options?: any[] = [];
   private _value: any = null;
   touched = false;
   onChange = (foo: any) => {};
 
   active = false;
   activeOption?: any;
+
+  get options() {
+    return this._options;
+  }
+
+  @Input()
+  set options(val) {
+    this._options = val;
+    if (this.value) {
+      this.activeOption = this.options?.find(item => item.id === this.value);
+    }
+  }
 
   get value() {
     return this._value;

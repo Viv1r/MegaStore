@@ -1,11 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormControl, FormGroup } from "@angular/forms";
 import { FilterField } from "../../types/FilterField";
-
-interface Range {
-  min: number;
-  max: number;
-}
+import {PopupFormService} from "../../services/popup-form.service";
 
 @Component({
   selector: 'app-items-table',
@@ -20,6 +16,8 @@ export class ItemsTableComponent implements OnInit {
   @Input() loading = false;
 
   @Output() pushFilters = new EventEmitter<any>();
+  @Output() delete = new EventEmitter<number>();
+  @Output() edit = new EventEmitter<number>();
 
   filtersForm = new FormGroup({});
 
@@ -56,6 +54,11 @@ export class ItemsTableComponent implements OnInit {
     this.initForm();
   }
 
+  editItem(id: number): void {
+    this.edit.emit(id);
+    window.scroll(0, 0);
+  }
+
   initForm(): void {
     const newForm: any = {};
 
@@ -72,7 +75,7 @@ export class ItemsTableComponent implements OnInit {
         newForm[field.key] = new FormControl<number[]>([]);
 
       if (type === 'range')
-        newForm[field.key] = new FormControl<Range>({ min: 0, max: 0 });
+        newForm[field.key] = new FormControl({ min: 0, max: 0 });
     }
 
     this.filtersForm = new FormGroup(newForm);

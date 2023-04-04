@@ -24,6 +24,7 @@
 
       <app-input-range
         *ngIf="field.type === 'range'"
+        [formControlName]="field.key"
       ></app-input-range>
 
       <input
@@ -80,13 +81,11 @@
           </td>
         </ng-template>
 
-        <td class="btn_edit" (click)="$event.stopPropagation()">
-          <a [routerLink]="item.id">
-            <img src="assets/svg/edit-item.svg" alt="edit">
-          </a>
+        <td class="btn_edit" (click)="$event.stopPropagation(); editItem(item.id)">
+          <img src="assets/svg/edit-item.svg" alt="edit">
         </td>
 
-        <td class="btn_delete" (click)="$event.stopPropagation()">
+        <td class="btn_delete" (click)="$event.stopPropagation(); delete.emit(item.id)">
           <img src="assets/svg/delete-item.svg" alt="delete">
         </td>
 

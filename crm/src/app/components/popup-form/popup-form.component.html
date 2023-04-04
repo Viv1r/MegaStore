@@ -1,0 +1,55 @@
+<ng-template [ngIf]="popupFormService.active">
+  <div class="popup_bg" (click)="close()"></div>
+  <div class="popup_wrapper" *ngIf="form" (click)="close()">
+    <div class="popup_window" (click)="$event.stopPropagation()">
+      <div class="title">Edit item</div>
+      <form [formGroup]="form" (keydown.enter)="apply()">
+        <div *ngFor="let field of fields" class="field_wrapper">
+
+          <label>{{ field.name ?? field.key | titlecase }}</label>
+
+          <app-select-one
+            *ngIf="field.type === 'select-one'"
+            [formControlName]="field.key"
+            [options]="field.options"
+            placeholder="Select"
+          ></app-select-one>
+
+          <app-select-multiple
+            *ngIf="field.type === 'select-multiple'"
+            [formControlName]="field.key"
+            [options]="field.options"
+            placeholder="Select"
+          ></app-select-multiple>
+
+          <app-input-range
+            *ngIf="field.type === 'range'"
+            [formControlName]="field.key"
+          ></app-input-range>
+
+          <input
+            *ngIf="field.type === 'text'"
+            type="text"
+            [formControlName]="field.key"
+          >
+
+          <textarea
+            *ngIf="field.type === 'longtext'"
+            [formControlName]="field.key"
+          ></textarea>
+
+          <input
+            *ngIf="field.type === 'number'"
+            type="number"
+            [formControlName]="field.key"
+          >
+
+        </div>
+      </form>
+      <div class="buttons_wrapper">
+        <button class="btn btn-apply" (click)="apply()">Apply</button>
+        <button class="btn btn-discard" (click)="close()">Discard changes</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
