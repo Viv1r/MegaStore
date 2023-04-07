@@ -11,7 +11,7 @@ class User {
     loggedIn = false;
 
     auth({name, email, profilePicture}) {
-        [this.name, this.email, this.profilePicture] = [name, email, token, profilePicture];
+        [this.name, this.email, this.profilePicture] = [name, email, profilePicture];
         this.loggedIn = true;
     };
 
@@ -53,7 +53,6 @@ export default {
                     state.user?.auth({
                         name: user.name,
                         email: user.email,
-                        token: user.auth_token,
                         profilePicture: user.profilePicture
                     });
                 }
@@ -75,7 +74,6 @@ export default {
                     state.user?.auth({
                         name: user.name,
                         email: user.email,
-                        token: user.auth_token,
                         profilePicture: user.profilePicture
                     });
                 } else if (data?.statusMessage) {
@@ -100,7 +98,6 @@ export default {
                     state.user?.auth({
                         name: user.name,
                         email: user.email,
-                        token: user.auth_token,
                         profilePicture: user.profilePicture
                     });
                 } else if (data?.statusMessage) {

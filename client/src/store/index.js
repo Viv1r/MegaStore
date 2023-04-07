@@ -75,8 +75,8 @@ export default createStore({
                 const response = await api.get(action);
                 data = response.data;
             } finally {
-                if (data?.categories) {
-                    commit('setCategories', data.categories);
+                if (data?.items) {
+                    commit('setCategories', data.items);
                 }
             }
         }
