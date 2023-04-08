@@ -14,51 +14,39 @@ export class PopupFormService {
   public constructorChange = new EventEmitter<any>;
   public close = new EventEmitter<void>;
   public applyItem?: EventEmitter<any>;
-
-  private _item?: any[];
-  private _itemID?: number;
-
-  get item(): any {
-    return this._item;
-  }
-
-  set item(val: any[]) {
-    this._item = val;
-    this.itemChange.emit(this._item);
-  }
+  public itemID?: number;
 
   clear(): void {
-    this._item = undefined;
-    this._itemID = undefined;
+    this.itemID = undefined;
     this.close.emit();
   }
 
   apply(data: any) {
     if (this.applyItem) {
-      this.applyItem.emit({id: this._itemID, item: data});
+      this.applyItem.emit({id: this.itemID, item: data});
     }
   }
 
   load({id, source, constructor, emitter}: {
-    id: number,
-    source: Observable<any>,
+    id?: number,
+    source?: Observable<any>,
     constructor: any,
     emitter: EventEmitter<any>
   }) {
     this.applyItem = emitter; // Привязка внешнего эмиттера для последующей отправки данных
-    this._itemID = id;
+    this.itemID = id;
 
-    return new Promise<void>(resolve => {
-
+    if (source) {
       source.subscribe((data: any) => {
         if (data) {
           this.constructorChange.emit(constructor);
-          this.item = data;
+          this.itemChange.emit(data);
         }
         this.active = true;
-        resolve();
       });
-
-    });
+    } else {
+      this.constructorChange.emit(constructor);
+      this.active = true;
+    }
   }
 }

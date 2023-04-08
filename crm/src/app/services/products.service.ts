@@ -28,11 +28,15 @@ export class ProductsService {
     return this.http.get(URL);
   }
 
+  public create(data: any): Observable<any> {
+    const URL = this.apiBasePath + 'crm/products/create';
+    return this.http.post(URL, data);
+  }
+
   public update(id: number, data: any): Observable<any> {
     const URL = this.apiBasePath + 'crm/products/update/' + id;
     return this.http.post(URL, data);
   }
-
 
   public getCategories(): Observable<any> {
     const URL = this.apiBasePath + 'categories';

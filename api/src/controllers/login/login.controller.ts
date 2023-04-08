@@ -32,8 +32,16 @@ export class LoginController {
         }
 
         if (token) {
-            response.cookie('token', token);
             const user = await this.usersService.get(token);
+
+            if (user?.is_banned) {
+                return {
+                    statusCode: 'error',
+                    statusMessage: 'You are banned!'
+                }
+            }
+
+            response.cookie('token', token);
             await this.usersService.updateLastLogin(user);
 
             return {

@@ -3,6 +3,7 @@ import { PopupFormService } from "../../services/popup-form.service";
 import { FormControl, FormGroup } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-popup-form',
@@ -10,13 +11,12 @@ import { environment } from "../../../environments/environment";
   styleUrls: ['./popup-form.component.scss']
 })
 export class PopupFormComponent {
-  constructor(public popupFormService: PopupFormService, protected http: HttpClient) {
+  constructor(public popupFormService: PopupFormService, public authService: AuthService, protected http: HttpClient) {
 
     this.popupFormService.close.subscribe(() => this.close());
 
     this.popupFormService.itemChange.subscribe((data: any) => {
       if (!this.form) return;
-      console.log('data', data);
 
       for (const key of Object.keys(data)) {
         if (this.form?.value[key] === undefined) {

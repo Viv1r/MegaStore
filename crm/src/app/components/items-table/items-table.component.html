@@ -58,6 +58,11 @@
 
       <th class="pseudo_cl"></th>
       <th class="pseudo_cl"></th>
+
+      <div class="btn_add" (click)="add.emit()">
+        <img src="assets/svg/add-item.svg" alt="add">
+      </div>
+
     </tr>
     <ng-template [ngIf]="items.length">
       <tr

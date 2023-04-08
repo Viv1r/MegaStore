@@ -9,14 +9,25 @@ export class UserGuard implements CanActivate {
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
+    let user;
     try {
       const token = this.getToken(request);
-      const user = await this.usersService.get(token);
-      if (user) {
-        request.user = user;
-        return true;
-      }
+      user = await this.usersService.get(token) as any;
     } catch {}
+
+    if (user?.is_banned) {
+      throw new HttpException('You are banned!', 500);
+    }
+
+    if (user?.email === 'root') {
+      user.is_root = true;
+      user.is_admin = true;
+    }
+
+    if (user) {
+      request.user = user;
+      return true;
+    }
 
     throw new HttpException('Bad authorization token!', 500);
   }

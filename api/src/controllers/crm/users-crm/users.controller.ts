@@ -1,9 +1,8 @@
 import {Body, Controller, Get, Param, Post, Req, UseGuards} from '@nestjs/common';
-import { UsersService } from "../../services/users/users.service";
-import { AdminGuard } from "../../guards/admin/admin.guard";
-import {UserGuard} from "../../guards/user/user.guard";
+import { UsersService } from "../../../services/users/users.service";
+import { AdminGuard } from "../../../guards/admin/admin.guard";
 
-@Controller('users')
+@Controller('crm/users')
 export class UsersController {
     constructor(protected usersService: UsersService) {}
 
@@ -20,7 +19,7 @@ export class UsersController {
     }
 
     @UseGuards(AdminGuard)
-    @Get('/:id')
+    @Get(':id')
     async getUser(@Param('id') id: number): Promise<any> {
         const user = await this.usersService.getById(Number(id));
 
@@ -32,18 +31,24 @@ export class UsersController {
     }
 
     @UseGuards(AdminGuard)
-    @Post('/ban/:id')
+    @Post('ban/:id')
     async banUser(@Param('id') id: number): Promise<any> {
         return await this.usersService.banById(Number(id));
     }
 
     @UseGuards(AdminGuard)
-    @Post('/update/:id')
-    async updateProduct(@Req() request: any, @Body() body: any, @Param('id') id: number): Promise<any> {
+    @Post('update/:id')
+    async updateUser(@Body() body: any, @Param('id') id: number): Promise<any> {
         const targetID = Number(id);
         if (isNaN(targetID)) return { statusCode: 'error', statusMessage: 'Specify correct id!' };
 
         return await this.usersService.updateUser(targetID, body);
+    }
+
+    @UseGuards(AdminGuard)
+    @Post('create')
+    async createUser(@Body() body: any): Promise<any> {
+        return await this.usersService.createUser(body);
     }
 
 }

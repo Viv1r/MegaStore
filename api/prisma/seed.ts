@@ -6,6 +6,14 @@ const prisma = new PrismaClient();
 async function main() {
 	await prisma.users.create({
 		data: {
+			name: 'Root',
+			email: 'root',
+			is_admin: true
+		},
+	});
+
+	await prisma.users.create({
+		data: {
 			name: 'Andrey Alymov',
 			email: 'andrey-alymov@hotmail.com',
 			owned_stores: {

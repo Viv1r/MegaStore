@@ -10,6 +10,7 @@ datasource db {
 model categories {
   id                  Int                   @id @default(autoincrement())
   name                String                @db.VarChar(64)
+  is_deleted          Boolean               @db.TinyInt @default(false)
 
   products            products[]
 }

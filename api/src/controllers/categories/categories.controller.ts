@@ -10,7 +10,15 @@ export class CategoriesController {
     
     @Get()
     async getCategories() {
-        const data = await this.categories.findMany();
+        const data = await this.categories.findMany({
+            select: {
+                id: true,
+                name: true,
+            },
+            where: {
+                is_deleted: false
+            }
+        });
         if (data) {
             return {statusCode: 'ok', items: data};
         }

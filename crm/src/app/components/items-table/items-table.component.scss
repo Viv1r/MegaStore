@@ -115,6 +115,27 @@
 
   .headers {
     background: #eaeaea;
+    position: relative;
+  }
+}
+
+.btn_add {
+  position: absolute;
+  top: 12px;
+  right: 21px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+
+  img {
+    width: auto;
+    height: 100%;
+    filter: invert(50%);
+    transition: .1s ease-out;
+  }
+
+  &:hover img {
+    filter: invert(20%);
   }
 }
 

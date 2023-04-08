@@ -7,6 +7,7 @@ import { ProductsComponent } from "./components/views/main/products/products.com
 import { UsersComponent } from "./components/views/main/users/users.component";
 import { PageNotFoundComponent } from "./components/views/page-not-found/page-not-found.component";
 import {TitlePageComponent} from "./components/views/main/title-page/title-page.component";
+import {StoresComponent} from "./components/views/main/stores/stores.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent
+      },
+      {
+        path: 'stores',
+        component: StoresComponent
       }
     ]
   },

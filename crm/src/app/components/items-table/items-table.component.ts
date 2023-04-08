@@ -16,8 +16,9 @@ export class ItemsTableComponent implements OnInit {
   @Input() loading = false;
 
   @Output() pushFilters = new EventEmitter<any>();
-  @Output() delete = new EventEmitter<number>();
+  @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<number>();
+  @Output() delete = new EventEmitter<number>();
 
   filtersForm = new FormGroup({});
 

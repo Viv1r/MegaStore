@@ -13,22 +13,27 @@ export class UsersService {
   private readonly apiBasePath = environment.API_BASE_PATH;
 
   public get(data: any = {}): Observable<any> {
-    const URL = this.apiBasePath + 'users';
+    const URL = this.apiBasePath + 'crm/users';
     return this.http.post(URL, data);
   }
 
   public getOne(id: number): Observable<any> {
-    const URL = this.apiBasePath + 'users/' + id;
+    const URL = this.apiBasePath + 'crm/users/' + id;
     return this.http.get(URL);
   }
 
+  public create(data: any): Observable<any> {
+    const URL = this.apiBasePath + 'crm/users/create';
+    return this.http.post(URL, data);
+  }
+
   public update(id: number, data: any): Observable<any> {
-    const URL = this.apiBasePath + 'users/update/' + id;
+    const URL = this.apiBasePath + 'crm/users/update/' + id;
     return this.http.post(URL, data);
   }
 
   public ban(id: number): Observable<any> {
-    const URL = this.apiBasePath + 'users/ban/' + id;
+    const URL = this.apiBasePath + 'crm/users/ban/' + id;
     return this.http.post(URL, {});
   }
 }

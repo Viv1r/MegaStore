@@ -25,6 +25,7 @@ import { InputRangeComponent } from './components/fields/input-range/input-range
 import { PageNotFoundComponent } from './components/views/page-not-found/page-not-found.component';
 import { PopupFormComponent } from './components/popup-form/popup-form.component';
 import { TitlePageComponent } from './components/views/main/title-page/title-page.component';
+import { StoresComponent } from './components/views/main/stores/stores.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { TitlePageComponent } from './components/views/main/title-page/title-pag
     InputRangeComponent,
     PageNotFoundComponent,
     PopupFormComponent,
-    TitlePageComponent
+    TitlePageComponent,
+    StoresComponent
   ],
     imports: [
         BrowserModule,

@@ -2,14 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { SqlService } from "../sql/sql.service";
 import { Prisma } from "@prisma/client";
 
-type UserResponse = {
-    id?: number;
-    name?: string;
-    email: string;
-    auth_token?: string;
-    is_admin?: boolean;
-}
-
 @Injectable()
 export class UsersService {
     constructor(private sqlService: SqlService) {}
@@ -17,22 +9,33 @@ export class UsersService {
     private readonly users = this.sqlService.client.users;
     private readonly stores = this.sqlService.client.stores;
 
-    async get(token: string): Promise<UserResponse|null> {
+    async get(token: string): Promise<any> {
         if (!token) return null;
-        const user = await this.users.findFirst({
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                auth_token: true,
-                is_admin: true
-            },
-            where: {
-                auth_token: token
-            }
-        });
 
-        return user ?? null;
+        let user: any;
+        try {
+            user = await this.users.findFirst({
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    auth_token: true,
+                    is_banned: true,
+                    is_admin: true
+                },
+                where: {
+                    auth_token: token
+                }
+            });
+        } catch {}
+
+        // Отчасти костыль, но так надо
+        if (user?.email === 'root') {
+            user.is_root = true;
+            user.is_admin = true;
+        }
+
+        return user;
     }
 
     async getById(id: number): Promise<any> {
@@ -62,7 +65,7 @@ export class UsersService {
         return null;
     }
 
-    async updateLastLogin(user: UserResponse): Promise<void> {
+    async updateLastLogin(user: any): Promise<void> {
         if (!user || !user.id) return;
         await this.users.update({
             where: {
@@ -75,7 +78,7 @@ export class UsersService {
     }
 
     async banById(id: number): Promise<any> {
-        if (!id) return { statusCode: 'error' };
+        if (!id) return {statusCode: 'error'};
 
         const result = await this.users.update({
             where: {
@@ -87,20 +90,50 @@ export class UsersService {
         });
 
         if (result) {
-            return { statusCode: 'ok' };
+            return {statusCode: 'ok'};
         }
-        if (!id) return { statusCode: 'error', statusMessage: `The user #${id} was not banned!` };
+        if (!id) return {statusCode: 'error', statusMessage: `The user #${id} was not banned!`};
+    }
+
+    public async createUser(data: any): Promise<any> {
+        const newUserData = {
+            email: data?.email,
+            password: data?.password,
+            name: data?.name,
+            is_banned: data?.is_banned ?? false
+        };
+
+        const emptyFields = Object.keys(newUserData).filter(key => newUserData[key] === undefined);
+        if (emptyFields?.length) {
+            return {
+                statusCode: 'error',
+                statusMessage: 'Check these fields: '
+                    + emptyFields.toString()
+                        .replaceAll(',', ', ')
+                        .replaceAll('_', ' ')
+            };
+        }
+
+        let newUser;
+        try {
+            newUser = await this.users.create({
+                data: newUserData
+            });
+        } catch {
+            return { statusCode: 'error', statusMessage: 'Check your data!' };
+        }
+
+        return { statusCode: 'ok', product: newUser };
     }
 
     public async updateUser(userID: number, data: any): Promise<any> {
         if (!userID) return { statusCode: 'error', statusMessage: 'Pleace specify the product id!' };
-        if (!data) return { statusCode: 'error', statusMessage: 'No data!' };
 
         const newData = {
-            email: data.email,
-            password: data.password,
-            name: data.name,
-            is_banned: data.is_banned,
+            email: data?.email,
+            password: data?.password,
+            name: data?.name,
+            is_banned: data?.is_banned,
         };
 
         if (Object.values(newData).every(item => item === undefined)) {
@@ -127,19 +160,19 @@ export class UsersService {
 
     async getAllUsers(data): Promise<any[]> {
         const requestParams = {
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                password: true,
-                owned_stores: true,
-                is_admin: true,
-                is_banned: true,
-                last_login: true
+            include: {
+                _count: {
+                    select: { owned_stores: true }
+                }
             },
             where: {
                 AND: []
             },
+            orderBy: [
+                {
+                    id: 'desc'
+                }
+            ] as any,
             take: 100
         };
 
@@ -171,8 +204,8 @@ export class UsersService {
         }
 
         return result.map(item => {
-            item['stores_count'] = item.owned_stores?.length;
-            delete item.owned_stores;
+            item.stores_count = item._count.owned_stores;
+            delete item._count;
             return item;
         });
     }

@@ -2,47 +2,49 @@
   <div class="popup_bg" (click)="close()"></div>
   <div class="popup_wrapper" *ngIf="form" (click)="close()">
     <div class="popup_window" (click)="$event.stopPropagation()">
-      <div class="title">Edit item</div>
+      <div class="title">{{ popupFormService.itemID ? 'Edit item' : 'Add item' }}</div>
       <form [formGroup]="form" (keydown.enter)="apply()">
         <div *ngFor="let field of fields" class="field_wrapper">
 
-          <label>{{ field.name ?? field.key | titlecase }}</label>
+          <ng-template [ngIf]="!field.adminOnly || authService.user.isAdmin">
+            <label>{{ field.name ?? field.key | titlecase }}</label>
 
-          <app-select-one
-            *ngIf="field.type === 'select-one'"
-            [formControlName]="field.key"
-            [options]="field.options"
-            placeholder="Select"
-          ></app-select-one>
+            <app-select-one
+              *ngIf="field.type === 'select-one'"
+              [formControlName]="field.key"
+              [options]="field.options"
+              placeholder="Select"
+            ></app-select-one>
 
-          <app-select-multiple
-            *ngIf="field.type === 'select-multiple'"
-            [formControlName]="field.key"
-            [options]="field.options"
-            placeholder="Select"
-          ></app-select-multiple>
+            <app-select-multiple
+              *ngIf="field.type === 'select-multiple'"
+              [formControlName]="field.key"
+              [options]="field.options"
+              placeholder="Select"
+            ></app-select-multiple>
 
-          <app-input-range
-            *ngIf="field.type === 'range'"
-            [formControlName]="field.key"
-          ></app-input-range>
+            <app-input-range
+              *ngIf="field.type === 'range'"
+              [formControlName]="field.key"
+            ></app-input-range>
 
-          <input
-            *ngIf="field.type === 'text'"
-            type="text"
-            [formControlName]="field.key"
-          >
+            <input
+              *ngIf="field.type === 'text'"
+              type="text"
+              [formControlName]="field.key"
+            >
 
-          <textarea
-            *ngIf="field.type === 'longtext'"
-            [formControlName]="field.key"
-          ></textarea>
+            <textarea
+              *ngIf="field.type === 'longtext'"
+              [formControlName]="field.key"
+            ></textarea>
 
-          <input
-            *ngIf="field.type === 'number'"
-            type="number"
-            [formControlName]="field.key"
-          >
+            <input
+              *ngIf="field.type === 'number'"
+              type="number"
+              [formControlName]="field.key"
+            >
+          </ng-template>
 
         </div>
       </form>

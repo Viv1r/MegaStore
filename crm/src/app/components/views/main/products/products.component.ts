@@ -17,6 +17,7 @@ export class ProductsComponent implements OnInit {
     protected storesService: StoresService,
     protected popupFormService: PopupFormService
   ) {
+    this.createEmitter.subscribe((data: any) => this.createProduct(data.item));
     this.updateEmitter.subscribe((data: any) => this.updateProduct(data.id, data.item));
   }
 
@@ -27,6 +28,7 @@ export class ProductsComponent implements OnInit {
   filters = filters;
 
   protected updateEmitter = new EventEmitter<any>();
+  protected createEmitter = new EventEmitter<any>();
 
   parseProducts(products: any[]): any[] {
     return products.map(product => {
@@ -52,7 +54,19 @@ export class ProductsComponent implements OnInit {
         this.products = this.parseProducts(response.products ?? []);
         this.loading = false;
       });
-  };
+  }
+
+  createProduct(item: any): void {
+    this.productsService.create(item)
+      .subscribe(data => {
+        if (data.statusCode === 'ok') {
+          this.popupFormService.clear();
+          this.loadProducts();
+        } else if (data.statusCode === 'error') {
+          alert(data.statusMessage);
+        }
+      });
+  }
 
   updateProduct(id: number, newData: any): void {
     this.productsService.update(id, newData)
@@ -93,7 +107,7 @@ export class ProductsComponent implements OnInit {
   }
 
   loadStores(): void {
-    this.storesService.get()
+    this.storesService.getShort()
       .subscribe(data => {
         if (data?.items) {
           const target = this.filters.find(item => item.key === 'store');
@@ -104,14 +118,20 @@ export class ProductsComponent implements OnInit {
       });
   }
 
-  async showPopup(itemID: number): Promise<void> {
-    await this.popupFormService.load({
+  showEditForm(itemID: number): void {
+    this.popupFormService.load({
       id: itemID,
       source: this.productsService.getOne(itemID),
       constructor: constructor,
       emitter: this.updateEmitter
     });
-    this.popupFormService.active = true;
+  }
+
+  showCreateForm(): void {
+    this.popupFormService.load({
+      constructor: constructor,
+      emitter: this.createEmitter
+    });
   }
 
   ngOnInit(): void {

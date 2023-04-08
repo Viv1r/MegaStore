@@ -5,13 +5,14 @@ import { columns, filters, constructor } from "../../../../forms/users";
 import { PopupFormService } from "../../../../services/popup-form.service";
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-users-crm',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
 
   constructor(protected usersService: UsersService, protected popupFormService: PopupFormService) {
+    this.createEmitter.subscribe((data: any) => this.createUser(data.item));
     this.updateEmitter.subscribe((data: any) => this.updateUser(data.id, data.item));
   }
 
@@ -22,6 +23,7 @@ export class UsersComponent implements OnInit {
   filters = filters;
 
   protected updateEmitter = new EventEmitter<any>();
+  protected createEmitter = new EventEmitter<any>();
 
   private filtersData?: any;
 
@@ -36,6 +38,18 @@ export class UsersComponent implements OnInit {
       .subscribe(response => {
         this.users = response.users ?? [];
         this.loading = false;
+      });
+  }
+
+  createUser(item: any): void {
+    this.usersService.create(item)
+      .subscribe(data => {
+        if (data.statusCode === 'ok') {
+          this.popupFormService.clear();
+          this.loadUsers();
+        } else if (data.statusCode === 'error') {
+          alert(data.statusMessage);
+        }
       });
   }
 
@@ -65,14 +79,20 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  async showPopup(itemID: number): Promise<void> {
-    await this.popupFormService.load({
+  showEditForm(itemID: number): void {
+    this.popupFormService.load({
       id: itemID,
       source: this.usersService.getOne(itemID),
       constructor: constructor,
       emitter: this.updateEmitter
     });
-    this.popupFormService.active = true;
+  }
+
+  showCreateForm(): void {
+    this.popupFormService.load({
+      constructor: constructor,
+      emitter: this.createEmitter
+    });
   }
 
 

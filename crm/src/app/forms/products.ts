@@ -116,6 +116,6 @@ export const constructor = [
     name: 'Seller store',
     type: 'select-one',
     options: [],
-    optionsURL: 'crm/stores'
+    optionsURL: 'crm/stores/short'
   }
 ];

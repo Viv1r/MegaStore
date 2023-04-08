@@ -7,7 +7,8 @@
       [filtersFields]="filters"
       [loading]="loading"
       (pushFilters)="loadUsers($event)"
-      (edit)="showPopup($event)"
+      (add)="showCreateForm()"
+      (edit)="showEditForm($event)"
       (delete)="banUser($event)"
     ></app-items-table>
   </div>

@@ -1,11 +1,12 @@
 export class User {
   name?: string;
   email?: string;
+  isAdmin?: boolean;
   loggedIn = false;
 
-  public auth(userData: User) {
-    [this.name, this.email]
-      = [userData.name, userData.email];
+  public auth(userData: any) {
+    [this.name, this.email, this.isAdmin]
+      = [userData.name, userData.email, userData.is_admin];
     this.loggedIn = true;
   }
 
