@@ -2,7 +2,7 @@
     <div
         v-if="product"
         class="product_card"
-        :class="{vertical: vertical}"
+        :class="{vertical: vertical, 'fit-grid': fitGrid}"
         @click="openDetailedView(product)"
     >
         <div class="picture">
@@ -50,6 +50,10 @@ export default {
             default: {}
         },
         vertical: {
+            type: Boolean,
+            default: false
+        },
+        fitGrid: {
             type: Boolean,
             default: false
         }

@@ -19,7 +19,7 @@
     .picture {
         width: 100%;
         height: 150px;
-        margin: 0 auto;
+        margin: 0 auto 8px auto;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -43,6 +43,14 @@
     .title {
         font-family: 'Kulim Park', serif;
         font-size: 20px;
+    }
+
+    .description {
+        max-width: 100%;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .price {
@@ -151,6 +159,16 @@
     }
 }
 
+.product_card.fit-grid {
+    width: 25%;
+    min-width: 230px;
+    height: auto;
+    flex-grow: 1;
+
+    .picture {
+        padding: 0 10%;
+    }
+}
 
 .product_card.vertical {
     width: 100%;
@@ -172,6 +190,7 @@
     .description {
         width: 100%;
         word-break: break-word;
+        text-align: start;
     }
 
     .title {
@@ -212,7 +231,7 @@
 }
 
 @media (max-width: 600px) {
-    .product_card {
+    .product_card:not(.fit-grid) {
         width: 100%;
         min-height: 180px;
         height: auto;
@@ -233,6 +252,10 @@
             width: 100%;
             font-size: 28px;
             line-height: 32px;
+        }
+
+        .description {
+            text-align: start;
         }
 
         .price {
@@ -263,6 +286,14 @@
             width: auto;
             height: 36px;
             grid-template-columns: 32px 48px 32px;
+        }
+    }
+
+    .product_card.fit-grid {
+        min-width: 160px;
+
+        .picture {
+            height: 120px;
         }
     }
 }

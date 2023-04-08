@@ -70,7 +70,11 @@ export class ProductsController {
     }
 
     @Post('/catalog')
-    async getCatalog(@Query('offset') offset: number, @Body() body: any): Promise<object> {
+    async getCatalog(
+        @Query('offset') offset: number,
+        @Query('count') count: number,
+        @Body() body: any
+    ): Promise<object> {
         const conditions: any = {
             is_deleted: false,
             title: {
@@ -104,7 +108,7 @@ export class ProductsController {
                 }
             },
             where: conditions,
-            take: this.productsPerPage,
+            take: Number(count) || this.productsPerPage,
             skip: Number(offset) || 0
         });
 

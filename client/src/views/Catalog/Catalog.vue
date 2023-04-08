@@ -14,28 +14,30 @@
 
                   <div
                     class="view grid-view"
-                    @click="listStyle = 'grid'"
-                    :class="{selected: listStyle === 'grid'}"
+                    @click="setStyle('grid')"
+                    :class="{selected: catalogStyle === 'grid'}"
                   >
                     <img src="src/assets/svg/view-grid.svg" alt="grid">
                   </div>
 
                   <div
                     class="view list-view"
-                    @click="listStyle = 'list'"
-                    :class="{selected: listStyle === 'list'}"
+                    @click="setStyle('list')"
+                    :class="{selected: catalogStyle === 'list'}"
                   >
                     <img src="src/assets/svg/view-list.svg" alt="list">
                   </div>
 
                 </div>
+
                 <TransitionGroup name="grow">
-                  <div class="products_wrapper" v-if="catalog.length">
+                  <div v-if="catalog.length" class="products_wrapper" :class="{grid: catalogStyle === 'grid'}">
                     <TransitionGroup name="grow">
                       <ProductCard
                         v-for="product in catalog"
                         :product="product"
-                        :vertical="true"
+                        :vertical="catalogStyle === 'list'"
+                        :fitGrid="catalogStyle === 'grid'"
                         :key="product.id"
                       />
                     </TransitionGroup>
@@ -43,6 +45,7 @@
                   <div v-else-if="loading" class="loading_indicator">Loading...</div>
                   <div v-else class="message">Nothing found!</div>
                 </TransitionGroup>
+
                 <button
                     v-if="catalog.length && canShowMore"
                     class="btn_more"
@@ -73,7 +76,8 @@ export default {
         return {
             catalog: [],
             filters: null,
-            listStyle: 'list',
+            catalogStyle: 'list',
+            productsPerPage: 5,
             offset: 0,
             canShowMore: true,
             loading: false
@@ -85,7 +89,7 @@ export default {
 
             const URL = 'api/products/catalog';
             const response = await axios.post(URL, this.filters, {
-                params: { offset: this.offset }
+                params: { offset: this.offset, count: this.productsPerPage }
             });
             const data = response.data;
             if (!data) return;
@@ -109,12 +113,29 @@ export default {
             this.loading = false;
         },
 
-        applyFilters(filters) {
-          this.filters = filters;
+        setStyle(style) {
+          if (this.catalogStyle === style) return;
+          if (style === 'list') {
+            this.productsPerPage = 5;
+          }
+          if (style === 'grid') {
+            this.productsPerPage = 6;
+          }
+
+          this.catalogStyle = style;
+          this.reloadCatalog();
+        },
+
+        reloadCatalog() {
           this.offset = 0;
           this.canShowMore = true;
           this.catalog = [];
           this.getCatalog();
+        },
+
+        applyFilters(filters) {
+          this.filters = filters;
+          this.reloadCatalog();
         },
     },
 
