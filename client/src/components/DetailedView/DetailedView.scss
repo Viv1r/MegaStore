@@ -109,6 +109,7 @@
                 height: 26px;
                 padding: 2px 6px;
                 font-size: 16px;
+                vertical-align: top;
 
                 &.attribute_name {
                     padding-left: 0;
@@ -118,7 +119,9 @@
 
                 &.attribute_value {
                     width: auto;
+                    max-width: 75%;
                     padding-left: 0;
+                    word-break: break-all;
                 }
             }
         }

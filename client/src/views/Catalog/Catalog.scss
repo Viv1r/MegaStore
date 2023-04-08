@@ -16,9 +16,22 @@
     position: absolute;
     width: 100%;
     color: #6d6d6d;
+    font-family: "Kufam", serif;
     font-size: 24px;
     text-align: center;
     margin: 20px auto;
+}
+
+.message {
+    position: absolute;
+    width: 100%;
+    font-family: "Kufam", serif;
+    font-size: 24px;
+    text-align: center;
+    padding: 20px;
+    background-color: #FFFFFF;
+    box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
 }
 
 .filters_block {
@@ -36,6 +49,46 @@
     height: fit-content;
     display: flex;
     flex-direction: column;
+}
+
+.views_wrapper {
+    position: absolute;
+    top: -44px;
+    width: 100%;
+    height: fit-content;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+
+    .view {
+        width: fit-content;
+        height: fit-content;
+        cursor: pointer;
+
+        img {
+            filter: opacity(10%);
+
+            &:hover {
+                filter: opacity(25%);
+            }
+        }
+
+        &.selected img {
+            filter: none;
+        }
+
+        &.grid-view img {
+            width: 32px;
+            height: 32px;
+        }
+
+        &.list-view img {
+            width: 40px;
+            height: 40px;
+        }
+    }
 }
 
 .products_wrapper {

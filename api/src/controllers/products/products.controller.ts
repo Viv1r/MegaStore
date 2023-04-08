@@ -69,8 +69,26 @@ export class ProductsController {
         }
     }
 
-    @Get('/catalog')
-    async getCatalog(@Query('offset') offset?: number): Promise<object> {
+    @Post('/catalog')
+    async getCatalog(@Query('offset') offset: number, @Body() body: any): Promise<object> {
+        const conditions: any = {
+            is_deleted: false,
+            title: {
+                contains: body.title ?? ''
+            },
+            description: {
+                contains: body.description ?? ''
+            },
+            price: {}
+        };
+
+        if (typeof body.price?.min === 'number') {
+            conditions.price.gte = body.price.min;
+        }
+        if (typeof body.price?.max === 'number') {
+            conditions.price.lte = body.price.max;
+        }
+
         const result: Product[] = await this.products.findMany({
             select: {
                 id: true,
@@ -85,20 +103,20 @@ export class ProductsController {
                     }
                 }
             },
-            where: {
-                is_deleted: false
-            },
+            where: conditions,
             take: this.productsPerPage,
             skip: Number(offset) || 0
         });
+
+        if (!result?.length) {
+            return { status: 'ok', products: [], end: true };
+        }
 
         const lastOne = await this.products.findFirst({
             select: {
                 id: true
             },
-            where: {
-                is_deleted: false
-            },
+            where: conditions,
             take: -1
         });
         

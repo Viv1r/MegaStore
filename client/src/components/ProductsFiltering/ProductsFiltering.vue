@@ -1,27 +1,44 @@
 <template>
     <div class="title">Filters</div>
-    <div class="filters_list">
-        <div class="filter_wrapper">
-            <label>Keywords</label>
-            <input type="text">
-        </div>
-        <div class="filter_wrapper">
-            <label>Manufacturer</label>
-            <div class="checkbox_wrapper">
-                <input type="checkbox" id="val1">
-                <label for="val1">Value 1</label>
-            </div>
-            <div class="checkbox_wrapper">
-                <input type="checkbox" id="val2">
-                <label for="val2">Value 2</label>
-            </div>
-        </div>
-    </div>
+    <FiltersForm
+      :filters="filters"
+      @submit="applyForm($event)"
+    />
 </template>
 
 <script>
-export default {
+import FiltersForm from "../FiltersForm/FiltersForm.vue";
 
+export default {
+  components: {
+    FiltersForm
+  },
+  data() {
+    return {
+      filters: [
+        {
+          tag: 'title',
+          name: 'Title'
+        },
+        {
+          tag: 'description',
+          name: 'Description'
+        },
+        {
+          tag: 'price',
+          name: 'Price',
+          type: 'range',
+          max: 1000
+        }
+      ]
+    }
+  },
+  methods: {
+    applyForm(form) {
+      this.$emit('update', form);
+    }
+  },
+  emits: ['update']
 }
 </script>
 
