@@ -16,6 +16,7 @@ export class PopupFormComponent {
 
     this.popupFormService.itemChange.subscribe((data: any) => {
       if (!this.form) return;
+      console.log('data', data);
 
       for (const key of Object.keys(data)) {
         if (this.form?.value[key] === undefined) {

@@ -16,4 +16,19 @@ export class UsersService {
     const URL = this.apiBasePath + 'users';
     return this.http.post(URL, data);
   }
+
+  public getOne(id: number): Observable<any> {
+    const URL = this.apiBasePath + 'users/' + id;
+    return this.http.get(URL);
+  }
+
+  public update(id: number, data: any): Observable<any> {
+    const URL = this.apiBasePath + 'users/update/' + id;
+    return this.http.post(URL, data);
+  }
+
+  public ban(id: number): Observable<any> {
+    const URL = this.apiBasePath + 'users/ban/' + id;
+    return this.http.post(URL, {});
+  }
 }

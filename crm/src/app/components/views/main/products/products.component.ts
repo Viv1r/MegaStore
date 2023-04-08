@@ -38,26 +38,21 @@ export class ProductsComponent implements OnInit {
     );
   }
 
-  // Своеобразная страховка. В аргумент ничего не прилетает - используем предыдущие данные
-  protected productLoader() {
-    let storedData: any;
+  private filtersData?: any;
 
-    return (data?: any) => {
-      if (!data) {
-        data = storedData;
-      }
-      storedData = data;
-
-      this.loading = true;
-      this.productsService.get(data)
-        .subscribe(response => {
-          this.products = this.parseProducts(response.products ?? []);
-          this.loading = false;
-        });
+  loadProducts(data?: any) {
+    if (!data) {
+      data = this.filtersData;
     }
-  }
+    this.filtersData = data;
 
-  public loadProducts = this.productLoader();
+    this.loading = true;
+    this.productsService.get(data)
+      .subscribe(response => {
+        this.products = this.parseProducts(response.products ?? []);
+        this.loading = false;
+      });
+  };
 
   updateProduct(id: number, newData: any): void {
     this.productsService.update(id, newData)

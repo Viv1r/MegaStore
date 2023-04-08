@@ -24,8 +24,19 @@ export const columns = [
     default: 0
   },
   {
+    tag: 'is_admin',
+    name: 'Is admin',
+    default: false
+  },
+  {
     tag: 'is_banned',
-    name: 'Is banned'
+    name: 'Is banned',
+    highlightValue: true
+  },
+  {
+    tag: 'last_login',
+    name: 'Last log in',
+    transform: (val: string) => new Date(val).toLocaleString()
   }
 ];
 
@@ -45,6 +56,21 @@ export const filters: FilterField[] = [
     type: 'text'
   },
   {
+    key: 'is_admin',
+    name: 'Access level',
+    type: 'select-one',
+    options: [
+      {
+        id: 1,
+        name: 'Admin'
+      },
+      {
+        id: 0,
+        name: 'Not admin'
+      }
+    ]
+  },
+  {
     key: 'is_banned',
     name: 'Status',
     type: 'select-one',
@@ -56,6 +82,36 @@ export const filters: FilterField[] = [
       {
         id: 0,
         name: 'Not banned'
+      }
+    ]
+  }
+];
+
+export const constructor = [
+  {
+    key: 'email',
+    type: 'text'
+  },
+  {
+    key: 'password',
+    type: 'text'
+  },
+  {
+    key: 'name',
+    type: 'text'
+  },
+  {
+    key: 'is_banned',
+    name: 'Status',
+    type: 'select-one',
+    options: [
+      {
+        id: false,
+        name: 'Not banned'
+      },
+      {
+        id: true,
+        name: 'Banned'
       }
     ]
   }

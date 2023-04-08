@@ -76,8 +76,15 @@
         </td>
 
         <ng-template ngFor let-cl [ngForOf]="columns">
-          <td [class]="{ marked: cl.important && !item[cl.tag] }">
-            {{ item[cl.tag] ?? cl.default ?? '' }}
+          <td [class]="{ marked: item[cl.tag] === cl.highlightValue }">
+
+            <ng-template [ngIf]="cl.transform" [ngIfElse]="noTransform">
+              {{ cl.transform(item[cl.tag]) }}
+            </ng-template>
+            <ng-template #noTransform>
+              {{ item[cl.tag] ?? cl.default ?? '' }}
+            </ng-template>
+
           </td>
         </ng-template>
 

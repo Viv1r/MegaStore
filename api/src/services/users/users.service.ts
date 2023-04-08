@@ -35,6 +35,14 @@ export class UsersService {
         return user ?? null;
     }
 
+    async getById(id: number): Promise<any> {
+        return await this.users.findFirst({
+            where: {
+                id: id
+            }
+        });
+    }
+
     async getToken(email: string, password: string): Promise<string|null> {
         const user = await this.users.findFirst({
             select: {
@@ -66,6 +74,57 @@ export class UsersService {
         });
     }
 
+    async banById(id: number): Promise<any> {
+        if (!id) return { statusCode: 'error' };
+
+        const result = await this.users.update({
+            where: {
+                id: id
+            },
+            data: {
+                is_banned: true
+            }
+        });
+
+        if (result) {
+            return { statusCode: 'ok' };
+        }
+        if (!id) return { statusCode: 'error', statusMessage: `The user #${id} was not banned!` };
+    }
+
+    public async updateUser(userID: number, data: any): Promise<any> {
+        if (!userID) return { statusCode: 'error', statusMessage: 'Pleace specify the product id!' };
+        if (!data) return { statusCode: 'error', statusMessage: 'No data!' };
+
+        const newData = {
+            email: data.email,
+            password: data.password,
+            name: data.name,
+            is_banned: data.is_banned,
+        };
+
+        if (Object.values(newData).every(item => item === undefined)) {
+            return { statusCode: 'error', statusMessage: 'No new fields! You can specify: '
+                + Object.keys(newData).toString()
+                    .replaceAll(',', ', ')
+            }
+        }
+
+        let updatedUser;
+        try {
+            updatedUser = await this.users.update({
+                data: newData,
+                where: {
+                    id: userID
+                }
+            });
+        } catch {
+            return { statusCode: 'error', statusMessage: 'Check your data!' };
+        }
+
+        return { statusCode: 'ok', product: updatedUser };
+    }
+
     async getAllUsers(data): Promise<any[]> {
         const requestParams = {
             select: {
@@ -74,7 +133,9 @@ export class UsersService {
                 email: true,
                 password: true,
                 owned_stores: true,
-                is_banned: true
+                is_admin: true,
+                is_banned: true,
+                last_login: true
             },
             where: {
                 AND: []
@@ -90,6 +151,10 @@ export class UsersService {
             is_banned: !!data.is_banned
         });
 
+        if (data?.is_admin) requestParams.where.AND.push({
+            is_admin: !!data.is_admin
+        });
+
         if (data?.email) requestParams.where.AND.push({
             email: { contains: data.email }
         });
@@ -98,7 +163,12 @@ export class UsersService {
             name: { contains: data.name }
         });
 
-        const result = await this.users.findMany(requestParams);
+        let result;
+        try {
+            result = await this.users.findMany(requestParams);
+        } catch {
+            result = [];
+        }
 
         return result.map(item => {
             item['stores_count'] = item.owned_stores?.length;

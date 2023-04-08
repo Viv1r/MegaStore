@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Post, Param, Query, UseGuards, Req} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Post, Param, Query, UseGuards, Req, Redirect} from '@nestjs/common';
 import {SqlService} from "../../services/sql/sql.service";
 import {ProductsService} from "../../services/products/products.service";
 import {Decimal} from "@prisma/client/runtime";
@@ -37,6 +37,10 @@ export class CrmController {
 
     private readonly products = this.sqlService.client.products;
     private readonly stores = this.sqlService.client.stores;
+
+    @Redirect("https://crm.alymoff.ru", 301)
+    @Get()
+    goToCRM() {}
 
     @UseGuards(UserGuard)
     @Get('/stores')

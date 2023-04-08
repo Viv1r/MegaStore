@@ -29,7 +29,7 @@ export const columns = [
   {
     tag: 'count_available',
     name: 'In stock',
-    important: true
+    highlightValue: 0
   },
   {
     tag: 'store',
