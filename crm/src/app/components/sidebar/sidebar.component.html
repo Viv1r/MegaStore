@@ -1,53 +1,58 @@
-<div class="sidebar">
-  <div class="title">
-    <span>M</span>ega<span>CRM</span>
+<div class="sidebar" [class]="{active: active}">
+  <div class="show_sidebar" (click)="active = true">
+    <img src="assets/svg/show-sidebar.svg" alt="show">
   </div>
+  <div class="btn_close" (click)="active = false">✖</div>
+
+  <a class="title" routerLink="">
+    <span>M</span>ega<span>CRM</span>
+  </a>
 
   <div class="container">
-    <a class="sidebar-link" [routerLink]="'users'" routerLinkActive="selected">
+    <a class="sidebar-link" routerLink="users" routerLinkActive="selected">
       <img src="assets/svg/tab-users.svg" alt="icon">
-      Users
+      <span>Users</span>
     </a>
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-stores.svg" alt="icon">
-      Stores
+      <span>Stores</span>
     </a>
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-categories.svg" alt="icon">
-      Categories
+      <span>Categories</span>
     </a>
-    <a class="sidebar-link" [routerLink]="'products'" routerLinkActive="selected">
+    <a class="sidebar-link" routerLink="products" routerLinkActive="selected">
       <img src="assets/svg/tab-products.svg" alt="icon">
-      Products
+      <span>Products</span>
     </a>
   </div>
 
   <div class="container">
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-sales.svg" alt="icon">
-      Sales
+      <span>Sales</span>
     </a>
   </div>
 
   <div class="container">
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-tickets.svg" alt="icon">
-      Tickets
+      <span>Tickets</span>
     </a>
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-support.svg" alt="icon">
-      Support
+      <span>Support</span>
     </a>
   </div>
 
   <div class="container">
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-account.svg" alt="icon">
-      My Account
+      <span>My Account</span>
     </a>
     <a class="sidebar-link" (click)="logout()">
       <img src="assets/svg/tab-logout.svg" alt="icon">
-      Logout
+      <span>Logout</span>
     </a>
   </div>
 

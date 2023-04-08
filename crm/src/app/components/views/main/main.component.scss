@@ -15,8 +15,20 @@
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 50;
 }
 
 .view_wrapper {
   width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    padding-left: 85px;
+  }
+
+  .sidebar_wrapper {
+    width: fit-content;
+    min-width: 85px;
+  }
 }

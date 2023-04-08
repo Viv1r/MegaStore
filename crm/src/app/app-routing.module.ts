@@ -6,12 +6,17 @@ import { LoginComponent } from "./components/views/login/login.component";
 import { ProductsComponent } from "./components/views/main/products/products.component";
 import { UsersComponent } from "./components/views/main/users/users.component";
 import { PageNotFoundComponent } from "./components/views/page-not-found/page-not-found.component";
+import {TitlePageComponent} from "./components/views/main/title-page/title-page.component";
 
 const routes: Routes = [
   {
     path: '',
     component: MainComponent,
     children: [
+      {
+        path: '',
+        component: TitlePageComponent
+      },
       {
         path: 'products',
         component: ProductsComponent

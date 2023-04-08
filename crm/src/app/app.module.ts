@@ -24,6 +24,7 @@ import { SelectMultipleComponent } from './components/fields/select-multiple/sel
 import { InputRangeComponent } from './components/fields/input-range/input-range.component';
 import { PageNotFoundComponent } from './components/views/page-not-found/page-not-found.component';
 import { PopupFormComponent } from './components/popup-form/popup-form.component';
+import { TitlePageComponent } from './components/views/main/title-page/title-page.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { PopupFormComponent } from './components/popup-form/popup-form.component
     SelectMultipleComponent,
     InputRangeComponent,
     PageNotFoundComponent,
-    PopupFormComponent
+    PopupFormComponent,
+    TitlePageComponent
   ],
     imports: [
         BrowserModule,

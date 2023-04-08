@@ -7,11 +7,11 @@ import { AuthService } from "../../services/auth.service";
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-
   constructor(protected authService: AuthService) {}
+
+  active = false;
 
   logout() {
     this.authService.logout();
   }
-
 }

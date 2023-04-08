@@ -4,13 +4,24 @@
   flex-direction: column;
   user-select: none;
 
+  .show_sidebar {
+    display: none;
+  }
+
+  .btn_close {
+    display: none;
+  }
+
   .title {
-    width: 100%;
+    width: fit-content;
+    margin: 0 auto;
     padding: 25px 0;
     text-align: center;
     font-size: 24px;
     font-family: "Raleway", serif;
     font-weight: bold;
+    text-decoration: none;
+    color: black;
 
     span {
       color: #008be1;
@@ -54,6 +65,55 @@
       width: auto;
       height: 34px;
       margin-bottom: 4px;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .sidebar:not(.active) {
+    max-width: 85px;
+
+    .title {
+      display: none;
+    }
+
+    .show_sidebar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+
+      img {
+        width: auto;
+        height: 36px;
+        cursor: pointer;
+      }
+    }
+
+    .container .sidebar-link {
+
+      span {
+        display: none;
+      }
+    }
+  }
+
+  .sidebar.active {
+
+    .title {
+      padding: 0 0 25px 0;
+    }
+
+    .btn_close {
+      display: flex;
+      width: 30px;
+      height: 30px;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      background-color: white;
+      border-radius: 50%;
+      cursor: pointer;
     }
   }
 }
