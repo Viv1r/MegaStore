@@ -3,20 +3,8 @@ import { Controller, Post, Body, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
 import validate from 'src/modules/validate';
-import {UsersService} from "../../services/users/users.service";
-
-
-function generateHash(length): string {
-    const rand = (max: number) => Math.floor(Math.random() * Math.floor(max));
-    const SYMBOLS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        const selector = rand(2);
-        result += selector ? SYMBOLS[rand(SYMBOLS.length)] : rand(10);
-    }
-    return result;
-}
+import { generateHash } from "../../modules/hashgen";
+import { UsersService } from "../../services/users/users.service";
 
 @Controller('register')
 export class RegisterController {

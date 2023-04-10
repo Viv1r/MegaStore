@@ -17,6 +17,7 @@ import { ProductsCrmController } from './controllers/crm/products-crm/products-c
 import { StoresCrmController } from './controllers/crm/stores-crm/stores-crm.controller';
 import { CategoriesCrmController } from './controllers/crm/categories-crm/categories-crm.controller';
 import { CategoriesService } from './services/categories/categories.service';
+import { PicturesService } from './services/pictures/pictures.service';
 
 @Module({
   imports: [],
@@ -40,7 +41,8 @@ import { CategoriesService } from './services/categories/categories.service';
     PurchasesService,
     ProductsService,
     StoresService,
-    CategoriesService
+    CategoriesService,
+    PicturesService
   ]
 })
 export class AppModule {}

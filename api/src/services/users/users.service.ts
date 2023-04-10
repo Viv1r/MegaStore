@@ -95,6 +95,22 @@ export class UsersService {
         if (!id) return {statusCode: 'error', statusMessage: `The user #${id} was not banned!`};
     }
 
+    async updateProfilePicture(userID: number, pictureLink: string): Promise<boolean> {
+        let result;
+        try {
+            result = await this.users.update({
+                data: {
+                    profile_picture: pictureLink
+                },
+                where: {
+                    id: Number(userID)
+                }
+            });
+        } catch {}
+
+        return !!result;
+    }
+
     public async createUser(data: any): Promise<any> {
         const newUserData = {
             email: data?.email,

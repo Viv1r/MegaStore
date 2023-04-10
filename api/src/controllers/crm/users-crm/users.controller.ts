@@ -1,10 +1,11 @@
 import {Body, Controller, Get, Param, Post, Req, UseGuards} from '@nestjs/common';
 import { UsersService } from "../../../services/users/users.service";
 import { AdminGuard } from "../../../guards/admin/admin.guard";
+import {PicturesService} from "../../../services/pictures/pictures.service";
 
 @Controller('crm/users')
 export class UsersController {
-    constructor(protected usersService: UsersService) {}
+    constructor(private usersService: UsersService, private picturesService: PicturesService) {}
 
     @UseGuards(AdminGuard)
     @Post()
@@ -43,16 +44,28 @@ export class UsersController {
     @UseGuards(AdminGuard)
     @Post('ban/:id')
     async banUser(@Param('id') id: number): Promise<any> {
-        return await this.usersService.banById(Number(id));
+        id = Number(id);
+        if (isNaN(id)) return { statusCode: 'error', statusMessage: 'Invalid id!' };
+
+        return await this.usersService.banById(id);
+    }
+
+    @UseGuards(AdminGuard)
+    @Post('picture/:id')
+    async updatePicture(@Param('id') id: number, @Body() body: any): Promise<any> {
+        id = Number(id);
+        if (isNaN(id)) return { statusCode: 'error', statusMessage: 'Invalid id!' };
+
+        return await this.picturesService.updateProfilePicture(id, body.picture);
     }
 
     @UseGuards(AdminGuard)
     @Post('update/:id')
     async updateUser(@Body() body: any, @Param('id') id: number): Promise<any> {
-        const targetID = Number(id);
-        if (isNaN(targetID)) return { statusCode: 'error', statusMessage: 'Specify correct id!' };
+        id = Number(id);
+        if (isNaN(id)) return { statusCode: 'error', statusMessage: 'Invalid id!' };
 
-        return await this.usersService.updateUser(targetID, body);
+        return await this.usersService.updateUser(id, body);
     }
 
     @UseGuards(AdminGuard)

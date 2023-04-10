@@ -27,6 +27,7 @@
     "@prisma/client": "^4.6.1",
     "connect-history-api-fallback": "^2.0.0",
     "cookie-parser": "^1.4.6",
+    "jimp": "^0.22.7",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
