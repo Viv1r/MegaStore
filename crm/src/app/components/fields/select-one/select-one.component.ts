@@ -18,13 +18,14 @@ export class SelectOneComponent implements ControlValueAccessor {
 
   @Input() placeholder?: string;
 
-  private _options?: any[] = [];
+  private _options: any[] = [];
   private _value: any = null;
   touched = false;
   onChange = (foo: any) => {};
 
-  active = false;
+  private _active = false;
   activeOption?: any;
+  filterInput = '';
 
   get options() {
     return this._options;
@@ -50,6 +51,17 @@ export class SelectOneComponent implements ControlValueAccessor {
     this.activeOption = this.options?.find(item => item.id === val);
   }
 
+  get active() {
+    return this._active;
+  }
+
+  set active(newVal) {
+    this._active = newVal;
+    if (newVal === false) {
+      this.filterInput = '';
+    }
+  }
+
   writeValue(newVal: any): void {
     this.value = newVal;
   }
@@ -60,10 +72,6 @@ export class SelectOneComponent implements ControlValueAccessor {
 
   registerOnTouched(): void {
     this.touched = true;
-  }
-
-  toggleActive(): void {
-    this.active = !this.active;
   }
 
   clear(): void {

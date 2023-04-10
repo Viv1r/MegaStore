@@ -1,3 +1,5 @@
+$color-main: #008be1;
+
 .popup_bg {
   position: fixed;
   width: 100%;
@@ -29,7 +31,7 @@
   height: fit-content;
   padding: 20px 35px;
   background-color: white;
-  border-radius: 30px;
+  border-radius: 8px;
   box-shadow: 3px 3px 6px rgba($color: #000, $alpha: .3);
 
   .title {
@@ -72,24 +74,34 @@
 
   label {
     font-family: "Kulim Park", serif;
-    margin-left: 2px;
+    margin-bottom: 4px;
+  }
+
+  input,
+  textarea {
+    border: none;
+    border-bottom: 1px solid #a2a2a2;
+    background-color: rgba($color: black, $alpha: .025);
+    font-family: "Raleway", serif;
+    font-size: 13px;
+
+    &:focus {
+      border-bottom: 1px solid $color-main;
+      outline: none;
+    }
   }
 
   input {
     min-width: 100px;
     height: 36px;
-    padding: 0 10px;
-    border: 1px solid #b6b6b6;
-    border-radius: 12px;
+    padding: 0 4px;
   }
 
   textarea {
     width: 100%;
     height: 160px;
     resize: none;
-    padding: 5px;
-    border: 1px solid #b6b6b6;
-    border-radius: 12px;
+    padding: 2px 4px;
   }
 }
 

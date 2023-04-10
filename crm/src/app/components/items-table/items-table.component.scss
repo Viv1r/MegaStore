@@ -1,27 +1,30 @@
+$color-main: #008be1;
+$color-main-light: #11a3ff;
+$color-danger: #e12900;
+
+$base-indent: 48px;
+
 .filters_container {
   width: 100%;
   height: fit-content;
-  margin-bottom: 20px;
-  border-radius: 20px;
-  box-shadow: 2px 2px 7px rgba($color: black, $alpha: .15);
-  padding: 15px;
+  padding: 30px $base-indent 20px $base-indent;
 
   .title {
     font-family: "Kulim Park", serif;
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 12px;
+    margin-bottom: 22px;
   }
 
   .filters {
     width: 100%;
     height: fit-content;
+    margin-bottom: 25px;
     display: flex;
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
-    gap: 7px 15px;
-    margin-bottom: 12px;
+    gap: 20px 15px;
   }
 
   .field_wrapper {
@@ -34,15 +37,22 @@
 
     label {
       font-family: "Kulim Park", serif;
-      margin-left: 2px;
+      margin-bottom: 4px;
     }
 
     input {
       min-width: 100px;
       height: 36px;
-      padding: 0 10px;
-      border: 1px solid #b6b6b6;
-      border-radius: 12px;
+      border: none;
+      border-bottom: 1px solid #a2a2a2;
+      background-color: rgba($color: black, $alpha: .025);
+      font-family: "Raleway", serif;
+      font-size: 13px;
+
+      &:focus {
+        border-bottom: 1px solid $color-main;
+        outline: none;
+      }
     }
   }
 
@@ -56,29 +66,29 @@
     width: 140px;
     height: 36px;
     padding: 0 10px;
-    border-radius: 12px;
+    border-radius: 8px;
     transition: all .1s ease-out;
     cursor: pointer;
   }
 
   .btn_apply {
     background-color: white;
-    color: #008be1;
-    border: 1px solid #008be1;
+    color: $color-main;
+    border: 1px solid $color-main;
 
     &:hover {
-      background-color: #008be1;
+      background-color: $color-main;
       color: white;
     }
   }
 
   .btn_reset {
     background-color: white;
-    color: #e12900;
-    border: 1px solid #e12900;
+    color: $color-danger;
+    border: 1px solid $color-danger;
 
     &:hover {
-      background-color: #e12900;
+      background-color: $color-danger;
       color: white;
     }
   }
@@ -92,7 +102,6 @@
 
 .container {
   background-color: white;
-  border-radius: 20px;
   box-shadow: 2px 2px 7px rgba($color: black, $alpha: .15);
   overflow: auto;
 
@@ -112,9 +121,10 @@
 
 .items-table {
   border-collapse: collapse;
+  padding: 0 $base-indent;
 
   .headers {
-    background: #008be1;
+    background: $color-main-light;
     position: relative;
     color: white;
   }
@@ -123,7 +133,7 @@
 .btn_add {
   position: absolute;
   top: 12px;
-  right: 21px;
+  right: 49px;
   width: 36px;
   height: 36px;
   cursor: pointer;
@@ -149,6 +159,14 @@ td, th {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  &:first-of-type {
+    padding-left: $base-indent;
+  }
+
+  &:last-of-type {
+    padding-right: $base-indent;
+  }
 }
 
 th {
@@ -207,7 +225,6 @@ th {
 
   .btn_edit,
   .btn_delete {
-    padding: 12px 20px 12px 8px;
     width: 60px;
     user-select: none;
 

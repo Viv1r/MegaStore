@@ -8,19 +8,19 @@
     <div *ngFor="let field of filtersFields" class="field_wrapper">
 
       <ng-template [ngIf]="!field.adminOnly || user.isAdmin">
-        <label>{{ field.name ?? field.key | titlecase }}</label>
+        <label>{{ field.name ?? (field.key | titlecase) }}</label>
 
         <app-select-one
           *ngIf="field.type === 'select-one'"
           [formControlName]="field.key"
-          [options]="field.options"
+          [options]="field.options ?? []"
           placeholder="Select"
         ></app-select-one>
 
         <app-select-multiple
           *ngIf="field.type === 'select-multiple'"
           [formControlName]="field.key"
-          [options]="field.options"
+          [options]="field.options ?? []"
           placeholder="Select"
         ></app-select-multiple>
 
@@ -56,7 +56,7 @@
       <th *ngIf="selectMode" class="pseudo_cl"></th>
 
       <th *ngFor="let cl of columns">
-        {{ cl.name }}
+        {{ cl.name || (cl.tag | titlecase) }}
       </th>
 
       <th class="pseudo_cl"></th>

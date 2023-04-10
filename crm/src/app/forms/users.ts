@@ -10,13 +10,10 @@ export const columns = [
     name: 'E-mail'
   },
   {
-    tag: 'password',
-    name: 'Password'
+    tag: 'password'
   },
   {
-    tag: 'name',
-    name: 'Name',
-    default: 'Anonymous'
+    tag: 'name'
   },
   {
     tag: 'stores_count',

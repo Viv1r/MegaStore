@@ -6,20 +6,16 @@ export const columns = [
     name: 'ID'
   },
   {
-    tag: 'category',
-    name: 'Category'
+    tag: 'title'
   },
   {
-    tag: 'title',
-    name: 'Title'
+    tag: 'description'
   },
   {
-    tag: 'description',
-    name: 'Description'
+    tag: 'category'
   },
   {
-    tag: 'price',
-    name: 'Price'
+    tag: 'price'
   },
   {
     tag: 'price_postfix',
@@ -44,18 +40,18 @@ export const filters: FilterField[] = [
     type: 'number'
   },
   {
-    key: 'category',
-    name: 'Categories',
-    type: 'select-multiple',
-    options: []
-  },
-  {
     key: 'title',
     type: 'text'
   },
   {
     key: 'description',
     type: 'text'
+  },
+  {
+    key: 'category',
+    name: 'Categories',
+    type: 'select-multiple',
+    options: []
   },
   {
     key: 'price',

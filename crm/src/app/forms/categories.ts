@@ -6,9 +6,7 @@ export const columns = [
     name: 'ID'
   },
   {
-    tag: 'name',
-    name: 'Name',
-    default: 'Anonymous'
+    tag: 'name'
   },
   {
     tag: 'products_count',

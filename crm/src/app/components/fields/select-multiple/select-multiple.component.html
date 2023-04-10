@@ -1,18 +1,16 @@
 <div class="dropdown">
-
-  <button
+  <div
     class="button_toggle"
     [class]="{active: active}"
-    type="button"
-    (click)="toggleActive()"
+    (click)="active = true"
   >
-    {{ value.length }} selected
+    <input type="text" placeholder="{{ value.length }} selected" [(ngModel)]="filterInput">
     <span *ngIf="value.length > 0" class="btn_clear" (click)="clear()">✖</span>
-  </button>
+  </div>
 
   <div *ngIf="active" class="dropdown_menu">
     <div
-      *ngFor="let option of options"
+      *ngFor="let option of options | filterByName:filterInput"
       class="item"
       [class]="{selected: value.includes(option.id)}"
       (click)="selectOption(option.id)"

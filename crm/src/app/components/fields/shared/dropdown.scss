@@ -1,3 +1,4 @@
+$color-main: #008be1;
 $option-height: 34px;
 
 .dropdown {
@@ -16,15 +17,19 @@ $option-height: 34px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
-  border: 1px solid #b6b6b6;
 }
 
 .button_toggle {
-  padding: 0 12px;
-  border-radius: 12px;
   cursor: pointer;
   color: #c0c0c0;
+  border: none;
+  border-bottom: 1px solid #a2a2a2;
+  background-color: rgba($color: black, $alpha: .025);
+
+  &:focus {
+    border-bottom: 1px solid $color-main;
+    outline: none;
+  }
 
   &.active {
     border-radius: 12px 12px 0 0;
@@ -35,9 +40,26 @@ $option-height: 34px;
     color: black;
   }
 
-  .btn_clear {
+  input {
+    width: 100%;
+    height: 100%;
+    padding: 0 12px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-family: "Raleway", serif;
     font-size: 14px;
-    margin-left: auto;
+  }
+
+  .btn_clear {
+    position: absolute;
+    width: 30px;
+    height: 100%;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
   }
 }
 
@@ -57,6 +79,8 @@ $option-height: 34px;
   .item {
     border: none;
     cursor: pointer;
+    font-family: "Raleway", serif;
+    font-size: 14px;
 
     &:hover {
       background-color: rgba($color: black, $alpha: .05);

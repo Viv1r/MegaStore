@@ -16,14 +16,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 export class SelectMultipleComponent implements ControlValueAccessor {
   constructor(private eRef: ElementRef) {}
 
-  @Input() options?: any[] = [];
+  @Input() options: any[] = [];
   @Input() placeholder?: string;
 
   private _value: number[] = [];
   touched = false;
   onChange = (foo: any) => {};
 
-  active = false;
+  private _active = false;
+  filterInput = '';
 
   get value() {
     return this._value;
@@ -39,6 +40,17 @@ export class SelectMultipleComponent implements ControlValueAccessor {
     this.onChange(this._value);
   }
 
+  get active() {
+    return this._active;
+  }
+
+  set active(newVal) {
+    this._active = newVal;
+    if (newVal === false) {
+      this.filterInput = '';
+    }
+  }
+
   writeValue(newVal: number[]): void {
     this.value = newVal;
   }
@@ -49,10 +61,6 @@ export class SelectMultipleComponent implements ControlValueAccessor {
 
   registerOnTouched(): void {
     this.touched = true;
-  }
-
-  toggleActive(): void {
-    this.active = !this.active;
   }
 
   clear(): void {

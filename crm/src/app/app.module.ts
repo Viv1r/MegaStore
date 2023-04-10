@@ -27,6 +27,7 @@ import { PopupFormComponent } from './components/popup-form/popup-form.component
 import { TitlePageComponent } from './components/views/main/title-page/title-page.component';
 import { StoresComponent } from './components/views/main/stores/stores.component';
 import { CategoriesComponent } from './components/views/main/categories/categories.component';
+import { FilterByNamePipe } from './pipes/filter-by-name.pipe';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { CategoriesComponent } from './components/views/main/categories/categori
     PopupFormComponent,
     TitlePageComponent,
     StoresComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    FilterByNamePipe
   ],
     imports: [
         BrowserModule,

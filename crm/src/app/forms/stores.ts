@@ -6,8 +6,7 @@ export const columns = [
     name: 'ID'
   },
   {
-    tag: 'name',
-    name: 'Name'
+    tag: 'name'
   },
   {
     tag: 'owner_email',
@@ -18,8 +17,7 @@ export const columns = [
     name: 'Products'
   },
   {
-    tag: 'sales',
-    name: 'Sales'
+    tag: 'sales'
   }
 ];
 
@@ -31,7 +29,6 @@ export const filters: FilterField[] = [
   },
   {
     key: 'name',
-    name: 'Name',
     type: 'text'
   },
   {
