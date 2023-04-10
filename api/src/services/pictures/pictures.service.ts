@@ -7,7 +7,7 @@ import { UsersService } from "../users/users.service";
 export class PicturesService {
     constructor(private usersService: UsersService) {}
 
-    readonly baseURL = 'dist/public/api/';
+    readonly baseURL = 'dist/public/';
 
     async updateProfilePicture(userID: number, pictureBase64: string): Promise<any> {
         if (!userID || !pictureBase64) {
@@ -37,12 +37,12 @@ export class PicturesService {
         if (resultPicture) {
             try {
                 const hash = generateHash(10);
-                const pictureLink = `assets/users/${userID}_${hash}.jpg`;
+                const pictureLink = `api/assets/users/${userID}_${hash}.jpg`;
                 resultPicture.write(this.baseURL + pictureLink);
 
                 const updated = await this.usersService.updateProfilePicture(userID, pictureLink);
                 if (updated) {
-                    return { statusCode: 'ok' };
+                    return { statusCode: 'ok', profile_picture: pictureLink };
                 }
             } catch {}
         }

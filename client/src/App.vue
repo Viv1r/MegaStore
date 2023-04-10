@@ -27,7 +27,11 @@
                 </Transition>
 
                 <Transition name="dropdown">
-                    <UserCard v-if="modules.userCard.active" @purchases="navigate('/purchases')"/>
+                    <UserCard
+                      v-if="modules.userCard.active"
+                      @purchases="navigate('/purchases')"
+                      @editProfile="switchModule('editProfile')"
+                    />
                 </Transition>
 
                 <div v-if="user.loggedIn" class="btn_profile" @click="switchModule('userCard')">Welcome, {{ user.name }}!</div>
@@ -35,23 +39,33 @@
             </div>
         </div>
     </header>
+
+    <Transition name="grow">
+        <EditProfile v-if="modules.editProfile.active" @close="switchModule('editProfile')"/>
+    </Transition>
+
     <Transition name="grow">
         <DetailedView v-if="detailedViewActive"/>
     </Transition>
+
     <Transition name="dropdown">
         <AuthWindow v-if="modules.authWindow.active" @close="hideOverlay()"/>
     </Transition>
+
     <Transition name="sidebar">
         <Sidebar v-if="modules.sidebar.active" @close="hideOverlay()"/>
     </Transition>
+
     <Transition>
         <div v-if="blackoutActive" class="blackout" @click="hideOverlay()"></div>
     </Transition>
+
     <div class="container">
         <Transition>
             <RouterView @auth="switchModule('authWindow')"/>
         </Transition>
     </div>
+
     <footer>MegaStore © 2022 (by viv1r)</footer>
 </template>
 
@@ -62,6 +76,7 @@ import Sidebar from './components/Sidebar/Sidebar.vue';
 import DetailedView from './components/DetailedView/DetailedView.vue';
 import AuthWindow from './components/AuthWindow/AuthWindow.vue';
 import UserCard from './components/UserCard/UserCard.vue';
+import EditProfile from "./components/EditProfile/EditProfile.vue";
 
 export default {
     components: {
@@ -69,7 +84,8 @@ export default {
         Sidebar,
         DetailedView,
         AuthWindow,
-        UserCard
+        UserCard,
+        EditProfile
     },
 
     data() {
@@ -78,7 +94,8 @@ export default {
               cart: { active: false },
               sidebar: { active: false },
               authWindow: { active: false },
-              userCard: { active: false }
+              userCard: { active: false },
+              editProfile: { active: false }
             }
         }
     },
@@ -117,7 +134,9 @@ export default {
         switchModule(name) {
             this.modules[name].active = !this.modules[name].active;
             Object.keys(this.modules).forEach(key => {
-                if (key !== name) this.modules[key].active = false;
+                if (key !== name) {
+                  this.modules[key].active = false;
+                }
             });
         },
 

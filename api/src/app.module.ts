@@ -18,6 +18,7 @@ import { StoresCrmController } from './controllers/crm/stores-crm/stores-crm.con
 import { CategoriesCrmController } from './controllers/crm/categories-crm/categories-crm.controller';
 import { CategoriesService } from './services/categories/categories.service';
 import { PicturesService } from './services/pictures/pictures.service';
+import { UserController } from './controllers/user/user.controller';
 
 @Module({
   imports: [],
@@ -33,7 +34,8 @@ import { PicturesService } from './services/pictures/pictures.service';
     CrmController,
     ProductsCrmController,
     StoresCrmController,
-    CategoriesCrmController
+    CategoriesCrmController,
+    UserController
   ],
   providers: [
     SqlService,

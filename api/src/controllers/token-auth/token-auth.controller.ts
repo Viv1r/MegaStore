@@ -17,9 +17,8 @@ export class TokenAuthController {
         let user;
         try {
             user = await this.usersService.get(token);
-        } catch(error) {
-            console.log(error);
-        }
+        } catch {}
+
         if (user) {
             await this.usersService.updateLastLogin(user);
             return { statusCode: 'ok', user: user };

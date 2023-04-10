@@ -31,12 +31,18 @@ export default {
     },
 
     mutations: {
-        setAuthStatus(store, status) {
-            store.processingAuth = !!status;
+        setAuthStatus(state, status) {
+            state.processingAuth = !!status;
         },
 
-        pushAuthError(store, error) {
-            store.authError = error;
+        pushAuthError(state, error) {
+            state.authError = error;
+        },
+
+        setProfilePicture(state, newURL) {
+            if (newURL.length) {
+                state.user.profilePicture = newURL;
+            }
         }
     },
 
@@ -53,7 +59,7 @@ export default {
                     state.user?.auth({
                         name: user.name,
                         email: user.email,
-                        profilePicture: user.profilePicture
+                        profilePicture: user.profile_picture
                     });
                 }
             }
@@ -104,6 +110,20 @@ export default {
                     commit('pushAuthError', data.statusMessage);
                 }
                 commit('setAuthStatus', false);
+            }
+        },
+
+        async updateProfilePicture({commit}, imageBase64) {
+            const action = 'user/picture';
+            let data;
+            try {
+                const response = await api.post(action, { picture: imageBase64 });
+                data = response.data;
+            } finally {
+                if (data?.profile_picture) {
+                    commit('setProfilePicture', data.profile_picture);
+                    alert('Your profile picture was updated successfully!')
+                }
             }
         },
 

@@ -19,7 +19,7 @@ export class UsersService {
                     id: true,
                     name: true,
                     email: true,
-                    auth_token: true,
+                    profile_picture: true,
                     is_banned: true,
                     is_admin: true
                 },

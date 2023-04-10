@@ -8,7 +8,7 @@
       <div class="email">{{ user.email }}</div>
     </div>
     <div class="actions_list">
-      <div class="link">Edit profile</div>
+      <div class="link" @click="$emit('editProfile')">Edit profile</div>
       <div class="link" @click="$emit('purchases')">Purchases history</div>
       <a class="link" href="api/crm">Manage stores</a>
       <div class="link huge" @click="logout()">Logout</div>
@@ -26,7 +26,7 @@ export default {
   methods: {
     ...mapActions('user', ['logout'])
   },
-  emits: ['navigate']
+  emits: ['purchases', 'editProfile']
 }
 </script>
 

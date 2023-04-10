@@ -1,0 +1,121 @@
+.edit_profile_wrapper {
+    position: absolute;
+    left: auto;
+    right: auto;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    top: 100px;
+    z-index: 20;
+}
+
+.edit_profile {
+    width: 800px;
+    height: fit-content;
+    border-radius: 32px;
+    padding: 20px 80px 40px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.25);
+
+    .btn_close {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        user-select: none;
+        cursor: pointer;
+        z-index: 20;
+    }
+
+    .title {
+        width: 100%;
+        padding: 15px 0;
+        text-align: center;
+        font-size: 28px;
+        font-family: "Kufam", serif;
+        font-weight: bold;
+    }
+
+    form {
+        width: 100%;
+        height: fit-content;
+        display: grid;
+        grid-template-columns: 200px auto;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .input_wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .base_input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #d2d2d2;
+            border-radius: 20px;
+            padding: 0 10px;
+            background-color: white;
+        }
+
+        .image_input {
+            display: none;
+        }
+    }
+
+    .upload_picture {
+        width: fit-content;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 12px;
+        font-family: "Kufam", serif;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .profile_picture {
+        width: 160px;
+        height: 160px;
+        margin: 0 auto;
+        border-radius: 50%;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: auto;
+            min-height: 100%;
+        }
+    }
+
+    .btn-apply {
+        width: 130px;
+        height: 36px;
+        border-radius: 14px;
+        border: 1px solid #1c8a00;
+        background-color: white;
+        color: #1c8a00;
+        cursor: pointer;
+        transition: all .1s ease-in-out;
+
+        &:hover  {
+            background-color: #1c8a00;
+            color: white;
+        }
+    }
+}
