@@ -22,16 +22,16 @@
       <mat-form-field appearance="fill">
         <mat-label>Password</mat-label>
         <input matInput
-               [type]="hidePassword ? 'password' : 'text'"
+               [type]="showPassword ? 'text' : 'password'"
                [formControlName]="'password'"
         >
-        <button
+        <button tabindex="-1"
           mat-icon-button matSuffix
-          (click)="hidePassword = !hidePassword"
+          (click)="showPassword = !showPassword"
           [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hidePassword"
+          [attr.aria-pressed]="showPassword"
         >
-          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
         </button>
         <mat-hint>8 to 30 symbols</mat-hint>
       </mat-form-field>
@@ -39,16 +39,16 @@
       <mat-form-field appearance="fill">
         <mat-label>Confirm password</mat-label>
         <input matInput
-               [type]="hideConfirmPassword ? 'password' : 'text'"
+               [type]="showConfirmPassword ? 'text' : 'password'"
                [formControlName]="'confirmPassword'"
         >
-        <button
+        <button tabindex="-1"
           mat-icon-button matSuffix
-          (click)="hideConfirmPassword = !hideConfirmPassword"
+          (click)="showConfirmPassword = !showConfirmPassword"
           [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hideConfirmPassword"
+          [attr.aria-pressed]="showConfirmPassword"
         >
-          <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <mat-icon>{{ showConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
         </button>
       </mat-form-field>
 

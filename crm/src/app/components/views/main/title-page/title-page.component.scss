@@ -8,5 +8,15 @@
   box-shadow: 2px 2px 7px rgba($color: black, $alpha: .15);
   text-align: center;
   font-family: "Kulim Park", serif;
-  font-size: 26px;
+  font-size: 30px;
+  line-height: 40px;
+
+  span {
+    color: #008be1;
+  }
+
+  .subtitle {
+    font-size: 20px;
+    line-height: 30px;
+  }
 }

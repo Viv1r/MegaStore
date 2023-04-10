@@ -10,6 +10,7 @@ export class SidebarComponent {
   constructor(protected authService: AuthService) {}
 
   active = false;
+  user = this.authService.user;
 
   logout() {
     this.authService.logout();

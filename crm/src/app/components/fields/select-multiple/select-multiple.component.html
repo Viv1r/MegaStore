@@ -7,7 +7,7 @@
     (click)="toggleActive()"
   >
     {{ value.length }} selected
-    <span *ngIf="value.length > 0" class="btn_clear" (click)="value = []">✖</span>
+    <span *ngIf="value.length > 0" class="btn_clear" (click)="clear()">✖</span>
   </button>
 
   <div *ngIf="active" class="dropdown_menu">

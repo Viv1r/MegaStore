@@ -19,6 +19,16 @@ export class UsersController {
     }
 
     @UseGuards(AdminGuard)
+    @Get('short')
+    async getUsersShort(): Promise<any> {
+        const users = await this.usersService.getUsersShort();
+        if (users) {
+            return { statusCode: 'ok', items: users };
+        }
+        return { statusCode: 'error' };
+    }
+
+    @UseGuards(AdminGuard)
     @Get(':id')
     async getUser(@Param('id') id: number): Promise<any> {
         const user = await this.usersService.getById(Number(id));

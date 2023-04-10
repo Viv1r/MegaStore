@@ -12,19 +12,30 @@
     display: none;
   }
 
-  .title {
-    width: fit-content;
-    margin: 0 auto;
+  .title_wrapper {
     padding: 25px 0;
-    text-align: center;
-    font-size: 24px;
-    font-family: "Raleway", serif;
-    font-weight: bold;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     text-decoration: none;
-    color: black;
 
-    span {
-      color: #008be1;
+    .title {
+      width: fit-content;
+      text-align: center;
+      font-size: 24px;
+      font-family: "Raleway", serif;
+      font-weight: bold;
+      color: black;
+
+      span {
+        color: #008be1;
+      }
+    }
+
+    img {
+      width: auto;
+      height: 34px;
     }
   }
 
@@ -73,7 +84,7 @@
   .sidebar:not(.active) {
     max-width: 85px;
 
-    .title {
+    .title_wrapper {
       display: none;
     }
 
@@ -81,7 +92,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px 0;
+      padding: 20px 0 28px 0;
 
       img {
         width: auto;
@@ -99,9 +110,11 @@
   }
 
   .sidebar.active {
+    min-width: 260px;
 
-    .title {
-      padding: 0 0 26px 0;
+    .title_wrapper {
+      padding: 0 0 20px 0;
+      min-height: 54px;
     }
 
     .btn_close {

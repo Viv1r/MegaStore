@@ -189,13 +189,4 @@ export class ProductsController {
         }
         return { statusCode: 'error', statusMessage: 'Could not get product' };
     }
-
-	@Post('/create')
-	async createProduct(@Req() request: Request, @Res({ passthrough: true }) response: Response): Promise<object> {
-		const token = request.cookies['token'];
-		if (!token) {
-			return { statusCode: 'error', statusMessage: 'bad token!' };
-		}
-		return { token: token };
-	}
 }

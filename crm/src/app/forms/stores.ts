@@ -12,6 +12,14 @@ export const columns = [
   {
     tag: 'owner_email',
     name: 'Owner'
+  },
+  {
+    tag: 'products_count',
+    name: 'Products'
+  },
+  {
+    tag: 'sales',
+    name: 'Sales'
   }
 ];
 
@@ -26,6 +34,13 @@ export const filters: FilterField[] = [
     name: 'Name',
     type: 'text'
   },
+  {
+    key: 'owner',
+    name: 'Owners',
+    type: 'select-multiple',
+    options: [],
+    adminOnly: true
+  }
 ];
 
 export const constructor = [
@@ -35,8 +50,10 @@ export const constructor = [
   },
   {
     key: 'owner_id',
-    name: 'Owner ID',
-    type: 'number',
+    name: 'Owner',
+    type: 'select-one',
+    options: [],
+    optionsURL: 'crm/users/short',
     adminOnly: true
   }
 ];

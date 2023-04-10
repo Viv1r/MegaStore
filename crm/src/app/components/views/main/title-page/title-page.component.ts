@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {AuthService} from "../../../../services/auth.service";
 
 @Component({
   selector: 'app-title-page',
   templateUrl: './title-page.component.html',
   styleUrls: ['./title-page.component.scss']
 })
-export class TitlePageComponent implements OnInit {
+export class TitlePageComponent {
+  constructor(private authService: AuthService) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  user = this.authService.user;
 }

@@ -4,6 +4,7 @@ import { FilterField } from "../../../../types/FilterField";
 import { StoresService } from "../../../../services/stores.service";
 import { PopupFormService } from "../../../../services/popup-form.service";
 import { columns, filters, constructor } from "../../../../forms/products";
+import {CategoriesService} from "../../../../services/categories.service";
 
 @Component({
   selector: 'app-products',
@@ -13,9 +14,10 @@ import { columns, filters, constructor } from "../../../../forms/products";
 export class ProductsComponent implements OnInit {
 
   constructor(
-    protected productsService: ProductsService,
-    protected storesService: StoresService,
-    protected popupFormService: PopupFormService
+    private productsService: ProductsService,
+    private storesService: StoresService,
+    private categoriesService: CategoriesService,
+    private popupFormService: PopupFormService
   ) {
     this.createEmitter.subscribe((data: any) => this.createProduct(data.item));
     this.updateEmitter.subscribe((data: any) => this.updateProduct(data.id, data.item));
@@ -95,8 +97,8 @@ export class ProductsComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.productsService.getCategories()
-      .subscribe(data => {
+    this.categoriesService.getShortList()
+      .subscribe((data: any) => {
         if (data?.items) {
           const target = this.filters.find(item => item.key === 'category');
           if (target) {

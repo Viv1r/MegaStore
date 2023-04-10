@@ -43,16 +43,20 @@ export class SelectMultipleComponent implements ControlValueAccessor {
     this.value = newVal;
   }
 
-  registerOnChange(onChange: any) {
+  registerOnChange(onChange: any): void {
     this.onChange = onChange;
   }
 
-  registerOnTouched() {
+  registerOnTouched(): void {
     this.touched = true;
   }
 
   toggleActive(): void {
     this.active = !this.active;
+  }
+
+  clear(): void {
+    this.value = [];
   }
 
   selectOption(id: number): void {

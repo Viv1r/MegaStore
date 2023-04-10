@@ -14,6 +14,9 @@ import { UsersController } from './controllers/crm/users-crm/users.controller';
 import { CrmController } from './controllers/crm/crm.controller';
 import { StoresService } from './services/stores/stores.service';
 import { ProductsCrmController } from './controllers/crm/products-crm/products-crm.controller';
+import { StoresCrmController } from './controllers/crm/stores-crm/stores-crm.controller';
+import { CategoriesCrmController } from './controllers/crm/categories-crm/categories-crm.controller';
+import { CategoriesService } from './services/categories/categories.service';
 
 @Module({
   imports: [],
@@ -27,14 +30,17 @@ import { ProductsCrmController } from './controllers/crm/products-crm/products-c
     PurchaseController,
     UsersController,
     CrmController,
-    ProductsCrmController
+    ProductsCrmController,
+    StoresCrmController,
+    CategoriesCrmController
   ],
   providers: [
     SqlService,
     UsersService,
     PurchasesService,
     ProductsService,
-    StoresService
+    StoresService,
+    CategoriesService
   ]
 })
 export class AppModule {}

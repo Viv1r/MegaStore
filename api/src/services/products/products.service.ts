@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import fs from "fs";
 import {SqlService} from "../sql/sql.service";
+import {Product} from "../../controllers/crm/types/Product";
+import {StoresService} from "../stores/stores.service";
 
 const mainFolder = './dist/public/';
 const itemsFolder = 'api/assets/items';
 
 @Injectable()
 export class ProductsService {
-    constructor(private sqlService: SqlService) {}
+    constructor(private sqlService: SqlService, private storesService: StoresService) {}
 
     private readonly products = this.sqlService.client.products;
 
@@ -34,11 +36,123 @@ export class ProductsService {
         })
     }
 
+    public async getProducts(user: any, query: any, data: any): Promise<any> {
+        let categoryQuery, storeQuery;
+
+        // Формирование списка категорий в запросе
+        if (Array.isArray(data?.category)) {
+            categoryQuery = data.category.map(id => { return { category_id: id } });
+        }
+
+        // Формирование списка магазинов в запросе (в т. ч. сверка с наличием доступа у юзера)
+        if (Array.isArray(data?.store) && data.store.length) {
+            storeQuery = data.store.map(id => { return { store_id: id } });
+
+            if (!user.is_admin) {
+                const hasAccess = await this.storesService.checkAccess(user.id, data.store)
+                if (!hasAccess) {
+                    return { statusCode: 'error', statusMessage: 'No access to some of the stores!' };
+                }
+            }
+        } else if (!user.is_admin) {
+            const userStores = await this.storesService.storesOfUser(user?.id);
+            if (!userStores.length) {
+                return { statusCode: 'ok', products: [] };
+            }
+            storeQuery = userStores.map(id => { return { store_id: id } });
+        }
+
+        const count = Number(query?.count) || 10;
+        let skip;
+        if (query?.page > 1) {
+            skip = Number(query.count) * (query.page - 1);
+        }
+
+        const requestParams = {
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                price: true,
+                price_postfix: true,
+                count_available: true,
+                store: {
+                    select: {
+                        name: true
+                    }
+                },
+                category: {
+                    select: {
+                        name: true
+                    }
+                }
+            },
+            where: {
+                is_deleted: false,
+                AND: []
+            },
+            orderBy: [
+                {
+                    id: 'desc'
+                }
+            ] as any,
+            take: count,
+            skip: skip
+        };
+
+        if (categoryQuery?.length) {
+            requestParams.where.AND.push({
+                OR: categoryQuery
+            });
+        }
+
+        if (storeQuery?.length) {
+            requestParams.where.AND.push({
+                OR: storeQuery
+            });
+        }
+
+        if (data?.title) requestParams.where.AND.push({
+            title: { contains: data.title }
+        });
+
+        if (data?.description) requestParams.where.AND.push({
+            description: { contains: data.description }
+        });
+
+        if (data?.id) requestParams.where.AND.push({
+            id: data.id
+        });
+
+        if (data?.price) requestParams.where.AND.push({
+            price: {
+                gte: data.price.min ?? undefined,
+                lte: data.price.max ?? undefined
+            }
+        });
+
+        if (data?.count_available) requestParams.where.AND.push({
+            count_available: {
+                gte: data.count_available.min ?? undefined,
+                lte: data.count_available.max ?? undefined
+            }
+        });
+
+        let result: Product[];
+
+        try {
+            result = await this.products.findMany(requestParams);
+        } catch (error) {
+            return { statusCode: 'error', statusMessage: 'Wrong data!' };
+        }
+
+        return { statusCode: 'ok', products: result };
+    }
+
     public async deleteProducts(products: number[]): Promise<any> {
         const productsQuery = products.map(id => { return { id: Number(id) } });
 
         let response;
-
         try {
             response = await this.products.updateMany({
                 data: {

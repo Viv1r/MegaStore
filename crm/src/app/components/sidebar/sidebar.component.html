@@ -4,48 +4,55 @@
   </div>
   <div class="btn_close" (click)="active = false">✖</div>
 
-  <a class="title" routerLink="">
-    <span>M</span>ega<span>CRM</span>
+  <a class="title_wrapper" routerLink="">
+    <img *ngIf="user.isAdmin" src="assets/svg/admin-icon.svg" alt="admin">
+    <span class="title">
+      <span>M</span>ega<span>CRM</span>
+    </span>
   </a>
 
-  <div class="container">
-    <a class="sidebar-link" routerLink="users" routerLinkActive="selected">
+  <div class="container" (click)="active = false">
+    <a *ngIf="user.isAdmin" class="sidebar-link" routerLink="users" routerLinkActive="selected">
       <img src="assets/svg/tab-users.svg" alt="icon">
       <span>Users</span>
     </a>
+
+    <a *ngIf="user.isAdmin" routerLink="categories" class="sidebar-link" routerLinkActive="selected">
+      <img src="assets/svg/tab-categories.svg" alt="icon">
+      <span>Categories</span>
+    </a>
+
     <a class="sidebar-link" routerLink="stores" routerLinkActive="selected">
       <img src="assets/svg/tab-stores.svg" alt="icon">
       <span>Stores</span>
     </a>
-    <a class="sidebar-link" routerLinkActive="selected">
-      <img src="assets/svg/tab-categories.svg" alt="icon">
-      <span>Categories</span>
-    </a>
+
     <a class="sidebar-link" routerLink="products" routerLinkActive="selected">
       <img src="assets/svg/tab-products.svg" alt="icon">
       <span>Products</span>
     </a>
   </div>
 
-  <div class="container">
+  <div class="container" (click)="active = false">
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-sales.svg" alt="icon">
       <span>Sales</span>
     </a>
   </div>
 
-  <div class="container">
-    <a class="sidebar-link" routerLinkActive="selected">
+  <div class="container" (click)="active = false">
+    <a *ngIf="user.isAdmin" class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-tickets.svg" alt="icon">
       <span>Tickets</span>
     </a>
+
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-support.svg" alt="icon">
       <span>Support</span>
     </a>
   </div>
 
-  <div class="container">
+  <div class="container" (click)="active = false">
     <a class="sidebar-link" routerLinkActive="selected">
       <img src="assets/svg/tab-account.svg" alt="icon">
       <span>My Account</span>

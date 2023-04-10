@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  hidePassword = true;
+  showPassword = false;
   error?: string;
 
   readonly loginForm = new FormGroup({

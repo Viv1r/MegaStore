@@ -7,6 +7,7 @@ export class StoresService {
     constructor(private sqlService: SqlService, private usersService: UsersService) {}
 
     private stores = this.sqlService.client.stores;
+    private products = this.sqlService.client.products;
 
     async storesOfUser(userID?: number): Promise<number[]> {
         if (!userID) return [];
@@ -16,7 +17,8 @@ export class StoresService {
                 id: true
             },
             where: {
-                owner_id: userID
+                owner_id: userID,
+                is_deleted: false
             }
         });
 
@@ -26,8 +28,8 @@ export class StoresService {
         return [];
     }
 
-    async createStore(ownerID: number, data: any): Promise<any> {
-        if (!data.name || !ownerID) {
+    async createStore(userID: number, data: any): Promise<any> {
+        if (!data.name || !userID) {
             return { statusCode: 'error', statusMessage: 'Check your data!' };
         }
 
@@ -36,10 +38,12 @@ export class StoresService {
             newStore = await this.stores.create({
                 data: {
                     name: data.name,
-                    owner_id: ownerID
+                    owner_id: data.owner_id ?? userID
                 }
             });
-        } catch {}
+        } catch(e) {
+            console.log(e);
+        }
 
         if (newStore) {
             return { statusCode: 'ok', store: newStore };
@@ -49,12 +53,12 @@ export class StoresService {
 
     async updateStore(storeID: number, data: any): Promise<any> {
         if (!storeID) {
-            return { statusCode: 'error', statusMessage: 'Pleace specify correct id!' };
+            return { statusCode: 'error', statusMessage: 'Please specify correct id!' };
         }
 
         const newData = {
             name: data.name,
-            owner_id: data.owner_id
+            owner_id: Number(data.owner_id)
         };
 
         let result: any;
@@ -62,7 +66,7 @@ export class StoresService {
             result = await this.stores.update({
                 data: newData,
                 where: {
-                    id: Number(storeID)
+                    id: storeID
                 }
             });
         } catch {}
@@ -78,7 +82,8 @@ export class StoresService {
         try {
             stores = await this.stores.findMany({
                 where: {
-                    owner_id: ownerID
+                    owner_id: ownerID,
+                    is_deleted: false
                 }
             });
         } catch {}
@@ -89,7 +94,6 @@ export class StoresService {
         return { statusCode: 'error', statusMessage: 'Check your data!' };
     }
 
-
     async getAllStores(data?: any): Promise<any> {
         const conditions = {
             include: {
@@ -97,9 +101,16 @@ export class StoresService {
                     select: {
                         email: true
                     }
+                },
+                _count: {
+                    select: {
+                        products: true,
+                        sales: true
+                    }
                 }
             },
             where: {
+                is_deleted: false,
                 AND: []
             }
         };
@@ -112,7 +123,7 @@ export class StoresService {
 
         if (data?.name) {
             conditions.where.AND.push({
-                name: { includes: data.name }
+                name: { contains: data.name }
             });
         }
 
@@ -122,11 +133,20 @@ export class StoresService {
             });
         }
 
-        const result = await this.stores.findMany(conditions);
+        let result;
+        try {
+            result = await this.stores.findMany(conditions);
+        } catch {
+            result = [];
+        }
 
         return result.map((item: any) => {
             item.owner_email = item.owner?.email;
             delete item.owner;
+            item.products_count = item._count.products;
+            item.sales = item._count.sales;
+            delete item._count;
+
             return item;
         });
     }
@@ -138,7 +158,8 @@ export class StoresService {
         try {
             store = await this.stores.findFirst({
                 where: {
-                    id: Number(storeID)
+                    id: Number(storeID),
+                    is_deleted: false
                 }
             });
         } catch {}
@@ -147,6 +168,41 @@ export class StoresService {
             return store;
         }
         return { statusCode: 'error', statusMessage: 'Check your data!' };
+    }
+
+    public async deleteStore(storeID: number): Promise<any> {
+        let deleteProducts;
+        try {
+            deleteProducts = await this.products.updateMany({
+                data: {
+                    is_deleted: true
+                },
+                where: {
+                    store_id: storeID,
+                    is_deleted: false
+                }
+            });
+        } catch {}
+        if (!deleteProducts) {
+            return { statusCode: 'error', statusMessage: 'Could not delete!' };
+        }
+
+        let deleteStore;
+        try {
+            deleteStore = await this.stores.update({
+                data: {
+                    is_deleted: true
+                },
+                where: {
+                    id: storeID
+                }
+            });
+        } catch {}
+        if (!deleteStore) {
+            return { statusCode: 'error', statusMessage: 'Could not delete!' };
+        }
+
+        return { statusCode: 'ok' };
     }
 
     // Проверка, имеет ли юзер доступ к редактированию товаров заданных магазинов

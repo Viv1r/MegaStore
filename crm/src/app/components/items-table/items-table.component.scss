@@ -114,8 +114,9 @@
   border-collapse: collapse;
 
   .headers {
-    background: #eaeaea;
+    background: #008be1;
     position: relative;
+    color: white;
   }
 }
 
@@ -130,12 +131,12 @@
   img {
     width: auto;
     height: 100%;
-    filter: invert(50%);
+    filter: invert(100%);
     transition: .1s ease-out;
   }
 
   &:hover img {
-    filter: invert(20%);
+    filter: invert(75%);
   }
 }
 
@@ -158,7 +159,7 @@ th {
   background: transparent;
 
   &:hover {
-    background: rgba($color: black, $alpha: .025);
+    background: rgba($color: black, $alpha: .05);
   }
 }
 

@@ -11,7 +11,7 @@ export class User {
   }
 
   public logout() {
-    this.name = this.email = undefined;
+    this.name = this.email = this.isAdmin = undefined;
     this.loggedIn = false;
   }
 }

@@ -29,6 +29,8 @@ export class PopupFormComponent {
     this.popupFormService.constructorChange.subscribe((data: any) => {
       this.fields = data;
       for (const field of this.fields) {
+        if (field.adminOnly && !this.user.isAdmin) continue;
+
         if (field.optionsURL) {
           this.http.get(this.apiBasePath + field.optionsURL)
             .subscribe((data: any) => {
@@ -44,8 +46,9 @@ export class PopupFormComponent {
 
   private readonly apiBasePath = environment.API_BASE_PATH;
 
-  public fields: any[] = [];
-  public form?: FormGroup;
+  fields: any[] = [];
+  form?: FormGroup;
+  user = this.authService.user;
 
   initForm(): void {
     const newForm: any = {};

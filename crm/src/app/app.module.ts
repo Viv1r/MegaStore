@@ -26,6 +26,7 @@ import { PageNotFoundComponent } from './components/views/page-not-found/page-no
 import { PopupFormComponent } from './components/popup-form/popup-form.component';
 import { TitlePageComponent } from './components/views/main/title-page/title-page.component';
 import { StoresComponent } from './components/views/main/stores/stores.component';
+import { CategoriesComponent } from './components/views/main/categories/categories.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { StoresComponent } from './components/views/main/stores/stores.component
     PageNotFoundComponent,
     PopupFormComponent,
     TitlePageComponent,
-    StoresComponent
+    StoresComponent,
+    CategoriesComponent
   ],
     imports: [
         BrowserModule,

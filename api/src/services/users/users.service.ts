@@ -209,4 +209,22 @@ export class UsersService {
             return item;
         });
     }
+
+    async getUsersShort(): Promise<any> {
+        let result;
+        try {
+            result = await this.users.findMany({
+                select: {
+                    id: true,
+                    email: true
+                }
+            });
+        } catch {
+            result = [];
+        }
+
+        return result.map(item => {
+            return { id: item.id, name: item.email }
+        });
+    }
 }

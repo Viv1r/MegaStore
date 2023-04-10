@@ -10,31 +10,36 @@ import {Observable} from "rxjs";
 export class StoresService {
   constructor(protected http: HttpClient, protected authService: AuthService) {}
 
-  private readonly apiBasePath = environment.API_BASE_PATH;
+  private readonly apiBasePath = environment.API_BASE_PATH + 'crm/stores/';
   private readonly user = this.authService.user;
 
-  public getShort(): Observable<any> {
-    const URL = this.apiBasePath + 'crm/stores/short';
-    return this.http.get(URL);
-  }
-
   public get(data?: any): Observable<any> {
-    const URL = this.apiBasePath + 'crm/stores';
+    const URL = this.apiBasePath;
     return this.http.post(URL, data);
   }
 
+  public getShort(): Observable<any> {
+    const URL = this.apiBasePath + 'short';
+    return this.http.get(URL);
+  }
+
   public getOne(id: number): Observable<any> {
-    const URL = this.apiBasePath + 'crm/stores/' + id;
+    const URL = this.apiBasePath + id;
     return this.http.get(URL);
   }
 
   public create(data: any): Observable<any> {
-    const URL = this.apiBasePath + 'crm/stores/create';
+    const URL = this.apiBasePath + 'create';
     return this.http.post(URL, data);
   }
 
   public update(storeID: number, data: any): Observable<any> {
-    const URL = this.apiBasePath + 'crm/stores/' + storeID;
+    const URL = this.apiBasePath + 'update/' + storeID;
     return this.http.post(URL, data);
+  }
+
+  public delete(storeID: number): Observable<any> {
+    const URL = this.apiBasePath + storeID;
+    return this.http.delete(URL);
   }
 }

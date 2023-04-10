@@ -6,38 +6,41 @@
     (keydown.enter)="applyFilters()"
   >
     <div *ngFor="let field of filtersFields" class="field_wrapper">
-      <label>{{ field.name ?? field.key | titlecase }}</label>
 
-      <app-select-one
-        *ngIf="field.type === 'select-one'"
-        [formControlName]="field.key"
-        [options]="field.options"
-        placeholder="Select"
-      ></app-select-one>
+      <ng-template [ngIf]="!field.adminOnly || user.isAdmin">
+        <label>{{ field.name ?? field.key | titlecase }}</label>
 
-      <app-select-multiple
-        *ngIf="field.type === 'select-multiple'"
-        [formControlName]="field.key"
-        [options]="field.options"
-        placeholder="Select"
-      ></app-select-multiple>
+        <app-select-one
+          *ngIf="field.type === 'select-one'"
+          [formControlName]="field.key"
+          [options]="field.options"
+          placeholder="Select"
+        ></app-select-one>
 
-      <app-input-range
-        *ngIf="field.type === 'range'"
-        [formControlName]="field.key"
-      ></app-input-range>
+        <app-select-multiple
+          *ngIf="field.type === 'select-multiple'"
+          [formControlName]="field.key"
+          [options]="field.options"
+          placeholder="Select"
+        ></app-select-multiple>
 
-      <input
-        *ngIf="field.type === 'text'"
-        type="text"
-        [formControlName]="field.key"
-      >
+        <app-input-range
+          *ngIf="field.type === 'range'"
+          [formControlName]="field.key"
+        ></app-input-range>
 
-      <input
-        *ngIf="field.type === 'number'"
-        type="number"
-        [formControlName]="field.key"
-      >
+        <input
+          *ngIf="field.type === 'text'"
+          type="text"
+          [formControlName]="field.key"
+        >
+
+        <input
+          *ngIf="field.type === 'number'"
+          type="number"
+          [formControlName]="field.key"
+        >
+      </ng-template>
 
     </div>
   </form>

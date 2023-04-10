@@ -6,7 +6,7 @@
     (click)="toggleActive()"
   >
     {{ activeOption?.name ?? placeholder ?? '' }}
-    <span *ngIf="activeOption" class="btn_clear" (click)="value = null">✖</span>
+    <span *ngIf="activeOption" class="btn_clear" (click)="clear(); $event.stopPropagation()">✖</span>
   </button>
   <div *ngIf="active" class="dropdown_menu">
     <div

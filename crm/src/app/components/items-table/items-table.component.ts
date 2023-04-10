@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormControl, FormGroup } from "@angular/forms";
 import { FilterField } from "../../types/FilterField";
 import {PopupFormService} from "../../services/popup-form.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-items-table',
@@ -9,6 +10,7 @@ import {PopupFormService} from "../../services/popup-form.service";
   styleUrls: ['./items-table.component.scss']
 })
 export class ItemsTableComponent implements OnInit {
+  constructor(private authService: AuthService) {}
 
   @Input() columns: any[] = [{ tag: 'id', name: 'ID' }, { tag: 'title', name: 'Title' }];
   @Input() filtersFields: FilterField[] = [];
@@ -21,6 +23,8 @@ export class ItemsTableComponent implements OnInit {
   @Output() delete = new EventEmitter<number>();
 
   filtersForm = new FormGroup({});
+
+  user = this.authService.user;
 
   private _items: any[] = [];
 

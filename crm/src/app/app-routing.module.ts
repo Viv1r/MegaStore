@@ -8,6 +8,7 @@ import { UsersComponent } from "./components/views/main/users/users.component";
 import { PageNotFoundComponent } from "./components/views/page-not-found/page-not-found.component";
 import {TitlePageComponent} from "./components/views/main/title-page/title-page.component";
 import {StoresComponent} from "./components/views/main/stores/stores.component";
+import {CategoriesComponent} from "./components/views/main/categories/categories.component";
 
 const routes: Routes = [
   {
@@ -19,16 +20,20 @@ const routes: Routes = [
         component: TitlePageComponent
       },
       {
-        path: 'products',
-        component: ProductsComponent
-      },
-      {
         path: 'users',
         component: UsersComponent
       },
       {
+        path: 'categories',
+        component: CategoriesComponent
+      },
+      {
         path: 'stores',
         component: StoresComponent
+      },
+      {
+        path: 'products',
+        component: ProductsComponent
       }
     ]
   },

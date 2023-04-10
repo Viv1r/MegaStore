@@ -1,15 +1,15 @@
 <div class="page">
-  <div class="main_title">Stores</div>
+  <div class="main_title">Categories</div>
   <div class="container">
     <app-items-table
       [columns]="columns"
-      [items]="stores"
+      [items]="categories"
       [filtersFields]="filters"
       [loading]="loading"
-      (pushFilters)="loadStores($event)"
+      (pushFilters)="loadCategories($event)"
       (add)="showCreateForm()"
       (edit)="showEditForm($event)"
-      (delete)="deleteStore($event)"
+      (delete)="deleteCategory($event)"
     ></app-items-table>
   </div>
 </div>

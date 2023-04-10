@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-import { User } from "../types/User";
 import { Observable } from "rxjs";
+import { HttpClient } from "@angular/common/http";
 import { AuthService } from "./auth.service";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductsService {
+export class CategoriesService {
   constructor(protected http: HttpClient, protected authService: AuthService) {}
 
-  private readonly apiBasePath = environment.API_BASE_PATH + 'crm/products/';
+  private readonly apiBasePath = environment.API_BASE_PATH + 'crm/categories/';
 
-  public get(data?: any): Observable<any> {
+  public get(): Observable<any> {
     const URL = this.apiBasePath;
+    return this.http.get(URL);
+  }
 
-    return this.http.post(URL, data, {
-      params: {
-        count: data?.count ?? 100
-      }
-    });
+  public getShortList(): Observable<any> {
+    const URL = this.apiBasePath + 'short';
+    return this.http.get(URL);
   }
 
   public getOne(id: number): Observable<any> {
@@ -38,9 +37,8 @@ export class ProductsService {
     return this.http.post(URL, data);
   }
 
-  public delete(id: number): Observable<any> {
+  public delete(id: number, replacementID: number): Observable<any> {
     const URL = this.apiBasePath + id;
-    return this.http.delete(URL);
+    return this.http.delete(URL, { params: { replacement: replacementID } });
   }
-
 }

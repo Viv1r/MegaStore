@@ -2,6 +2,8 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import { PopupFormService } from "../../../../services/popup-form.service";
 import { columns, filters, constructor } from "../../../../forms/stores";
 import { StoresService } from "../../../../services/stores.service";
+import {UsersService} from "../../../../services/users.service";
+import {AuthService} from "../../../../services/auth.service";
 
 @Component({
   selector: 'app-stores',
@@ -9,10 +11,17 @@ import { StoresService } from "../../../../services/stores.service";
   styleUrls: ['./stores.component.scss']
 })
 export class StoresComponent implements OnInit {
-  constructor(protected storesService: StoresService, protected popupFormService: PopupFormService) {
+  constructor(
+    private storesService: StoresService,
+    private usersService: UsersService,
+    private authService: AuthService,
+    private popupFormService: PopupFormService
+  ) {
     this.createEmitter.subscribe((data: any) => this.createStore(data.item));
     this.updateEmitter.subscribe((data: any) => this.updateStore(data.id, data.item));
   }
+
+  user = this.authService.user;
 
   stores: any[] = [];
   loading = false;
@@ -63,6 +72,20 @@ export class StoresComponent implements OnInit {
       });
   }
 
+  deleteStore(id: number): void {
+    if (!confirm(`Are you sure you want to delete store #${id}?`))
+      return;
+    this.storesService.delete(id)
+      .subscribe(data => {
+        if (data.statusCode === 'ok') {
+          const index = this.stores.findIndex(item => item.id === id);
+          this.stores.splice(index, 1);
+        } else if (data.statusCode === 'error') {
+          alert(data.statusMessage);
+        }
+      });
+  }
+
   showEditForm(itemID: number): void {
     this.popupFormService.load({
       id: itemID,
@@ -79,8 +102,23 @@ export class StoresComponent implements OnInit {
     });
   }
 
+  loadUsers(): void {
+    this.usersService.getShort()
+      .subscribe(data => {
+        if (data?.items) {
+          const target = this.filters.find(item => item.key === 'owner_id');
+          if (target) {
+            target.options = data.items;
+          }
+        }
+      });
+  }
+
 
   ngOnInit(): void {
     this.loadStores();
+    if (this.user.isAdmin) {
+      this.loadUsers();
+    }
   }
 }
