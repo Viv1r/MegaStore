@@ -1,0 +1,25 @@
+<div class="dictionary_input">
+  <table>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+      <th *ngIf="valueRaw.length"></th>
+    </tr>
+    <tr *ngFor="let item of valueRaw; let i = index">
+      <td>
+        <input type="text" [(ngModel)]="item.key" (input)="onChange(value)">
+      </td>
+      <td>
+        <input type="text" [(ngModel)]="item.value" (input)="onChange(value)">
+      </td>
+      <td>
+        <button class="btn_delete" (click)="deleteRow(i)">✖</button>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <button class="btn_add" (click)="addRow()">+</button>
+      </td>
+    </tr>
+  </table>
+</div>

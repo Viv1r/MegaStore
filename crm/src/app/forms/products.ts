@@ -12,9 +12,6 @@ export const columns = [
     tag: 'description'
   },
   {
-    tag: 'category'
-  },
-  {
     tag: 'price'
   },
   {
@@ -26,6 +23,9 @@ export const columns = [
     tag: 'count_available',
     name: 'In stock',
     highlightValue: 0
+  },
+  {
+    tag: 'category'
   },
   {
     tag: 'store',

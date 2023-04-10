@@ -46,7 +46,7 @@ export class CategoriesComponent implements OnInit {
           this.popupFormService.clear();
           this.loadCategories();
         } else if (data.statusCode === 'error') {
-          alert(data.statusMessage);
+          this.popupFormService.pushError(data.statusMessage);
         }
       });
   }
@@ -58,7 +58,7 @@ export class CategoriesComponent implements OnInit {
           this.popupFormService.clear();
           this.loadCategories();
         } else if (data.statusCode === 'error') {
-          alert(data.statusMessage);
+          this.popupFormService.pushError(data.statusMessage);
         }
       });
   }
@@ -75,8 +75,7 @@ export class CategoriesComponent implements OnInit {
     this.categoriesService.delete(id, replacement)
       .subscribe(data => {
         if (data.statusCode === 'ok') {
-          const index = this.categories.findIndex(item => item.id === id);
-          this.categories.splice(index, 1);
+          this.loadCategories();
         } else if (data.statusCode === 'error') {
           alert(data.statusMessage);
         }

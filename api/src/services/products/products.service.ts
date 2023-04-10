@@ -183,7 +183,7 @@ export class ProductsService {
             count_available: data.count_available || 1,
             store_id: data.store_id,
             category_id: data.category_id,
-            attributes: data.attributes || null
+            attributes: JSON.stringify(data.attributes ?? {})
         };
 
         const emptyFields = Object.keys(newProductData).filter(key => newProductData[key] === undefined);

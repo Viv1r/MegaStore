@@ -47,7 +47,7 @@ $color-main: #008be1;
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 22px;
     margin-bottom: 20px;
   }
 }
@@ -103,6 +103,16 @@ $color-main: #008be1;
     resize: none;
     padding: 2px 4px;
   }
+}
+
+.message {
+  width: 100%;
+  height: fit-content;
+  margin-bottom: 16px;
+  color: red;
+  font-family: "Kulim Park", serif;
+  font-size: 15px;
+  text-align: center;
 }
 
 .buttons_wrapper {

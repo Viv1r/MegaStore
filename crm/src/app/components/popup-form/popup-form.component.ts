@@ -16,6 +16,7 @@ export class PopupFormComponent {
     this.popupFormService.close.subscribe(() => this.close());
 
     this.popupFormService.itemChange.subscribe((data: any) => {
+      this.error = undefined;
       if (!this.form) return;
 
       for (const key of Object.keys(data)) {
@@ -42,12 +43,17 @@ export class PopupFormComponent {
       this.initForm();
     });
 
+    this.popupFormService.error.subscribe((error: string) => {
+      this.error = error;
+    });
   }
 
   private readonly apiBasePath = environment.API_BASE_PATH;
 
   fields: any[] = [];
   form?: FormGroup;
+  error?: string;
+
   user = this.authService.user;
 
   initForm(): void {

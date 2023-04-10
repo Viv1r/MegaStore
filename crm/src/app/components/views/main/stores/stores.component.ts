@@ -55,7 +55,7 @@ export class StoresComponent implements OnInit {
           this.popupFormService.clear();
           this.loadStores();
         } else if (data.statusCode === 'error') {
-          alert(data.statusMessage);
+          this.popupFormService.pushError(data.statusMessage);
         }
       });
   }
@@ -67,7 +67,7 @@ export class StoresComponent implements OnInit {
           this.popupFormService.clear();
           this.loadStores();
         } else if (data.statusCode === 'error') {
-          alert(data.statusMessage);
+          this.popupFormService.pushError(data.statusMessage);
         }
       });
   }

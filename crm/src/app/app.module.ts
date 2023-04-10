@@ -28,6 +28,7 @@ import { TitlePageComponent } from './components/views/main/title-page/title-pag
 import { StoresComponent } from './components/views/main/stores/stores.component';
 import { CategoriesComponent } from './components/views/main/categories/categories.component';
 import { FilterByNamePipe } from './pipes/filter-by-name.pipe';
+import { DictionaryComponent } from './components/fields/dictionary/dictionary.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { FilterByNamePipe } from './pipes/filter-by-name.pipe';
     TitlePageComponent,
     StoresComponent,
     CategoriesComponent,
-    FilterByNamePipe
+    FilterByNamePipe,
+    DictionaryComponent
   ],
     imports: [
         BrowserModule,

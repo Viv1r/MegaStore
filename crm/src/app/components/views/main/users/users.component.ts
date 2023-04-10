@@ -48,7 +48,7 @@ export class UsersComponent implements OnInit {
           this.popupFormService.clear();
           this.loadUsers();
         } else if (data.statusCode === 'error') {
-          alert(data.statusMessage);
+          this.popupFormService.pushError(data.statusMessage);
         }
       });
   }
@@ -60,7 +60,7 @@ export class UsersComponent implements OnInit {
           this.popupFormService.clear();
           this.loadUsers();
         } else if (data.statusCode === 'error') {
-          alert(data.statusMessage);
+          this.popupFormService.pushError(data.statusMessage);
         }
       });
   }

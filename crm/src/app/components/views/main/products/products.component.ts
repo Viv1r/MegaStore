@@ -65,7 +65,7 @@ export class ProductsComponent implements OnInit {
           this.popupFormService.clear();
           this.loadProducts();
         } else if (data.statusCode === 'error') {
-          alert(data.statusMessage);
+          this.popupFormService.pushError(data.statusMessage);
         }
       });
   }
@@ -77,7 +77,7 @@ export class ProductsComponent implements OnInit {
           this.popupFormService.clear();
           this.loadProducts();
         } else if (data.statusCode === 'error') {
-          alert(data.statusMessage);
+          this.popupFormService.pushError(data.statusMessage);
         }
       });
   }

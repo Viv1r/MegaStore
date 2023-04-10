@@ -7,14 +7,15 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class PopupFormService {
-
   active = false;
 
-  public itemChange = new EventEmitter<any>();
-  public constructorChange = new EventEmitter<any>;
-  public close = new EventEmitter<void>;
-  public applyItem?: EventEmitter<any>;
-  public itemID?: number;
+  itemChange = new EventEmitter<any>();
+  constructorChange = new EventEmitter<any>();
+  close = new EventEmitter<void>();
+  error = new EventEmitter<string>();
+
+  applyItem?: EventEmitter<any>;
+  itemID?: number;
 
   clear(): void {
     this.itemID = undefined;
@@ -25,6 +26,10 @@ export class PopupFormService {
     if (this.applyItem) {
       this.applyItem.emit({id: this.itemID, item: data});
     }
+  }
+
+  pushError(errorMessage: string): void {
+    this.error.emit(errorMessage);
   }
 
   load({id, source, constructor, emitter}: {

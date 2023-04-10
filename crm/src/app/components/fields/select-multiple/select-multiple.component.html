@@ -4,7 +4,12 @@
     [class]="{active: active}"
     (click)="active = true"
   >
-    <input type="text" placeholder="{{ value.length }} selected" [(ngModel)]="filterInput">
+    <input
+      type="text"
+      placeholder="{{ value.length }} selected"
+      [(ngModel)]="filterInput"
+      (focusin)="active = true"
+    >
     <span *ngIf="value.length > 0" class="btn_clear" (click)="clear()">✖</span>
   </div>
 

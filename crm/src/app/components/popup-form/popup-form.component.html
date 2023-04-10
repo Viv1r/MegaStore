@@ -1,7 +1,7 @@
 <ng-template [ngIf]="popupFormService.active">
   <div class="popup_bg" (click)="close()"></div>
-  <div class="popup_wrapper" *ngIf="form" (click)="close()">
-    <div class="popup_window" (click)="$event.stopPropagation()">
+  <div class="popup_wrapper" *ngIf="form">
+    <div class="popup_window">
       <div class="btn_close" (click)="close()">✖</div>
 
       <div class="title">{{ popupFormService.itemID ? 'Edit item' : 'Add item' }}</div>
@@ -16,24 +16,28 @@
               *ngIf="field.type === 'select-one'"
               [formControlName]="field.key"
               [options]="field.options"
-              placeholder="Select"
             ></app-select-one>
 
             <app-select-multiple
               *ngIf="field.type === 'select-multiple'"
               [formControlName]="field.key"
               [options]="field.options"
-              placeholder="Select"
             ></app-select-multiple>
 
-            <app-input-range
-              *ngIf="field.type === 'range'"
+            <app-dictionary
+              *ngIf="field.type === 'dictionary'"
               [formControlName]="field.key"
-            ></app-input-range>
+            ></app-dictionary>
 
             <input
               *ngIf="field.type === 'text'"
               type="text"
+              [formControlName]="field.key"
+            >
+
+            <input
+              *ngIf="field.type === 'number'"
+              type="number"
               [formControlName]="field.key"
             >
 
@@ -42,15 +46,11 @@
               [formControlName]="field.key"
             ></textarea>
 
-            <input
-              *ngIf="field.type === 'number'"
-              type="number"
-              [formControlName]="field.key"
-            >
           </ng-template>
 
         </div>
       </form>
+      <div class="message" *ngIf="error">{{ error }}</div>
       <div class="buttons_wrapper">
         <button class="btn btn-apply" (click)="apply()">Apply</button>
         <button class="btn btn-discard" (click)="close()">Discard changes</button>
