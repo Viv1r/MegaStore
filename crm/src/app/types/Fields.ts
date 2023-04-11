@@ -28,6 +28,7 @@ export interface ConstructorField {
   options?: Option[];
   showID?: boolean;
   adminOnly?: boolean;
+  rootOnly?: boolean;
   optionsURL?: string;
   optional?: boolean;
 }

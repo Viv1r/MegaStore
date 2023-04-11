@@ -8,7 +8,7 @@
     <form [formGroup]="form" (keydown.enter)="apply()">
       <div *ngFor="let field of fields" class="field_wrapper">
 
-        <ng-template [ngIf]="!field.adminOnly || user.isAdmin">
+        <ng-template [ngIf]="(!field.adminOnly || user.isAdmin) && (!field.rootOnly || user.isRoot)">
           <label>{{ field.name ?? field.key | titlecase }}</label>
 
           <app-select-one

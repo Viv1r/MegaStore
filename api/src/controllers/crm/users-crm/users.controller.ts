@@ -61,9 +61,14 @@ export class UsersController {
 
     @UseGuards(AdminGuard)
     @Post('update/:id')
-    async updateUser(@Body() body: any, @Param('id') id: number): Promise<any> {
+    async updateUser(@Req() request: any, @Body() body: any, @Param('id') id: number): Promise<any> {
         id = Number(id);
         if (isNaN(id)) return { statusCode: 'error', statusMessage: 'Invalid id!' };
+
+        // Только рут может назначать админов
+        if (!request.user.is_root) {
+            delete body.is_admin;
+        }
 
         return await this.usersService.updateUser(id, body);
     }

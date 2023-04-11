@@ -153,6 +153,7 @@ export class UsersService {
             password: data?.password,
             name: data?.name,
             is_banned: data?.is_banned,
+            is_admin: data?.is_admin
         };
 
         if (Object.values(newData).every(item => item === undefined)) {

@@ -98,6 +98,22 @@ export const constructor: ConstructorField[] = [
     type: 'text'
   },
   {
+    key: 'is_admin',
+    name: 'Access level',
+    type: 'select-one',
+    rootOnly: true,
+    options: [
+      {
+        id: false,
+        name: 'Not admin'
+      },
+      {
+        id: true,
+        name: 'Admin'
+      }
+    ]
+  },
+  {
     key: 'is_banned',
     name: 'Status',
     type: 'select-one',
