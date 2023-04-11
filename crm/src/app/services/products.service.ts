@@ -43,4 +43,9 @@ export class ProductsService {
     return this.http.delete(URL);
   }
 
+  public addPicture(id: number, picture: any): Observable<any> {
+    const URL = this.apiBasePath + id + '/picture';
+    return this.http.post(URL, { picture: picture });
+  }
+
 }

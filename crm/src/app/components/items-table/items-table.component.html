@@ -91,11 +91,30 @@
         <ng-template ngFor let-cl [ngForOf]="columns">
           <td [class]="{ marked: item[cl.tag] === cl.highlightValue }">
 
-            <ng-template [ngIf]="cl.transform" [ngIfElse]="noTransform">
-              {{ cl.transform(item[cl.tag]) }}
+            <ng-template [ngIf]="cl.image" [ngIfElse]="noImage">
+              <label for="inp_{{item.id}}">
+                <img
+                  class="item_picture"
+                  [class]="{ filled: item[cl.tag] }"
+                  [src]="item[cl.tag] || 'assets/svg/no-image.svg'"
+                  alt="image"
+                >
+              </label>
+              <input
+                class="image_input"
+                id="inp_{{item.id}}"
+                type="file"
+                accept="image/png, image/jpeg"
+                (input)="applyPicture(cl.tag, item.id, $event)"
+              >
             </ng-template>
-            <ng-template #noTransform>
-              {{ item[cl.tag] ?? cl.default ?? '' }}
+            <ng-template #noImage>
+              <ng-template [ngIf]="cl.transform" [ngIfElse]="noTransform">
+                {{ cl.transform(item[cl.tag]) }}
+              </ng-template>
+              <ng-template #noTransform>
+                {{ item[cl.tag] ?? cl.default ?? '' }}
+              </ng-template>
             </ng-template>
 
           </td>

@@ -30,6 +30,10 @@ export const columns: ColumnField[] = [
   {
     tag: 'store',
     name: 'Seller'
+  },
+  {
+    tag: 'picture',
+    image: true
   }
 ];
 

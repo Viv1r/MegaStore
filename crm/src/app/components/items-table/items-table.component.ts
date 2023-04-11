@@ -4,6 +4,12 @@ import {PopupFormService} from "../../services/popup-form.service";
 import {AuthService} from "../../services/auth.service";
 import {FilterField} from "../../types/Fields";
 
+interface PictureOutput {
+  tag: string;
+  id: number;
+  picture: File;
+}
+
 @Component({
   selector: 'app-items-table',
   templateUrl: './items-table.component.html',
@@ -22,6 +28,7 @@ export class ItemsTableComponent implements OnInit {
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
+  @Output() uploadPicture = new EventEmitter<PictureOutput>();
 
   filtersForm = new FormGroup({});
 
@@ -105,6 +112,15 @@ export class ItemsTableComponent implements OnInit {
 
   applyFilters(): void {
     this.pushFilters.emit(this.filtersForm.value);
+  }
+
+  applyPicture(tag: string, itemID: number, event: any): void {
+    event.stopPropagation();
+    this.uploadPicture.emit({
+      tag: tag,
+      id: itemID,
+      picture: event.target?.files[0] ?? null
+    });
   }
 
   resetForm(): void {

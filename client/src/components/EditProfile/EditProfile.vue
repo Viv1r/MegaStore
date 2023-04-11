@@ -54,7 +54,7 @@ export default {
   methods: {
     ...mapActions('user', ['updateProfilePicture']),
 
-    convertToBase64(file, callback) {
+    convertToBase64(file) {
       return new Promise(resolve => {
         const reader = new FileReader();
         reader.onloadend = () => {

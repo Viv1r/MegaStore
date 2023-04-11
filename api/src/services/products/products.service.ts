@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import fs from "fs";
 import {SqlService} from "../sql/sql.service";
-import {Product} from "../../controllers/crm/types/Product";
 import {StoresService} from "../stores/stores.service";
 
 const mainFolder = './dist/public/';
@@ -34,6 +33,20 @@ export class ProductsService {
                 resolve(null);
             }
         })
+    }
+
+    public async get(id: number): Promise<any> {
+        let result;
+        try {
+            result = await this.products.findFirst({
+                where: {
+                    id: Number(id),
+                    is_deleted: false
+                }
+            });
+        } catch {}
+
+        return result;
     }
 
     public async getAll(user: any, query: any, data: any): Promise<any> {
@@ -108,7 +121,7 @@ export class ProductsService {
             skip = Number(query.count) * (query.page - 1);
         }
 
-        let result: Product[];
+        let result: any[];
         try {
             result = await this.products.findMany({
                 select: {
@@ -138,7 +151,13 @@ export class ProductsService {
             return { statusCode: 'error', statusMessage: 'Wrong data!' };
         }
 
-        return { statusCode: 'ok', products: result };
+        if (result) {
+            for (const item of result) {
+                item.picture = await this.parseImage(item.id);
+            }
+            return { statusCode: 'ok', products: result };
+        }
+        return { statusCode: 'error' };
     }
 
     public async deleteProducts(products: number[]): Promise<any> {

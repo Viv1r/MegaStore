@@ -245,6 +245,22 @@ th {
   }
 }
 
+.image_input {
+  display: none;
+}
+
+.item_picture {
+  display: block;
+  max-width: 160px;
+  height: auto;
+  max-height: 70px;
+  margin: auto;
+}
+
+.item.selected .item_picture.filled {
+  filter: none;
+}
+
 .actions {
   width: 100%;
   height: fit-content;

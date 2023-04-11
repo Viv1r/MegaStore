@@ -9,6 +9,7 @@ export interface ColumnField {
   highlightValue?: any;
   default?: any;
   transform?: Function;
+  image?: boolean;
 }
 
 export interface FilterField {
@@ -23,7 +24,7 @@ export interface FilterField {
 export interface ConstructorField {
   key: string;
   name?: string;
-  type: 'text' | 'longtext' | 'number' | 'select-one' | 'select-multiple' | 'range' | 'dictionary';
+  type: 'text' | 'longtext' | 'number' | 'select-one' | 'select-multiple' | 'range' | 'dictionary' | 'image';
   options?: Option[];
   showID?: boolean;
   adminOnly?: boolean;

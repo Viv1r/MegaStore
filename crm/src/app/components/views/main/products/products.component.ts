@@ -3,7 +3,8 @@ import { ProductsService } from "../../../../services/products.service";
 import { StoresService } from "../../../../services/stores.service";
 import { PopupFormService } from "../../../../services/popup-form.service";
 import { columns, filters, constructor } from "../../../../forms/products";
-import {CategoriesService} from "../../../../services/categories.service";
+import { CategoriesService } from "../../../../services/categories.service";
+import { convertToBase64 } from "../../../../modules/base64";
 
 @Component({
   selector: 'app-products',
@@ -133,6 +134,25 @@ export class ProductsComponent implements OnInit {
       constructor: constructor,
       emitter: this.createEmitter
     });
+  }
+
+  async sendPicture(productID: number, picture: File) {
+    const pictureBase64 = await convertToBase64(picture);
+    this.productsService.addPicture(productID, pictureBase64)
+      .subscribe((data: any) => {
+        if (data.statusCode === 'ok') {
+          alert('Uploaded successfully!');
+          this.loadProducts();
+        } else {
+          alert(data.statusMessage);
+        }
+      });
+  }
+
+  uploadPicture(data: { id: number, tag: string, picture: File }): void {
+    if (data.tag === 'picture') {
+      this.sendPicture(data.id, data.picture);
+    }
   }
 
   ngOnInit(): void {

@@ -6,6 +6,7 @@ import {UsersService} from "../../../services/users/users.service";
 import {ProductsService} from "../../../services/products/products.service";
 import {StoresService} from "../../../services/stores/stores.service";
 import {SqlService} from "../../../services/sql/sql.service";
+import {PicturesService} from "../../../services/pictures/pictures.service";
 
 @Controller('crm/products')
 export class ProductsCrmController {
@@ -13,7 +14,8 @@ export class ProductsCrmController {
         private sqlService: SqlService,
         private usersService: UsersService,
         private productsService: ProductsService,
-        private storesService: StoresService
+        private storesService: StoresService,
+        private picturesService: PicturesService
     ) {}
 
     private readonly products = this.sqlService.client.products;
@@ -45,16 +47,10 @@ export class ProductsCrmController {
     @UseGuards(UserGuard)
     @Post('update/:id')
     async updateProduct(@Req() request: any, @Body() body: any, @Param('id') id: number): Promise<any> {
-        const targetID = Number(id);
-        if (isNaN(targetID)) return { statusCode: 'error', statusMessage: 'Specify correct id!' };
+        id = Number(id);
+        if (isNaN(id)) return { statusCode: 'error', statusMessage: 'Specify correct id!' };
 
-        const target = await this.products.findFirst({
-            select: { store_id: true },
-            where: {
-                id: targetID,
-                is_deleted: false
-            }
-        });
+        const target = await this.productsService.get(id);
 
         if (!target) {
             return { statusCode: 'error', statusMessage: 'Product not found!' };
@@ -72,7 +68,39 @@ export class ProductsCrmController {
             return { statusCode: 'error', statusMessage: 'No access to this store!' };
         }
 
-        return await this.productsService.updateProduct(targetID, body);
+        return await this.productsService.updateProduct(id, body);
+    }
+
+    @UseGuards(UserGuard)
+    @Post(':id/picture')
+    async updatePicture(
+        @Param('id') id: number,
+        @Body() body: any,
+        @Req() request: any
+    ) {
+        id = Number(id);
+        if (isNaN(id)) {
+            return { statusCode: 'error', statusMessage: 'Please specify id!' };
+        }
+        if (!body.picture) {
+            return { statusCode: 'error', statusMessage: 'Please upload a picture!' };
+        }
+
+        const product = await this.productsService.get(id);
+
+        if (!product) {
+            return { statusCode: 'error', statusMessage: 'Product not found!' };
+        }
+
+        // Проверка доступа к магазину
+        if (!request.user?.is_admin) {
+            const hasAccess = await this.storesService.checkAccess(request.user?.id, [product.store_id]);
+            if (!hasAccess) {
+                return { statusCode: 'error', statusMessage: 'No access to this product!' };
+            }
+        }
+
+        return await this.picturesService.addProductPicture(id, body.picture);
     }
 
     @UseGuards(UserGuard)
@@ -83,22 +111,18 @@ export class ProductsCrmController {
             return { statusCode: 'error', statusMessage: 'Please specify id' };
         }
 
-        const product = await this.products.findFirst({
-            where: {
-                id: targetID,
-                is_deleted: false
-            }
-        });
+        const product = await this.productsService.get(id);
 
         if (!product) {
             return { statusCode: 'error', statusMessage: 'Product not found!' };
         }
 
         // Проверка доступа к магазину
-        const hasAccess = request.user?.is_admin
-            || await this.storesService.checkAccess(request.user?.id, [product.store_id]);
-        if (!hasAccess) {
-            return { statusCode: 'error', statusMessage: 'No access to this product!' };
+        if (!request.user?.is_admin) {
+            const hasAccess = await this.storesService.checkAccess(request.user?.id, [product.store_id]);
+            if (!hasAccess) {
+                return { statusCode: 'error', statusMessage: 'No access to this product!' };
+            }
         }
 
         try {
