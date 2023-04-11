@@ -20,7 +20,8 @@
       [class]="{selected: value.includes(option.id)}"
       (click)="selectOption(option.id)"
     >
-      {{ option.name }}
+      <span *ngIf="showID" class="item_id">#{{ option.id }}</span>
+      <div class="item_name">{{ option.name }}</div>
     </div>
   </div>
 

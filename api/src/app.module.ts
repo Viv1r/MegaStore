@@ -19,6 +19,9 @@ import { CategoriesCrmController } from './controllers/crm/categories-crm/catego
 import { CategoriesService } from './services/categories/categories.service';
 import { PicturesService } from './services/pictures/pictures.service';
 import { UserController } from './controllers/user/user.controller';
+import { MailService } from './services/mail/mail.service';
+import { SalesCrmController } from './controllers/crm/sales-crm/sales-crm.controller';
+import { SalesService } from './services/sales/sales.service';
 
 @Module({
   imports: [],
@@ -35,7 +38,8 @@ import { UserController } from './controllers/user/user.controller';
     ProductsCrmController,
     StoresCrmController,
     CategoriesCrmController,
-    UserController
+    UserController,
+    SalesCrmController
   ],
   providers: [
     SqlService,
@@ -44,7 +48,9 @@ import { UserController } from './controllers/user/user.controller';
     ProductsService,
     StoresService,
     CategoriesService,
-    PicturesService
+    PicturesService,
+    MailService,
+    SalesService
   ]
 })
 export class AppModule {}

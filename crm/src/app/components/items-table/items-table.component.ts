@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormControl, FormGroup } from "@angular/forms";
-import { FilterField } from "../../types/FilterField";
 import {PopupFormService} from "../../services/popup-form.service";
 import {AuthService} from "../../services/auth.service";
+import {FilterField} from "../../types/Fields";
 
 @Component({
   selector: 'app-items-table',
@@ -16,6 +16,7 @@ export class ItemsTableComponent implements OnInit {
   @Input() filtersFields: FilterField[] = [];
   @Input() itemsPerPage = 10;
   @Input() loading = false;
+  @Input() editable? = true;
 
   @Output() pushFilters = new EventEmitter<any>();
   @Output() add = new EventEmitter<void>();

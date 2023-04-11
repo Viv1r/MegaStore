@@ -40,6 +40,9 @@ export class UsersService {
 
     async getById(id: number): Promise<any> {
         return await this.users.findFirst({
+            include: {
+                owned_stores: true
+            },
             where: {
                 id: id
             }
@@ -174,7 +177,45 @@ export class UsersService {
         return { statusCode: 'ok', product: updatedUser };
     }
 
-    async getAllUsers(data): Promise<any[]> {
+    async updateName(userID: number, newName: string): Promise<boolean> {
+        let nameUpdated;
+        try {
+            nameUpdated = await this.users.update({
+                data: {
+                    name: newName
+                },
+                where: {
+                    id: userID
+                }
+            });
+        } catch {}
+
+        return !!nameUpdated;
+    }
+
+    // Когда юзер меняет свой пароль
+    async updatePassword(userID: number, oldPassword: string, newPassword: string): Promise<boolean> {
+        const user = await this.getById(userID);
+        if (user.password !== oldPassword) {
+            return false;
+        }
+
+        let passwordUpdated;
+        try {
+            passwordUpdated = await this.users.update({
+                data: {
+                    password: newPassword
+                },
+                where: {
+                    id: Number(userID)
+                }
+            });
+        } catch {}
+
+        return !!passwordUpdated;
+    }
+
+    async getAll(data): Promise<any[]> {
         const requestParams = {
             include: {
                 _count: {

@@ -10,7 +10,7 @@ export class UsersController {
     @UseGuards(AdminGuard)
     @Post()
     async getAllUsers(@Body() body: any): Promise<any> {
-        const users = await this.usersService.getAllUsers(body);
+        const users = await this.usersService.getAll(body);
 
         if (users?.length) {
             return { statusCode: 'ok', users: users };
@@ -35,7 +35,7 @@ export class UsersController {
         const user = await this.usersService.getById(Number(id));
 
         if (user) {
-            return user;
+            return { statusCode: 'ok', item: user };
         }
 
         return { statusCode: 'error' };

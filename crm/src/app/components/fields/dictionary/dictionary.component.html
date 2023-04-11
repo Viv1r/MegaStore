@@ -13,7 +13,7 @@
         <input type="text" [(ngModel)]="item.value" (input)="onChange(value)">
       </td>
       <td>
-        <button class="btn_delete" (click)="deleteRow(i)">✖</button>
+        <button class="btn_delete" tabindex="-1" (click)="deleteRow(i)">✖</button>
       </td>
     </tr>
     <tr>

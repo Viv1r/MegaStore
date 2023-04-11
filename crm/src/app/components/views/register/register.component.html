@@ -11,45 +11,23 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
-        <input matInput [formControlName]="'name'">
+        <input matInput formControlName="name">
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
-        <input matInput [formControlName]="'email'">
+        <input matInput formControlName="email">
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Password</mat-label>
-        <input matInput
-               [type]="showPassword ? 'text' : 'password'"
-               [formControlName]="'password'"
-        >
-        <button tabindex="-1"
-          mat-icon-button matSuffix
-          (click)="showPassword = !showPassword"
-          [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="showPassword"
-        >
-          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
-        </button>
+        <input matInput type="password" formControlName="password">
         <mat-hint>8 to 30 symbols</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Confirm password</mat-label>
-        <input matInput
-               [type]="showConfirmPassword ? 'text' : 'password'"
-               [formControlName]="'confirmPassword'"
-        >
-        <button tabindex="-1"
-          mat-icon-button matSuffix
-          (click)="showConfirmPassword = !showConfirmPassword"
-          [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="showConfirmPassword"
-        >
-          <mat-icon>{{ showConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
-        </button>
+        <input matInput type="password" formControlName="confirmPassword">
       </mat-form-field>
 
     </form>

@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import {AuthService} from "../../services/auth.service";
+import {ConstructorField} from "../../types/Fields";
 
 @Component({
   selector: 'app-popup-form',
@@ -50,7 +51,7 @@ export class PopupFormComponent {
 
   private readonly apiBasePath = environment.API_BASE_PATH;
 
-  fields: any[] = [];
+  fields: ConstructorField[] = [];
   form?: FormGroup;
   error?: string;
 

@@ -95,47 +95,48 @@ export class StoresService {
     }
 
     async getAllStores(data?: any): Promise<any> {
-        const conditions = {
-            include: {
-                owner: {
-                    select: {
-                        email: true
-                    }
-                },
-                _count: {
-                    select: {
-                        products: true,
-                        sales: true
-                    }
-                }
-            },
-            where: {
-                is_deleted: false,
-                AND: []
-            }
+        const whereCondition = {
+            is_deleted: false,
+            AND: []
         };
 
         if (data?.id) {
-            conditions.where.AND.push({
+            whereCondition.AND.push({
                 id: Number(data.id)
             });
         }
 
         if (data?.name) {
-            conditions.where.AND.push({
+            whereCondition.AND.push({
                 name: { contains: data.name }
             });
         }
 
         if (Array.isArray(data?.owner)) {
-            conditions.where.AND.push({
+            whereCondition.AND.push({
                 OR: data.owner.map(id => ({ owner_id: id }) )
             });
         }
 
         let result;
         try {
-            result = await this.stores.findMany(conditions);
+            result = await this.stores.findMany({
+                include: {
+                    owner: {
+                        select: {
+                            email: true
+                        }
+                    },
+                    _count: {
+                        select: {
+                            products: true,
+                            sales: true
+                        }
+                    }
+                },
+                where: whereCondition,
+                orderBy: [{ id: 'desc' }] as any
+            });
         } catch {
             result = [];
         }
@@ -165,7 +166,7 @@ export class StoresService {
         } catch {}
 
         if (store) {
-            return store;
+            return { statusCode: 'ok', item: store };
         }
         return { statusCode: 'error', statusMessage: 'Check your data!' };
     }
@@ -210,4 +211,31 @@ export class StoresService {
         const userStores = await this.storesOfUser(userID);
         return stores.every(id => userStores.includes(id));
     }
+
+    public async formStoresList(user: any, stores: any[]): Promise<any> {
+        let result;
+
+        if (Array.isArray(stores) && stores.length) {
+            result = stores;
+
+            if (!user.is_admin) {
+                const hasAccess = await this.checkAccess(user.id, stores)
+                if (!hasAccess) {
+                    return null;
+                }
+            }
+        } else if (!user.is_admin) {
+            const userStores = await this.storesOfUser(user?.id);
+            if (!userStores.length) {
+                return null;
+            }
+            result = userStores;
+        } else {
+            result = [];
+        }
+
+        return result;
+    }
+
+
 }

@@ -14,6 +14,7 @@
           *ngIf="field.type === 'select-one'"
           [formControlName]="field.key"
           [options]="field.options ?? []"
+          [showID]="field.showID"
           placeholder="Select"
         ></app-select-one>
 
@@ -21,7 +22,7 @@
           *ngIf="field.type === 'select-multiple'"
           [formControlName]="field.key"
           [options]="field.options ?? []"
-          placeholder="Select"
+          [showID]="field.showID"
         ></app-select-multiple>
 
         <app-input-range
@@ -59,12 +60,14 @@
         {{ cl.name || (cl.tag | titlecase) }}
       </th>
 
-      <th class="pseudo_cl"></th>
-      <th class="pseudo_cl"></th>
+      <ng-template [ngIf]="editable">
+        <th class="pseudo_cl"></th>
+        <th class="pseudo_cl"></th>
 
-      <div class="btn_add" (click)="add.emit()">
-        <img src="assets/svg/add-item.svg" alt="add">
-      </div>
+        <div class="btn_add" (click)="add.emit()">
+          <img src="assets/svg/add-item.svg" alt="add">
+        </div>
+      </ng-template>
 
     </tr>
     <ng-template [ngIf]="items.length">
@@ -75,12 +78,14 @@
         [class]="{selected: selectedItems.includes(item.id)}"
       >
 
-        <td *ngIf="selectMode" class="checkbox">
-          <img
-            *ngIf="selectedItems.includes(item.id)"
-            src="assets/svg/item-selected.svg"
-            alt="check"
-          >
+        <td *ngIf="selectMode">
+          <div class="checkbox">
+            <img
+              *ngIf="selectedItems.includes(item.id)"
+              src="assets/svg/item-selected.svg"
+              alt="check"
+            >
+          </div>
         </td>
 
         <ng-template ngFor let-cl [ngForOf]="columns">
@@ -96,13 +101,15 @@
           </td>
         </ng-template>
 
-        <td class="btn_edit" (click)="$event.stopPropagation(); editItem(item.id)">
-          <img src="assets/svg/edit-item.svg" alt="edit">
-        </td>
+        <ng-template [ngIf]="editable">
+          <td class="btn_edit" (click)="$event.stopPropagation(); editItem(item.id)">
+            <img src="assets/svg/edit-item.svg" alt="edit">
+          </td>
 
-        <td class="btn_delete" (click)="$event.stopPropagation(); delete.emit(item.id)">
-          <img src="assets/svg/delete-item.svg" alt="delete">
-        </td>
+          <td class="btn_delete" (click)="$event.stopPropagation(); delete.emit(item.id)">
+            <img src="assets/svg/delete-item.svg" alt="delete">
+          </td>
+        </ng-template>
 
       </tr>
     </ng-template>

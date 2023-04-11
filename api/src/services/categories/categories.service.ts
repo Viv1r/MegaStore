@@ -8,7 +8,7 @@ export class CategoriesService {
     private categories = this.sqlService.client.categories;
     private products = this.sqlService.client.products;
 
-    async get(): Promise<any> {
+    async getAll(): Promise<any> {
         let result;
         try {
             result = await this.categories.findMany({
@@ -21,7 +21,12 @@ export class CategoriesService {
                 },
                 where: {
                     is_deleted: false
-                }
+                },
+                orderBy: [
+                    {
+                        id: 'desc'
+                    }
+                ] as any
             });
         } catch {}
 
@@ -57,7 +62,10 @@ export class CategoriesService {
             });
         } catch {}
 
-        return result ?? null;
+        if (result) {
+            return { statusCode: 'ok', item: result };
+        }
+        return { statusCode: 'error', statusMessage: 'Try again later!' };
     }
 
     async create(data: any) {
@@ -123,7 +131,7 @@ export class CategoriesService {
 
     async delete(id: number): Promise<boolean> {
         try {
-            await this.products.update({
+            await this.categories.update({
                 data: {
                     is_deleted: true
                 },

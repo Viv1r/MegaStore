@@ -15,8 +15,6 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  showPassword = true;
-  showConfirmPassword = true;
   error?: string;
 
   readonly registerForm = new FormGroup({

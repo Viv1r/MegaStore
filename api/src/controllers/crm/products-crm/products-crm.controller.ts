@@ -22,7 +22,7 @@ export class ProductsCrmController {
     @Post()
     async getProducts(@Req() request: any, @Query() query: any, @Body() body: any): Promise<any> {
         const user = request.user;
-        return await this.productsService.getProducts(user, query, body);
+        return await this.productsService.getAll(user, query, body);
     }
 
     @UseGuards(UserGuard)
@@ -107,7 +107,7 @@ export class ProductsCrmController {
             product.attributes = null;
         }
 
-        return product;
+        return { statusCode: 'ok', item: product };
     }
 
     @UseGuards(UserGuard)

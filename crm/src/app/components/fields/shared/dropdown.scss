@@ -19,6 +19,23 @@ $option-height: 34px;
   align-items: center;
 }
 
+.item {
+  padding: 0 10px;
+}
+
+.item_id {
+  font-size: 12px;
+  color: #aaa;
+  margin-right: 8px;
+}
+
+.item_name {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .button_toggle {
   cursor: pointer;
   color: #c0c0c0;

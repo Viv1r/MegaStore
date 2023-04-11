@@ -43,9 +43,9 @@ export class PopupFormService {
 
     if (source) {
       source.subscribe((data: any) => {
-        if (data) {
+        if (data.item) {
           this.constructorChange.emit(constructor);
-          this.itemChange.emit(data);
+          this.itemChange.emit(data.item);
         }
         this.active = true;
       });

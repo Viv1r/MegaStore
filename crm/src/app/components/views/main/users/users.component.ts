@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
-import { FilterField } from "../../../../types/FilterField";
 import { columns, filters, constructor } from "../../../../forms/users";
 import { PopupFormService } from "../../../../services/popup-form.service";
 

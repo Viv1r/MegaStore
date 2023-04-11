@@ -1,6 +1,6 @@
-import { FilterField } from "../types/FilterField";
+import {FilterField, ConstructorField, ColumnField} from "../types/Fields";
 
-export const columns = [
+export const columns: ColumnField[] = [
   {
     tag: 'id',
     name: 'ID'
@@ -66,11 +66,12 @@ export const filters: FilterField[] = [
     key: 'store',
     name: 'Sellers',
     type: 'select-multiple',
-    options: []
+    options: [],
+    showID: true
   }
 ];
 
-export const constructor = [
+export const constructor: ConstructorField[] = [
   {
     key: 'category_id',
     name: 'Category',
@@ -112,6 +113,7 @@ export const constructor = [
     name: 'Seller store',
     type: 'select-one',
     options: [],
-    optionsURL: 'crm/stores/short'
+    optionsURL: 'crm/stores/short',
+    showID: true
   }
 ];

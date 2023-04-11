@@ -1,0 +1,13 @@
+<div class="page">
+  <div class="header">Sales</div>
+  <div class="container">
+    <app-items-table
+      [columns]="columns"
+      [items]="sales"
+      [filtersFields]="filters"
+      [loading]="loading"
+      [editable]="false"
+      (pushFilters)="loadSales($event)"
+    ></app-items-table>
+  </div>
+</div>

@@ -1,60 +1,60 @@
 <ng-template [ngIf]="popupFormService.active">
   <div class="popup_bg" (click)="close()"></div>
-  <div class="popup_wrapper" *ngIf="form">
-    <div class="popup_window">
-      <div class="btn_close" (click)="close()">✖</div>
+  <div class="popup_window" *ngIf="form">
+    <div class="btn_close" (click)="close()">✖</div>
 
-      <div class="title">{{ popupFormService.itemID ? 'Edit item' : 'Add item' }}</div>
+    <div class="title">{{ popupFormService.itemID ? 'Edit item' : 'Add item' }}</div>
 
-      <form [formGroup]="form" (keydown.enter)="apply()">
-        <div *ngFor="let field of fields" class="field_wrapper">
+    <form [formGroup]="form" (keydown.enter)="apply()">
+      <div *ngFor="let field of fields" class="field_wrapper">
 
-          <ng-template [ngIf]="!field.adminOnly || user.isAdmin">
-            <label>{{ field.name ?? field.key | titlecase }}</label>
+        <ng-template [ngIf]="!field.adminOnly || user.isAdmin">
+          <label>{{ field.name ?? field.key | titlecase }}</label>
 
-            <app-select-one
-              *ngIf="field.type === 'select-one'"
-              [formControlName]="field.key"
-              [options]="field.options"
-            ></app-select-one>
+          <app-select-one
+            *ngIf="field.type === 'select-one'"
+            [formControlName]="field.key"
+            [options]="field.options ?? []"
+            [showID]="field.showID"
+          ></app-select-one>
 
-            <app-select-multiple
-              *ngIf="field.type === 'select-multiple'"
-              [formControlName]="field.key"
-              [options]="field.options"
-            ></app-select-multiple>
+          <app-select-multiple
+            *ngIf="field.type === 'select-multiple'"
+            [formControlName]="field.key"
+            [options]="field.options ?? []"
+            [showID]="field.showID"
+          ></app-select-multiple>
 
-            <app-dictionary
-              *ngIf="field.type === 'dictionary'"
-              [formControlName]="field.key"
-            ></app-dictionary>
+          <app-dictionary
+            *ngIf="field.type === 'dictionary'"
+            [formControlName]="field.key"
+          ></app-dictionary>
 
-            <input
-              *ngIf="field.type === 'text'"
-              type="text"
-              [formControlName]="field.key"
-            >
+          <input
+            *ngIf="field.type === 'text'"
+            type="text"
+            [formControlName]="field.key"
+          >
 
-            <input
-              *ngIf="field.type === 'number'"
-              type="number"
-              [formControlName]="field.key"
-            >
+          <input
+            *ngIf="field.type === 'number'"
+            type="number"
+            [formControlName]="field.key"
+          >
 
-            <textarea
-              *ngIf="field.type === 'longtext'"
-              [formControlName]="field.key"
-            ></textarea>
+          <textarea
+            *ngIf="field.type === 'longtext'"
+            [formControlName]="field.key"
+          ></textarea>
 
-          </ng-template>
+        </ng-template>
 
-        </div>
-      </form>
-      <div class="message" *ngIf="error">{{ error }}</div>
-      <div class="buttons_wrapper">
-        <button class="btn btn-apply" (click)="apply()">Apply</button>
-        <button class="btn btn-discard" (click)="close()">Discard changes</button>
       </div>
+    </form>
+    <div class="message" *ngIf="error">{{ error }}</div>
+    <div class="buttons_wrapper">
+      <button class="btn btn-apply" (click)="apply()">Apply</button>
+      <button class="btn btn-discard" (click)="close()">Discard changes</button>
     </div>
   </div>
 </ng-template>

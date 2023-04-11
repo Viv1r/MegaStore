@@ -17,7 +17,7 @@ export class SelectMultipleComponent implements ControlValueAccessor {
   constructor(private eRef: ElementRef) {}
 
   @Input() options: any[] = [];
-  @Input() placeholder?: string;
+  @Input() showID?: boolean;
 
   private _value: number[] = [];
   touched = false;

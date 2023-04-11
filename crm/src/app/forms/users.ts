@@ -1,6 +1,6 @@
-import { FilterField } from "../types/FilterField";
+import {ColumnField, FilterField, ConstructorField} from "../types/Fields";
 
-export const columns = [
+export const columns: ColumnField[] = [
   {
     tag: 'id',
     name: 'ID'
@@ -73,18 +73,18 @@ export const filters: FilterField[] = [
     type: 'select-one',
     options: [
       {
-        id: 1,
-        name: 'Banned'
+        id: false,
+        name: 'Not banned'
       },
       {
-        id: 0,
-        name: 'Not banned'
+        id: true,
+        name: 'Banned'
       }
     ]
   }
 ];
 
-export const constructor = [
+export const constructor: ConstructorField[] = [
   {
     key: 'email',
     type: 'text'

@@ -53,7 +53,10 @@
                         <div class="postfix" v-if="product.pricePostfix">{{ product.pricePostfix }}</div>
                     </div>
 
-                    <div v-if="cartGetCount(product.id)" class="count_selector" @click.stop>
+
+                    <div v-if="!product.countAvailable" class="out_of_stock" @click.stop>Out of stock!</div>
+
+                    <div v-else-if="cartGetCount(product.id)" class="count_selector" @click.stop>
                         <button class="btn_decrease"
                                 @click="cartAddCount({id: product.id, count: -1})"
                         >-</button>

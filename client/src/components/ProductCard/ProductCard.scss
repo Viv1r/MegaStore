@@ -82,11 +82,11 @@
     gap: 12px;
 }
 
-.btn_add_item {
+.btn_add_item,
+.out_of_stock {
     width: 76px;
     height: 23px;
     padding: 2px 0;
-    border: 1px solid rgba(0, 133, 255, 0.75);
     border-radius: 5px;
     font-family: 'Kulim Park', serif;
     font-style: normal;
@@ -96,13 +96,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    color: #0085FF;
     overflow: hidden;
     white-space: nowrap;
+    user-select: none;
+    background-color: white;
+}
+
+.out_of_stock {
+    border: 1px solid rgba(167, 213, 255, 0.75);
+    color: #40a4ff;
+    cursor: default;
+}
+
+.btn_add_item {
+    border: 1px solid rgba(0, 133, 255, 0.75);
+    color: #0085FF;
     transition: all .2s ease-out;
     cursor: pointer;
-    user-select: none;
 
     &:hover {
         color: white;
@@ -217,7 +227,8 @@
         border-radius: 0 10px 10px 0;
     }
 
-    .btn_add_item {
+    .btn_add_item,
+    .out_of_stock {
         width: 112px;
         height: 32px;
         border-radius: 10px;
@@ -276,7 +287,8 @@
             border-radius: 0 10px 10px 0;
         }
 
-        .btn_add_item {
+        .btn_add_item,
+        .out_of_stock {
             width: 112px;
             height: 32px;
             border-radius: 10px;

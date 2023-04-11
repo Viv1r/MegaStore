@@ -17,6 +17,7 @@ export class SelectOneComponent implements ControlValueAccessor {
   constructor(private eRef: ElementRef) {}
 
   @Input() placeholder?: string;
+  @Input() showID?: boolean;
 
   private _options: any[] = [];
   private _value: any = null;

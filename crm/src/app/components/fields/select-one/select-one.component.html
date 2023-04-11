@@ -17,6 +17,9 @@
       *ngFor="let option of options | filterByName:filterInput"
       class="item"
       (click)="value = option.id"
-    >{{ option.name }}</div>
+    >
+      <span *ngIf="showID" class="item_id">#{{ option.id }}</span>
+      <div class="item_name">{{ option.name }}</div>
+    </div>
   </div>
 </div>

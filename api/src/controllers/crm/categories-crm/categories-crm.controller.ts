@@ -11,7 +11,7 @@ export class CategoriesCrmController {
     @UseGuards(AdminGuard)
     @Get()
     async getCategories() {
-        const data = await this.categoriesService.get();
+        const data = await this.categoriesService.getAll();
 
         if (data) {
             const result = data.map((item: any) => {

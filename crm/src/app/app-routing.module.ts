@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from "./components/views/page-not-found/page-no
 import {TitlePageComponent} from "./components/views/main/title-page/title-page.component";
 import {StoresComponent} from "./components/views/main/stores/stores.component";
 import {CategoriesComponent} from "./components/views/main/categories/categories.component";
+import {SalesComponent} from "./components/views/main/sales/sales.component";
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
       {
         path: 'products',
         component: ProductsComponent
+      },
+      {
+        path: 'sales',
+        component: SalesComponent
       }
     ]
   },

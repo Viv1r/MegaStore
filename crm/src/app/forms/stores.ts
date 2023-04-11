@@ -1,6 +1,6 @@
-import { FilterField } from "../types/FilterField";
+import {ColumnField, ConstructorField, FilterField} from "../types/Fields";
 
-export const columns = [
+export const columns: ColumnField[] = [
   {
     tag: 'id',
     name: 'ID'
@@ -40,7 +40,7 @@ export const filters: FilterField[] = [
   }
 ];
 
-export const constructor = [
+export const constructor: ConstructorField[] = [
   {
     key: 'name',
     type: 'text'

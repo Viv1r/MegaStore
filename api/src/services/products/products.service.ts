@@ -36,7 +36,11 @@ export class ProductsService {
         })
     }
 
-    public async getProducts(user: any, query: any, data: any): Promise<any> {
+    public async getAll(user: any, query: any, data: any): Promise<any> {
+        const conditions = {
+            is_deleted: false,
+            AND: []
+        };
         let categoryQuery, storeQuery;
 
         // Формирование списка категорий в запросе
@@ -45,21 +49,57 @@ export class ProductsService {
         }
 
         // Формирование списка магазинов в запросе (в т. ч. сверка с наличием доступа у юзера)
-        if (Array.isArray(data?.store) && data.store.length) {
-            storeQuery = data.store.map(id => { return { store_id: id } });
+        storeQuery = await this.storesService.formStoresList(user, data.store);
+        if (!storeQuery) {
+            return { statusCode: 'error', statusMessage: 'No access to some of the stores or no stores present!' };
+        }
 
-            if (!user.is_admin) {
-                const hasAccess = await this.storesService.checkAccess(user.id, data.store)
-                if (!hasAccess) {
-                    return { statusCode: 'error', statusMessage: 'No access to some of the stores!' };
+        if (categoryQuery?.length) {
+            conditions.AND.push({
+                OR: categoryQuery
+            });
+        }
+
+        if (storeQuery?.length) {
+            conditions.AND.push({
+                OR: storeQuery.map(id => ({ store_id: id }))
+            });
+        }
+
+        if (data?.title) {
+            conditions.AND.push({
+                title: { contains: data.title }
+            });
+        }
+
+        if (data?.description) {
+            conditions.AND.push({
+                description: { contains: data.description }
+            });
+        }
+
+        if (data?.id) {
+            conditions.AND.push({
+                id: data.id
+            });
+        }
+
+        if (data?.price) {
+            conditions.AND.push({
+                price: {
+                    gte: data.price.min,
+                    lte: data.price.max
                 }
-            }
-        } else if (!user.is_admin) {
-            const userStores = await this.storesService.storesOfUser(user?.id);
-            if (!userStores.length) {
-                return { statusCode: 'ok', products: [] };
-            }
-            storeQuery = userStores.map(id => { return { store_id: id } });
+            });
+        }
+
+        if (data?.count_available) {
+            conditions.AND.push({
+                count_available: {
+                    gte: data.count_available.min,
+                    lte: data.count_available.max
+                }
+            });
         }
 
         const count = Number(query?.count) || 10;
@@ -68,80 +108,32 @@ export class ProductsService {
             skip = Number(query.count) * (query.page - 1);
         }
 
-        const requestParams = {
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                price: true,
-                price_postfix: true,
-                count_available: true,
-                store: {
-                    select: {
-                        name: true
+        let result: Product[];
+        try {
+            result = await this.products.findMany({
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    price: true,
+                    price_postfix: true,
+                    count_available: true,
+                    store: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    category: {
+                        select: {
+                            name: true
+                        }
                     }
                 },
-                category: {
-                    select: {
-                        name: true
-                    }
-                }
-            },
-            where: {
-                is_deleted: false,
-                AND: []
-            },
-            orderBy: [
-                {
-                    id: 'desc'
-                }
-            ] as any,
-            take: count,
-            skip: skip
-        };
-
-        if (categoryQuery?.length) {
-            requestParams.where.AND.push({
-                OR: categoryQuery
+                where: conditions,
+                orderBy: [{ id: 'desc' }] as any,
+                take: count,
+                skip: skip
             });
-        }
-
-        if (storeQuery?.length) {
-            requestParams.where.AND.push({
-                OR: storeQuery
-            });
-        }
-
-        if (data?.title) requestParams.where.AND.push({
-            title: { contains: data.title }
-        });
-
-        if (data?.description) requestParams.where.AND.push({
-            description: { contains: data.description }
-        });
-
-        if (data?.id) requestParams.where.AND.push({
-            id: data.id
-        });
-
-        if (data?.price) requestParams.where.AND.push({
-            price: {
-                gte: data.price.min ?? undefined,
-                lte: data.price.max ?? undefined
-            }
-        });
-
-        if (data?.count_available) requestParams.where.AND.push({
-            count_available: {
-                gte: data.count_available.min ?? undefined,
-                lte: data.count_available.max ?? undefined
-            }
-        });
-
-        let result: Product[];
-
-        try {
-            result = await this.products.findMany(requestParams);
         } catch (error) {
             return { statusCode: 'error', statusMessage: 'Wrong data!' };
         }
