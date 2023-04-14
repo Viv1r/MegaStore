@@ -65,7 +65,7 @@ export default {
                     alert(`Thanks for your purchase! Total paid: $${data.purchase.sum}`);
                     state.products = [];
                     commit('clearCart');
-                } else if (data.statusCode === 'error' ) {
+                } else if (data.statusMessage) {
                     alert(data.statusMessage);
                 }
             }
