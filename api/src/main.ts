@@ -5,7 +5,7 @@ import { join } from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 
-const PORT = 443;
+const PORT = 80;
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
