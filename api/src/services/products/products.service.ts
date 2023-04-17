@@ -190,8 +190,8 @@ export class ProductsService {
             title: data.title,
             description: data.description,
             price: data.price,
-            price_postfix: data.price_postfix || null,
-            count_available: data.count_available || 1,
+            price_postfix: data.price_postfix ?? null,
+            count_available: data.count_available ?? 1,
             store_id: data.store_id,
             category_id: data.category_id,
             attributes: JSON.stringify(data.attributes ?? {})
@@ -203,9 +203,13 @@ export class ProductsService {
                 statusCode: 'error',
                 statusMessage: 'Check these fields: '
                     + emptyFields.toString()
-                        .replaceAll(',', ', ')
-                        .replaceAll('_', ' ')
+                    .replaceAll(',', ', ')
+                    .replaceAll('_', ' ')
             };
+        }
+
+        if (newProductData.price <= 0) {
+            return { statusCode: 'error', statusMessage: 'Price cannot be zero or lower!' };
         }
 
         let newProduct;
@@ -240,6 +244,10 @@ export class ProductsService {
                 + Object.keys(newData).toString()
                     .replaceAll(',', ', ')
             }
+        }
+
+        if (newData.price <= 0) {
+            return { statusCode: 'error', statusMessage: 'Price cannot be zero or lower!' };
         }
 
         let updatedProduct;

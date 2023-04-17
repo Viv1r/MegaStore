@@ -25,7 +25,7 @@
                         <div class="info">
                             <div class="title">{{ sale.product?.title }}</div>
                             <div class="attributes">
-                                Seller: {{ sale.seller?.title }}<br>
+                                Seller: {{ sale.seller?.name }}<br>
                                 Count: {{ sale.product_count }}<br>
                                 Total: ${{ sale.sum }}
                             </div>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="summary">
-                    <div class="total">Total: {{ purchase.sum }}</div>
+                    <div class="total">Total: ${{ purchase.sum }}</div>
                     <div class="date">{{ toDate(purchase.datetime) }}</div>
                 </div>
             </div>

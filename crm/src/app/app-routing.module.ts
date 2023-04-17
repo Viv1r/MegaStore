@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from "./components/views/main/main.component";
-import { RegisterComponent } from "./components/views/register/register.component";
-import { LoginComponent } from "./components/views/login/login.component";
+import { RegisterComponent } from "./auth/components/register/register.component";
+import { LoginComponent } from "./auth/components/login/login.component";
 import { ProductsComponent } from "./components/views/main/products/products.component";
 import { UsersComponent } from "./components/views/main/users/users.component";
 import { PageNotFoundComponent } from "./components/views/page-not-found/page-not-found.component";
-import {TitlePageComponent} from "./components/views/main/title-page/title-page.component";
-import {StoresComponent} from "./components/views/main/stores/stores.component";
-import {CategoriesComponent} from "./components/views/main/categories/categories.component";
-import {SalesComponent} from "./components/views/main/sales/sales.component";
+import { TitlePageComponent } from "./components/views/main/title-page/title-page.component";
+import { StoresComponent } from "./components/views/main/stores/stores.component";
+import { CategoriesComponent } from "./components/views/main/categories/categories.component";
+import { SalesComponent } from "./components/views/main/sales/sales.component";
 
 const routes: Routes = [
   {

@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 import axios from 'axios';
 
 export default {
@@ -100,8 +100,10 @@ export default {
     },
 
     methods: {
-        ...mapMutations('cart', ['addToCart', 'cartAddCount', 'cartSetCount']),
+        ...mapMutations('cart', ['cartAddCount', 'cartSetCount']),
         ...mapMutations(['openDetailedView']),
+        ...mapActions('cart', ['addToCart']),
+        ...mapActions(['pushToHistory']),
 
         async loadProduct() {
             const URL = 'api/products/' + this.detailedViewProduct.id;
@@ -124,6 +126,8 @@ export default {
                     category: product.category,
                     picture: product.picture
                 };
+
+                this.pushToHistory(product.id);
             }
         }
     },

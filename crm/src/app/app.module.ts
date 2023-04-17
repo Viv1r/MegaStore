@@ -2,17 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from "@angular/material/input";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/views/login/login.component';
-import { RegisterComponent } from './components/views/register/register.component';
 import { MainComponent } from './components/views/main/main.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemsTableComponent } from './components/items-table/items-table.component';
@@ -30,12 +22,11 @@ import { CategoriesComponent } from './components/views/main/categories/categori
 import { FilterByNamePipe } from './pipes/filter-by-name.pipe';
 import { DictionaryComponent } from './components/fields/dictionary/dictionary.component';
 import { SalesComponent } from './components/views/main/sales/sales.component';
+import { AuthModule } from "./auth/auth.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
     MainComponent,
     ItemsTableComponent,
     ProductsComponent,
@@ -53,20 +44,15 @@ import { SalesComponent } from './components/views/main/sales/sales.component';
     DictionaryComponent,
     SalesComponent
   ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        AppRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatButtonModule,
-        MatSlideToggleModule,
-        MatInputModule,
-        MatIconModule
-    ],
+  imports: [
+      AuthModule,
+      BrowserModule,
+      HttpClientModule,
+      AppRoutingModule,
+      FormsModule,
+      ReactiveFormsModule,
+      BrowserAnimationsModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

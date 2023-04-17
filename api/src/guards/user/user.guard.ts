@@ -19,7 +19,7 @@ export class UserGuard implements CanActivate {
       throw new HttpException('You are banned!', 500);
     }
 
-    if (user?.email === 'root') {
+    if (user?.id === 0) {
       user.is_root = true;
       user.is_admin = true;
     }

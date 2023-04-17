@@ -5,26 +5,26 @@
         <div class="btn_close" @click="$emit('close')">✕</div>
         <div class="switcher_wrapper">
             Log in
-            <Switcher @switchOn="registerMode = true" @switchOff="registerMode = false"/>
+            <Switcher v-model="registerMode"/>
             Register
         </div>
         <div class="form_wrapper">
-            <template v-if="registerMode">
+            <form v-if="registerMode" @keydown.enter.prevent="register()">
                 <div class="field_wrapper">
                     Name
-                    <input type="text" v-model="form.name" @keydown.enter="register()">
+                    <input type="text" v-model="form.name">
                 </div>
                 <div class="field_wrapper">
                     E-mail
-                    <input type="text" v-model="form.email" @keydown.enter="register()">
+                    <input type="text" v-model="form.email">
                 </div>
                 <div class="field_wrapper">
                     Password
-                    <input type="password" v-model="form.password" @keydown.enter="register()">
+                    <input type="password" v-model="form.password">
                 </div>
                 <div class="field_wrapper">
                     Confirm password
-                    <input type="password" v-model="form.passwordConfirm" @keydown.enter="register()">
+                    <input type="password" v-model="form.passwordConfirm">
                 </div>
 
                 <div v-if="authError" class="error_message">{{ authError }}</div>
@@ -32,16 +32,16 @@
                     <template v-if="processingAuth">...</template>
                     <template v-else>Register</template>
                 </button>
-            </template>
+            </form>
 
-            <template v-else>
+            <form v-else @keydown.enter.prevent="login()">
                 <div class="field_wrapper">
                     E-mail
-                    <input type="text" v-model="form.email" @keydown.enter="login()">
+                    <input type="text" v-model="form.email">
                 </div>
                 <div class="field_wrapper">
                     Password
-                    <input type="password" v-model="form.password" @keydown.enter="login()">
+                    <input type="password" v-model="form.password">
                 </div>
 
                 <div v-if="authError" class="error_message">{{ authError }}</div>
@@ -49,7 +49,7 @@
                     <template v-if="processingAuth">...</template>
                     <template v-else>Log in</template>
                 </button>
-            </template>
+            </form>
         </div>
     </div>
 </div>

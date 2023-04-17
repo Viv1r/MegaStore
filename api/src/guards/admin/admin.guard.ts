@@ -9,14 +9,18 @@ export class AdminGuard implements CanActivate {
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    try {
-      const token = this.getToken(request);
-      const user = await this.usersService.get(token);
-      if (user?.is_admin || user?.email === 'root') {
-        request.user = user;
-        return true;
-      }
-    } catch {}
+    const token = this.getToken(request);
+    const user = await this.usersService.get(token);
+    request.user = user;
+
+    if (user?.id === 0) {
+      user.is_root = true;
+      return true;
+    }
+
+    if (user?.is_admin) {
+      return true;
+    }
 
     throw new HttpException('Not authorized as admin!', 500);
   }

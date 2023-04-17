@@ -19,7 +19,7 @@ export class UserController {
     }
 
     @UseGuards(UserGuard)
-    @Post('update-data')
+    @Post('update')
     async updateData(@Req() request: any, @Body() { name, password, oldPassword }) {
         const user = request.user;
 

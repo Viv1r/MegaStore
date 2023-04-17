@@ -46,6 +46,11 @@ export default {
             }
         },
 
+        addToCart({commit}, id) {
+            commit('addToCart', id);
+            commit('pushToHistory', id, { root: true });
+        },
+
         async checkout({state, commit}) {
             if (!user.state.user.loggedIn) return alert('Please log in!');
 

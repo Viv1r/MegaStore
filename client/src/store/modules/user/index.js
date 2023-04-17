@@ -39,6 +39,12 @@ export default {
             state.authError = error;
         },
 
+        setName(state, newName) {
+            if (newName) {
+                state.user.name = newName;
+            }
+        },
+
         setProfilePicture(state, newURL) {
             if (newURL.length) {
                 state.user.profilePicture = newURL;
@@ -115,14 +121,30 @@ export default {
 
         async updateProfilePicture({commit}, imageBase64) {
             const action = 'user/picture';
-            let data;
+            let result;
             try {
                 const response = await api.post(action, { picture: imageBase64 });
-                data = response.data;
+                result = response.data;
             } finally {
-                if (data?.profile_picture) {
-                    commit('setProfilePicture', data.profile_picture);
-                    alert('Your profile picture was updated successfully!')
+                if (result?.profile_picture) {
+                    commit('setProfilePicture', result.profile_picture);
+                    alert('Your profile picture was updated successfully!');
+                }
+            }
+        },
+
+        async updateUserData({commit}, newData) {
+            const action = 'user/update';
+            let result;
+            try {
+                const response = await api.post(action, newData);
+                result = response.data;
+            } finally {
+                if (result?.statusCode === 'ok') {
+                    commit('setName', newData.name);
+                    alert('Your data was updated successfully!');
+                } else if (result?.statusMessage) {
+                    alert(result.statusMessage);
                 }
             }
         },

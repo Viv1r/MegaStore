@@ -36,6 +36,10 @@
 
                 <div v-if="user.loggedIn" class="btn_profile" @click="switchModule('userCard')">Welcome, {{ user.name }}!</div>
                 <div v-else class="btn_auth" @click="switchModule('authWindow')">Log in</div>
+
+                <div class="btn_auth_mobile" @click="switchModule(user.loggedIn ? 'userCard' : 'authWindow')">
+                  <img src="src/assets/svg/user.svg" alt="user">
+                </div>
             </div>
         </div>
     </header>
@@ -66,7 +70,7 @@
         </Transition>
     </div>
 
-    <footer>MegaStore © 2022 (by viv1r)</footer>
+    <footer><a href="https://github.com/Viv1r/MegaStore">MegaStore © 2022-2023 (by viv1r)</a></footer>
 </template>
 
 <script>

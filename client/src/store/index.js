@@ -79,6 +79,22 @@ export default createStore({
                     commit('setCategories', data.items);
                 }
             }
+        },
+
+        pushToHistory(store, productID) {
+            let history;
+            try {
+                history = JSON.parse(localStorage.getItem('history'));
+            } catch {}
+
+            if (!Array.isArray(history)) {
+                history = [];
+            }
+            if (!history.includes(productID)) {
+                history.unshift(productID);
+                history.splice(10);
+                localStorage.setItem('history', JSON.stringify(history));
+            }
         }
     }
 });

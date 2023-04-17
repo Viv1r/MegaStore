@@ -72,6 +72,19 @@ header {
     }
 }
 
+.btn_auth_mobile {
+    display: none;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+    }
+}
+
 .left_side {
     margin-right: auto;
 }
@@ -115,8 +128,12 @@ footer {
     justify-content: center;
     align-items: center;
     background-color: #5A5A5A;
-    color: white;
-    font-family: 'Kulim Park';
+
+    a {
+        color: white;
+        font-family: 'Kulim Park', serif;
+        font-size: 16px;
+    }
 }
 
 .blackout {
@@ -145,5 +162,11 @@ footer {
     .btn_auth,
     .btn_profile {
         display: none;
+    }
+
+    .btn_auth_mobile {
+        display: block;
+        position: relative;
+        top: 1px;
     }
 }

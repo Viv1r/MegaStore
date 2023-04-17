@@ -14,7 +14,7 @@
     width: 800px;
     height: fit-content;
     border-radius: 32px;
-    padding: 20px 80px 40px 80px;
+    padding: 20px 60px 40px 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,13 +34,23 @@
         z-index: 20;
     }
 
-    .title {
+    .title,
+    .subtitle {
         width: 100%;
-        padding: 15px 0;
         text-align: center;
-        font-size: 28px;
         font-family: "Kufam", serif;
+        user-select: none;
+    }
+
+    .title {
+        padding: 15px 0;
+        font-size: 28px;
         font-weight: bold;
+    }
+
+    .subtitle {
+        padding-top: 10px;
+        font-size: 18px;
     }
 
     form {
@@ -48,7 +58,7 @@
         height: fit-content;
         display: grid;
         grid-template-columns: 200px auto;
-        gap: 30px;
+        gap: 40px;
         margin-bottom: 30px;
     }
 
@@ -70,6 +80,11 @@
             border-radius: 20px;
             padding: 0 10px;
             background-color: white;
+
+            &:disabled {
+                border-color: #8f8f8f;
+                background-color: #f1f1f1;
+            }
         }
 
         .image_input {
@@ -117,5 +132,19 @@
             background-color: #1c8a00;
             color: white;
         }
+    }
+}
+
+@media (max-width: 800px) {
+    .edit_profile {
+        padding: 20px;
+        border-radius: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .edit_profile form {
+        display: flex;
+        flex-direction: column;
     }
 }
