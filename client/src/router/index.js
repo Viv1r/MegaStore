@@ -29,6 +29,6 @@ export default createRouter({
             path: '/purchases',
             name: 'purchasesHistory',
             component: PurchasesHistory
-        },
+        }
     ]
 });

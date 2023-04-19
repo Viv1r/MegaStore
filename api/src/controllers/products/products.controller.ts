@@ -86,34 +86,43 @@ export class ProductsController {
             price: {}
         };
 
+        if (typeof body.category === 'number') {
+            conditions.category_id = body.category;
+        }
+
         if (typeof body.price?.min === 'number') {
             conditions.price.gte = body.price.min;
         }
+
         if (typeof body.price?.max === 'number') {
             conditions.price.lte = body.price.max;
         }
 
-        const result: Product[] = await this.products.findMany({
-            select: {
-                id: true,
-                title: true,
-                price: true,
-                price_postfix: true,
-                description: true,
-                count_available: true,
-                store: {
-                    select: {
-                        name: true
+        let result: Product[];
+        try {
+            result = await this.products.findMany({
+                select: {
+                    id: true,
+                    title: true,
+                    price: true,
+                    price_postfix: true,
+                    description: true,
+                    count_available: true,
+                    store: {
+                        select: { name: true }
+                    },
+                    category: {
+                        select: { name: true }
                     }
-                }
-            },
-            where: conditions,
-            take: Number(count) || this.productsPerPage,
-            skip: Number(offset) || 0
-        });
+                },
+                where: conditions,
+                take: Number(count) || this.productsPerPage,
+                skip: Number(offset) || 0
+            });
+        } catch {}
 
         if (!result?.length) {
-            return { status: 'ok', products: [], end: true };
+            return { statusCode: 'ok', products: [], end: true };
         }
 
         const lastOne = await this.products.findFirst({

@@ -202,9 +202,7 @@ export class ProductsService {
             return {
                 statusCode: 'error',
                 statusMessage: 'Check these fields: '
-                    + emptyFields.toString()
-                    .replaceAll(',', ', ')
-                    .replaceAll('_', ' ')
+                    + emptyFields.join(', ').replaceAll('_', ' ')
             };
         }
 
@@ -241,8 +239,7 @@ export class ProductsService {
 
         if (Object.values(newData).every(item => item === undefined)) {
             return { statusCode: 'error', statusMessage: 'No new fields! You can specify: '
-                + Object.keys(newData).toString()
-                    .replaceAll(',', ', ')
+                + Object.keys(newData).join(', ')
             }
         }
 

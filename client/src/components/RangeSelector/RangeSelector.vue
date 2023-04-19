@@ -23,7 +23,7 @@ export default {
   props: {
     modelValue: {
       type: Object,
-      default: { min: 0, max: undefined }
+      default: { min: undefined, max: undefined }
     }
   }
 }

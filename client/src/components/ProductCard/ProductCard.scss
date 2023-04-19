@@ -33,16 +33,26 @@
 
     .info {
         width: 100%;
-        margin-top: auto;
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 12px;
+        gap: 2px;
     }
 
     .title {
         font-family: 'Kulim Park', serif;
         font-size: 20px;
+        margin-bottom: auto;
+    }
+
+    .subtitle {
+        width: 100%;
+        font-size: 12px;
+        line-height: 14px;
+        color: #6d6d6d;
+        font-family: 'Kulim Park', serif;
+        text-align: center;
     }
 
     .description {
@@ -51,6 +61,8 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        font-family: 'Raleway', serif;
+        margin: 8px 0;
     }
 
     .price {
@@ -201,12 +213,18 @@
         width: 100%;
         word-break: break-word;
         text-align: start;
+        margin-top: 8px;
     }
 
     .title {
         width: 100%;
         font-size: 28px;
         line-height: 32px;
+        margin-bottom: 0;
+    }
+
+    .subtitle {
+        text-align: start;
     }
 
     .price {

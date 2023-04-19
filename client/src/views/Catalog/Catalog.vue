@@ -72,10 +72,11 @@ export default {
         ProductCard,
         ProductsFiltering
     },
+
     data() {
         return {
             catalog: [],
-            filters: null,
+            filters: {},
             catalogStyle: 'list',
             productsPerPage: 5,
             offset: 0,
@@ -83,6 +84,7 @@ export default {
             loading: false
         }
     },
+
     methods: {
         async getCatalog() {
             this.loading = true;
@@ -139,8 +141,18 @@ export default {
         },
     },
 
+    watch: {
+        '$route.query.category'(newCategory) {
+            this.filters.category = newCategory;
+            this.reloadCatalog();
+        }
+    },
+
     mounted() {
         window.scrollTo(0, 0);
+
+        const category = this.$route.query?.category;
+        this.filters.category = category ?? null;
         this.getCatalog();
     }
 }

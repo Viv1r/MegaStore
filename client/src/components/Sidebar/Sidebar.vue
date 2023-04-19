@@ -5,7 +5,9 @@
                 <img src="../../assets/svg/menu.svg" alt="menu">
             </div>
         </div>
-        <a v-for="category in categories" class="sidebar__link">{{ category.name }}</a>
+        <a v-for="category in categories" class="sidebar__link" @click="goToCatalog(category.id)">
+          {{ category.name }}
+        </a>
     </div>
 </template>
 
@@ -15,6 +17,12 @@ import { mapState } from 'vuex';
 export default {
     computed: {
         ...mapState(['categories'])
+    },
+    methods: {
+        goToCatalog(categoryId) {
+            this.$router.push({ path: '/catalog', query: { category: categoryId }});
+            this.$emit('close');
+        }
     },
     emits: ['close']
 }

@@ -13,6 +13,7 @@
         </div>
         <div class="info">
             <div class="title">{{ product.title || 'Product' }}</div>
+            <div v-if="product.category" class="subtitle">{{ product.category.name }}</div>
             <div v-if="product.description" class="description">{{ product.description }}</div>
             <div class="actions_wrapper">
                 <div class="price">

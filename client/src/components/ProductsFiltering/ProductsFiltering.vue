@@ -1,44 +1,65 @@
 <template>
     <div class="title">Filters</div>
     <FiltersForm
-      :filters="filters"
-      @submit="applyForm($event)"
+        :filters="filters"
+        @submit="applyForm($event)"
     />
 </template>
 
 <script>
 import FiltersForm from "../FiltersForm/FiltersForm.vue";
+import { mapState } from "vuex";
 
 export default {
-  components: {
-    FiltersForm
-  },
-  data() {
-    return {
-      filters: [
-        {
-          tag: 'title',
-          name: 'Title'
-        },
-        {
-          tag: 'description',
-          name: 'Description'
-        },
-        {
-          tag: 'price',
-          name: 'Price',
-          type: 'range',
-          max: 1000
+    components: {
+        FiltersForm
+    },
+    computed: {
+        ...mapState(['categories'])
+    },
+    watch: {
+        categories(newVal) {
+            this.loadCategories(newVal);
         }
-      ]
-    }
-  },
-  methods: {
-    applyForm(form) {
-      this.$emit('update', form);
-    }
-  },
-  emits: ['update']
+    },
+    data() {
+        return {
+            filters: [
+                {
+                    tag: 'category',
+                    name: 'Category',
+                    type: 'select-one',
+                    options: []
+                },
+                {
+                    tag: 'title',
+                    name: 'Title'
+                },
+                {
+                    tag: 'description',
+                    name: 'Description'
+                },
+                {
+                    tag: 'price',
+                    name: 'Price',
+                    type: 'range'
+                }
+            ]
+        }
+    },
+    methods: {
+        applyForm(form) {
+            this.$emit('update', form);
+        },
+        loadCategories(newCategories) {
+            this.filters.find(item => item.tag === 'category')
+                .options = newCategories;
+        }
+    },
+    mounted() {
+        this.loadCategories(this.categories);
+    },
+    emits: ['update']
 }
 </script>
 
