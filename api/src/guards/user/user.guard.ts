@@ -16,7 +16,7 @@ export class UserGuard implements CanActivate {
     } catch {}
 
     if (user?.is_banned) {
-      throw new HttpException('You are banned!', 500);
+      throw new HttpException('You are so banned! :D', 500);
     }
 
     if (user?.id === 0) {

@@ -1,8 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { FormControl, FormGroup } from "@angular/forms";
-import {PopupFormService} from "../../services/popup-form.service";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
-import {FilterField} from "../../types/Fields";
+import {FilterField} from "../../types/fields";
+import {SelectOneComponent} from "../fields/select-one/select-one.component";
+import {SelectMultipleComponent} from "../fields/select-multiple/select-multiple.component";
+import {InputRangeComponent} from "../fields/input-range/input-range.component";
+import {CommonModule} from "@angular/common";
 
 interface PictureOutput {
   tag: string;
@@ -11,9 +14,18 @@ interface PictureOutput {
 }
 
 @Component({
+  standalone: true,
   selector: 'app-items-table',
   templateUrl: './items-table.component.html',
-  styleUrls: ['./items-table.component.scss']
+  styleUrls: ['./items-table.component.scss'],
+  imports: [
+    CommonModule,
+    SelectOneComponent,
+    SelectMultipleComponent,
+    InputRangeComponent,
+    FormsModule,
+    ReactiveFormsModule
+  ]
 })
 export class ItemsTableComponent implements OnInit {
   constructor(private authService: AuthService) {}

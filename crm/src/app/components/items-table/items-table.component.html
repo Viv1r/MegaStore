@@ -7,7 +7,7 @@
   >
     <div *ngFor="let field of filtersFields" class="field_wrapper">
 
-      <ng-template [ngIf]="!field.adminOnly || user.isAdmin">
+      <ng-container *ngIf="!field.adminOnly || user.isAdmin">
         <label>{{ field.name ?? (field.key | titlecase) }}</label>
 
         <app-select-one
@@ -41,7 +41,7 @@
           type="number"
           [formControlName]="field.key"
         >
-      </ng-template>
+      </ng-container>
 
     </div>
   </form>

@@ -1,3 +1,4 @@
+@import "src/styles/mixins";
 $color-main: #008be1;
 
 .popup_bg {
@@ -33,7 +34,7 @@ $color-main: #008be1;
   .title {
     width: 100%;
     margin: 8px 0;
-    font-family: "Raleway", serif;
+    @include font-fancy;
     font-size: 24px;
     text-align: center;
   }
@@ -69,7 +70,7 @@ $color-main: #008be1;
   flex-grow: 1;
 
   label {
-    font-family: "Kulim Park", serif;
+    @include font-default;
     margin-bottom: 4px;
   }
 
@@ -78,7 +79,7 @@ $color-main: #008be1;
     border: none;
     border-bottom: 1px solid #a2a2a2;
     background-color: rgba($color: black, $alpha: .025);
-    font-family: "Raleway", serif;
+    @include font-fancy;
     font-size: 13px;
 
     &:focus {
@@ -106,7 +107,7 @@ $color-main: #008be1;
   height: fit-content;
   margin-bottom: 16px;
   color: red;
-  font-family: "Kulim Park", serif;
+  @include font-default;
   font-size: 15px;
   text-align: center;
 }

@@ -1,15 +1,27 @@
-import {Component, EventEmitter} from '@angular/core';
-import { PopupFormService } from "../../services/popup-form.service";
-import { FormControl, FormGroup } from "@angular/forms";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
+import {Component} from '@angular/core';
+import {PopupFormService} from "../../services/popup-form.service";
+import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../../environments/environment";
 import {AuthService} from "../../services/auth.service";
-import {ConstructorField} from "../../types/Fields";
+import {ConstructorField} from "../../types/fields";
+import {CommonModule} from "@angular/common";
+import {SelectOneComponent} from "../fields/select-one/select-one.component";
+import {SelectMultipleComponent} from "../fields/select-multiple/select-multiple.component";
+import {DictionaryComponent} from "../fields/dictionary/dictionary.component";
 
 @Component({
+  standalone: true,
   selector: 'app-popup-form',
   templateUrl: './popup-form.component.html',
-  styleUrls: ['./popup-form.component.scss']
+  styleUrls: ['./popup-form.component.scss'],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SelectOneComponent,
+    SelectMultipleComponent,
+    DictionaryComponent
+  ]
 })
 export class PopupFormComponent {
   constructor(public popupFormService: PopupFormService, public authService: AuthService, protected http: HttpClient) {

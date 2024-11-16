@@ -1,10 +1,18 @@
-import { Component, ElementRef, forwardRef, HostListener, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import {Component, ElementRef, forwardRef, HostListener, Input} from '@angular/core';
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {CommonModule} from "@angular/common";
+import {FilterByNamePipe} from "../../../pipes/filter-by-name.pipe";
 
 @Component({
+  standalone: true,
   selector: 'app-select-one',
   templateUrl: './select-one.component.html',
   styleUrls: ['./select-one.component.scss'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FilterByNamePipe
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

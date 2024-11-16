@@ -1,4 +1,4 @@
-<ng-template [ngIf]="popupFormService.active">
+<ng-container *ngIf="popupFormService.active">
   <div class="popup_bg" (click)="close()"></div>
   <div class="popup_window" *ngIf="form">
     <div class="btn_close" (click)="close()">✖</div>
@@ -57,4 +57,4 @@
       <button class="btn btn-discard" (click)="close()">Discard changes</button>
     </div>
   </div>
-</ng-template>
+</ng-container>

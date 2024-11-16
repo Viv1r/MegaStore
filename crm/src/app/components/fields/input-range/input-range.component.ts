@@ -1,10 +1,18 @@
 import {Component, forwardRef, Input} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {CommonModule} from "@angular/common";
+import {FilterByNamePipe} from "../../../pipes/filter-by-name.pipe";
 
 @Component({
+  standalone: true,
   selector: 'app-input-range',
   templateUrl: './input-range.component.html',
   styleUrls: ['./input-range.component.scss'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FilterByNamePipe
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

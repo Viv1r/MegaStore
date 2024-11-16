@@ -1,8 +1,9 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import { User } from "../types/User";
+import { User } from "../types/user";
 import { Router } from "@angular/router";
+import {UserResponseData} from "../types/user-response-data";
 
 @Injectable({
   providedIn: 'root'
@@ -11,25 +12,21 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   private readonly apiBasePath = environment.API_BASE_PATH;
-  public readonly user = new User();
 
-  public readonly errorEmitter = new EventEmitter<string>();
+  readonly user = new User();
+  readonly errorEmitter = new EventEmitter<string>();
 
-  public tokenAuth(): Promise<boolean> {
-    const URL = this.apiBasePath + 'token-auth';
+  async tokenAuth(): Promise<boolean> {
+    const url = this.apiBasePath + 'token-auth';
 
-    return new Promise(resolve => {
-      this.http.post(URL, {})
-        .subscribe(response => {
-          const user = (response as { user?: User }).user;
-          if (user) {
-            this.user.auth(user);
-            resolve(true);
-          } else {
-            resolve(false);
-          }
-        });
-    })
+    const data = await this.http.post(url, {}).toPromise();
+
+    const user = (data as { user?: UserResponseData }).user;
+    if (user) {
+      this.user.auth(user);
+      return true;
+    }
+    return false;
   }
 
   public login(data: any): void {

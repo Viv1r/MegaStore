@@ -1,4 +1,4 @@
-import {ColumnField, FilterField, ConstructorField} from "../types/Fields";
+import {ColumnField, FilterField, ConstructorField} from "../types/fields";
 
 export const columns: ColumnField[] = [
   {
