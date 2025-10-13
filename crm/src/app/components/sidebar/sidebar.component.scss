@@ -1,3 +1,5 @@
+@import "src/styles/mixins";
+
 .sidebar {
   width: 100%;
   display: flex;
@@ -24,7 +26,7 @@
       width: fit-content;
       text-align: center;
       font-size: 24px;
-      font-family: "Raleway", serif;
+      @include font-fancy;
       font-weight: bold;
       color: black;
 
@@ -54,7 +56,7 @@
     background: transparent;
     transition: all .1s ease-in-out;
     font-size: 20px;
-    font-family: "Kufam", serif;
+    @include font-secondary;
     text-decoration: none;
     color: black;
     cursor: pointer;

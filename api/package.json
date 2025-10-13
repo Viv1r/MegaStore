@@ -13,6 +13,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "dbcreate": "npx prisma migrate dev",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

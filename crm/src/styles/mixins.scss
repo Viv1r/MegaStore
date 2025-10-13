@@ -1,0 +1,11 @@
+@mixin font-default {
+  font-family: "Kulim Park", serif;
+}
+
+@mixin font-secondary {
+  font-family: "Kufam", serif;
+}
+
+@mixin font-fancy {
+  font-family: "Raleway", serif;
+}

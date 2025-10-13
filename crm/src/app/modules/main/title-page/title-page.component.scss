@@ -1,0 +1,21 @@
+@import "../styles/page-style";
+@import "src/styles/mixins";
+
+.message {
+  width: 100%;
+  height: fit-content;
+  padding: 120px 0;
+  text-align: center;
+  @include font-default;
+  font-size: 30px;
+  line-height: 40px;
+
+  span {
+    color: #008be1;
+  }
+
+  .subtitle {
+    font-size: 20px;
+    line-height: 30px;
+  }
+}

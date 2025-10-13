@@ -1,4 +1,5 @@
-import {ColumnField, ConstructorField, FilterField} from "../types/Fields";
+import {ColumnField, ConstructorField, FilterField} from "../models/fields";
+import {FieldType} from "../models/field-type";
 
 export const columns: ColumnField[] = [
   {
@@ -25,16 +26,16 @@ export const filters: FilterField[] = [
   {
     key: 'id',
     name: 'ID',
-    type: 'number'
+    type: FieldType.NUMBER
   },
   {
     key: 'name',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'owner',
     name: 'Owners',
-    type: 'select-multiple',
+    type: FieldType.SELECT_MULTIPLE,
     options: [],
     adminOnly: true
   }
@@ -43,12 +44,12 @@ export const filters: FilterField[] = [
 export const constructor: ConstructorField[] = [
   {
     key: 'name',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'owner_id',
     name: 'Owner',
-    type: 'select-one',
+    type: FieldType.SELECT_ONE,
     options: [],
     optionsURL: 'crm/users/short',
     adminOnly: true
