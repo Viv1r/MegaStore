@@ -1,3 +1,5 @@
+import {FieldType} from "./field-type";
+
 interface Option {
   id: number | boolean;
   name: string;
@@ -15,7 +17,7 @@ export interface ColumnField {
 export interface FilterField {
   key: string;
   name?: string;
-  type: 'text' | 'longtext' | 'number' | 'select-one' | 'select-multiple' | 'range' | 'dictionary';
+  type: FieldType;
   options?: Option[];
   showID?: boolean;
   adminOnly?: boolean;
@@ -24,7 +26,7 @@ export interface FilterField {
 export interface ConstructorField {
   key: string;
   name?: string;
-  type: 'text' | 'longtext' | 'number' | 'select-one' | 'select-multiple' | 'range' | 'dictionary' | 'image';
+  type: FieldType;
   options?: Option[];
   showID?: boolean;
   adminOnly?: boolean;

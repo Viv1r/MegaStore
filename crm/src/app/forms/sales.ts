@@ -1,4 +1,5 @@
-import {FilterField, ConstructorField, ColumnField} from "../types/fields";
+import {FilterField, ConstructorField, ColumnField} from "../models/fields";
+import {FieldType} from "../models/field-type";
 
 export const columns: ColumnField[] = [
   {
@@ -33,17 +34,17 @@ export const filters: FilterField[] = [
   {
     key: 'id',
     name: 'ID',
-    type: 'number'
+    type: FieldType.NUMBER
   },
   {
     key: 'sum',
     name: 'Total, USD',
-    type: 'range'
+    type: FieldType.RANGE
   },
   {
     key: 'seller',
     name: 'Sellers',
-    type: 'select-multiple',
+    type: FieldType.SELECT_MULTIPLE,
     options: [],
     showID: true
   }

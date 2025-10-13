@@ -1,144 +1,130 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
-import {FilterField} from "../../types/fields";
+import {FilterField} from "../../models/fields";
 import {SelectOneComponent} from "../fields/select-one/select-one.component";
 import {SelectMultipleComponent} from "../fields/select-multiple/select-multiple.component";
 import {InputRangeComponent} from "../fields/input-range/input-range.component";
 import {CommonModule} from "@angular/common";
+import {PictureOutput} from "./models/picture-output";
+import {getFormControlByType} from "../popup-form/models/get-form-control-by-type";
 
-interface PictureOutput {
-  tag: string;
-  id: number;
-  picture: File;
-}
 
 @Component({
-  standalone: true,
-  selector: 'app-items-table',
-  templateUrl: './items-table.component.html',
-  styleUrls: ['./items-table.component.scss'],
-  imports: [
-    CommonModule,
-    SelectOneComponent,
-    SelectMultipleComponent,
-    InputRangeComponent,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    standalone: true,
+    selector: 'app-items-table',
+    templateUrl: './items-table.component.html',
+    styleUrls: ['./items-table.component.scss'],
+    imports: [
+        CommonModule,
+        SelectOneComponent,
+        SelectMultipleComponent,
+        InputRangeComponent,
+        FormsModule,
+        ReactiveFormsModule
+    ]
 })
 export class ItemsTableComponent implements OnInit {
-  constructor(private authService: AuthService) {}
-
-  @Input() columns: any[] = [{ tag: 'id', name: 'ID' }, { tag: 'title', name: 'Title' }];
-  @Input() filtersFields: FilterField[] = [];
-  @Input() itemsPerPage = 10;
-  @Input() loading = false;
-  @Input() editable? = true;
-
-  @Output() pushFilters = new EventEmitter<any>();
-  @Output() add = new EventEmitter<void>();
-  @Output() edit = new EventEmitter<number>();
-  @Output() delete = new EventEmitter<number>();
-  @Output() uploadPicture = new EventEmitter<PictureOutput>();
-
-  filtersForm = new FormGroup({});
-
-  user = this.authService.user;
-
-  private _items: any[] = [];
-
-  @Input()
-  set items(newItems: any[]) {
-    // Убираем выделение при изменении списка предметов
-    if (JSON.stringify(this.items) !== JSON.stringify(newItems)) {
-      this.selectMode = false;
-    }
-    this._items = newItems;
-  }
-
-  get items() {
-    return this._items;
-  }
-
-  private _selectMode = false;
-  selectedItems: number[] = [];
-
-  get selectMode(): boolean {
-    return this._selectMode;
-  }
-
-  set selectMode(val: boolean) {
-    this._selectMode = val;
-    if (val === false) {
-      this.selectedItems = [];
-    }
-  }
-
-  ngOnInit(): void {
-    this.initForm();
-  }
-
-  editItem(id: number): void {
-    this.edit.emit(id);
-    window.scroll(0, 0);
-  }
-
-  initForm(): void {
-    const newForm: any = {};
-
-    for (const field of this.filtersFields) {
-      const type = field.type;
-
-      if (type === 'number' || type === 'select-one')
-        newForm[field.key] = new FormControl(0);
-
-      if (type === 'text')
-        newForm[field.key] = new FormControl('');
-
-      if (type === 'select-multiple')
-        newForm[field.key] = new FormControl<number[]>([]);
-
-      if (type === 'range')
-        newForm[field.key] = new FormControl({ min: 0, max: 0 });
+    constructor(private authService: AuthService) {
     }
 
-    this.filtersForm = new FormGroup(newForm);
-    this.filtersForm.reset();
-  }
+    @Input() columns: any[] = [{tag: 'id', name: 'ID'}, {tag: 'title', name: 'Title'}];
+    @Input() filtersFields: FilterField[] = [];
+    @Input() itemsPerPage = 10;
+    @Input() loading = false;
+    @Input() editable? = true;
 
-  selectItem(id: number): void {
-    this.selectMode = true;
+    @Output() pushFilters = new EventEmitter<any>();
+    @Output() add = new EventEmitter<void>();
+    @Output() edit = new EventEmitter<number>();
+    @Output() delete = new EventEmitter<number>();
+    @Output() uploadPicture = new EventEmitter<PictureOutput>();
 
-    if (this.selectedItems.includes(id)) {
-      const index = this.selectedItems.findIndex(item => item === id);
-      this.selectedItems.splice(index, 1);
-    } else {
-      this.selectedItems.push(id);
+    filtersForm = new FormGroup({});
+
+    user = this.authService.user;
+
+    private _items: any[] = [];
+
+    @Input()
+    set items(newItems: any[]) {
+        // Убираем выделение при изменении списка предметов
+        if (JSON.stringify(this.items) !== JSON.stringify(newItems)) {
+            this.selectMode = false;
+        }
+        this._items = newItems;
     }
 
-    if (this.selectedItems.length === 0) {
-      this.selectMode = false;
+    get items() {
+        return this._items;
     }
-  }
 
-  applyFilters(): void {
-    this.pushFilters.emit(this.filtersForm.value);
-  }
+    private _selectMode = false;
+    selectedItems: number[] = [];
 
-  applyPicture(tag: string, itemID: number, event: any): void {
-    event.stopPropagation();
-    this.uploadPicture.emit({
-      tag: tag,
-      id: itemID,
-      picture: event.target?.files[0] ?? null
-    });
-  }
+    get selectMode(): boolean {
+        return this._selectMode;
+    }
 
-  resetForm(): void {
-    if (Object.values(this.filtersForm.value).every(item => !item)) return;
-    this.filtersForm.reset();
-    this.applyFilters();
-  }
+    set selectMode(val: boolean) {
+        this._selectMode = val;
+        if (val === false) {
+            this.selectedItems = [];
+        }
+    }
+
+    ngOnInit(): void {
+        this.initForm();
+    }
+
+    editItem(id: number): void {
+        this.edit.emit(id);
+        window.scroll(0, 0);
+    }
+
+    initForm(): void {
+        const newForm: any = {};
+
+        for (const field of this.filtersFields) {
+            newForm[field.key] = getFormControlByType(field.type);
+        }
+
+        this.filtersForm = new FormGroup(newForm);
+        this.filtersForm.reset();
+    }
+
+    selectItem(id: number): void {
+        this.selectMode = true;
+
+        if (this.selectedItems.includes(id)) {
+            const index = this.selectedItems.findIndex(item => item === id);
+            this.selectedItems.splice(index, 1);
+        } else {
+            this.selectedItems.push(id);
+        }
+
+        if (this.selectedItems.length === 0) {
+            this.selectMode = false;
+        }
+    }
+
+    applyFilters(): void {
+        this.pushFilters.emit(this.filtersForm.value);
+    }
+
+    applyPicture(tag: string, itemID: number, event: any): void {
+        event.stopPropagation();
+        this.uploadPicture.emit({
+            tag: tag,
+            id: itemID,
+            picture: event.target?.files[0] ?? null
+        });
+    }
+
+    resetForm(): void {
+        if (Object.values(this.filtersForm.value).every(item => !item)) return;
+        this.filtersForm.reset();
+        this.applyFilters();
+    }
 
 }

@@ -4,98 +4,98 @@ import {columns, constructor, filters} from "../../../../forms/users";
 import {PopupFormService} from "../../../../services/popup-form.service";
 
 @Component({
-  selector: 'app-users-crm',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+    selector: 'app-users-crm',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
 
-  constructor(protected usersService: UsersService, protected popupFormService: PopupFormService) {
-    this.createEmitter.subscribe((data: any) => this.createUser(data.item));
-    this.updateEmitter.subscribe((data: any) => this.updateUser(data.id, data.item));
-  }
+    users: any[] = [];
+    loading = false;
 
-  users: any[] = [];
-  loading = false;
+    columns = columns;
+    filters = filters;
 
-  columns = columns;
-  filters = filters;
+    protected updateEmitter = new EventEmitter<any>();
+    protected createEmitter = new EventEmitter<any>();
 
-  protected updateEmitter = new EventEmitter<any>();
-  protected createEmitter = new EventEmitter<any>();
+    private filtersData?: any;
 
-  private filtersData?: any;
-
-  loadUsers(data?: any): void {
-    if (!data) {
-      data = this.filtersData;
+    constructor(protected usersService: UsersService, protected popupFormService: PopupFormService) {
+        this.createEmitter.subscribe((data: any) => this.createUser(data.item));
+        this.updateEmitter.subscribe((data: any) => this.updateUser(data.id, data.item));
     }
-    this.filtersData = data;
 
-    this.loading = true;
-    this.usersService.get(data)
-      .subscribe(response => {
-        this.users = response.users ?? [];
-        this.loading = false;
-      });
-  }
-
-  createUser(item: any): void {
-    this.usersService.create(item)
-      .subscribe(data => {
-        if (data.statusCode === 'ok') {
-          this.popupFormService.clear();
-          this.loadUsers();
-        } else if (data.statusCode === 'error') {
-          this.popupFormService.pushError(data.statusMessage);
+    loadUsers(data?: any): void {
+        if (!data) {
+            data = this.filtersData;
         }
-      });
-  }
+        this.filtersData = data;
 
-  updateUser(id: number, newData: any): void {
-    this.usersService.update(id, newData)
-      .subscribe(data => {
-        if (data.statusCode === 'ok') {
-          this.popupFormService.clear();
-          this.loadUsers();
-        } else if (data.statusCode === 'error') {
-          this.popupFormService.pushError(data.statusMessage);
-        }
-      });
-  }
+        this.loading = true;
+        this.usersService.get(data)
+            .subscribe(response => {
+                this.users = response.users ?? [];
+                this.loading = false;
+            });
+    }
 
-  banUser(id: number): void {
-    if (!confirm(`Are you sure you want to ban user #${id}?`))
-      return;
-    this.usersService.ban(id)
-      .subscribe(data => {
-        if (data.statusCode === 'ok') {
-          const target = this.users.find(item => item.id === id);
-          target.is_banned = true;
-        } else if (data.statusCode === 'error') {
-          alert(data.statusMessage);
-        }
-      });
-  }
+    createUser(item: any): void {
+        this.usersService.create(item)
+            .subscribe(data => {
+                if (data.statusCode === 'ok') {
+                    this.popupFormService.clear();
+                    this.loadUsers();
+                } else if (data.statusCode === 'error') {
+                    this.popupFormService.pushError(data.statusMessage);
+                }
+            });
+    }
 
-  showEditForm(itemID: number): void {
-    this.popupFormService.load({
-      id: itemID,
-      source: this.usersService.getOne(itemID),
-      constructor: constructor,
-      emitter: this.updateEmitter
-    });
-  }
+    updateUser(id: number, newData: any): void {
+        this.usersService.update(id, newData)
+            .subscribe(data => {
+                if (data.statusCode === 'ok') {
+                    this.popupFormService.clear();
+                    this.loadUsers();
+                } else if (data.statusCode === 'error') {
+                    this.popupFormService.pushError(data.statusMessage);
+                }
+            });
+    }
 
-  showCreateForm(): void {
-    this.popupFormService.load({
-      constructor: constructor,
-      emitter: this.createEmitter
-    });
-  }
+    banUser(id: number): void {
+        if (!confirm(`Are you sure you want to ban user #${id}?`))
+            return;
+        this.usersService.ban(id)
+            .subscribe(data => {
+                if (data.statusCode === 'ok') {
+                    const target = this.users.find(item => item.id === id);
+                    target.is_banned = true;
+                } else if (data.statusCode === 'error') {
+                    alert(data.statusMessage);
+                }
+            });
+    }
+
+    showEditForm(itemID: number): void {
+        this.popupFormService.load({
+            id: itemID,
+            source: this.usersService.getOne(itemID),
+            constructor: constructor,
+            emitter: this.updateEmitter
+        });
+    }
+
+    showCreateForm(): void {
+        this.popupFormService.load({
+            constructor: constructor,
+            emitter: this.createEmitter
+        });
+    }
 
 
-  ngOnInit(): void {
-    this.loadUsers();
-  }
+    ngOnInit(): void {
+        this.loadUsers();
+    }
 }

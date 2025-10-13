@@ -68,15 +68,16 @@ $base-indent: 48px;
     width: 140px;
     height: 36px;
     padding: 0 10px;
-    border-radius: 8px;
+    border-radius: 12px;
     transition: all .1s ease-out;
     cursor: pointer;
+    font-weight: 600;
   }
 
   .btn_apply {
     background-color: white;
     color: $color-main;
-    border: 1px solid $color-main;
+    border: 2px solid $color-main;
 
     &:hover {
       background-color: $color-main;
@@ -87,7 +88,7 @@ $base-indent: 48px;
   .btn_reset {
     background-color: white;
     color: $color-danger;
-    border: 1px solid $color-danger;
+    border: 2px solid $color-danger;
 
     &:hover {
       background-color: $color-danger;
@@ -143,12 +144,13 @@ $base-indent: 48px;
   img {
     width: auto;
     height: 100%;
-    filter: invert(100%);
+    filter: invert(1);
+    opacity: 1;
     transition: .1s ease-out;
   }
 
   &:hover img {
-    filter: invert(75%);
+    opacity: .75;
   }
 }
 
@@ -185,7 +187,7 @@ th {
 
 .items-table tr {
 
-  .pseudo_cl:hover {
+  .pseudo-cl:hover {
     background: transparent;
     cursor: default;
   }

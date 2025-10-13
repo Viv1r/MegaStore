@@ -20,23 +20,28 @@ const routes: Routes = [
       },
       {
         path: 'users',
-        loadChildren: () => import('./users/users.module').then(m => m.UsersModule)
+        loadChildren: () => import('./users/users.module')
+            .then(m => m.UsersModule)
       },
       {
         path: 'categories',
-        loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule)
+        loadChildren: () => import('./categories/categories.module')
+            .then(m => m.CategoriesModule)
       },
       {
         path: 'stores',
-        loadChildren: () => import('./stores/stores.module').then(m => m.StoresModule)
+        loadChildren: () => import('./stores/stores.module')
+            .then(m => m.StoresModule)
       },
       {
         path: 'products',
-        loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
+        loadChildren: () => import('./products/products.module')
+            .then(m => m.ProductsModule)
       },
       {
         path: 'sales',
-        loadChildren: () => import('./sales/sales.module').then(m => m.SalesModule)
+        loadChildren: () => import('./sales/sales.module')
+            .then(m => m.SalesModule)
       }
     ]
   }

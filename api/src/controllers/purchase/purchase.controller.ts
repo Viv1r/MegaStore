@@ -1,11 +1,11 @@
 import { Controller, Post, Body, Req, Get, UseGuards } from '@nestjs/common';
 import { SqlService } from "../../services/sql/sql.service";
-import { Prisma } from "@prisma/client";
 import { Request } from "express";
 import { UsersService } from "../../services/users/users.service";
 import { PurchasesService } from "../../services/purchases/purchases.service";
 import { UserGuard } from "../../guards/user/user.guard";
 import { AdminGuard } from "../../guards/admin/admin.guard";
+import { Prisma } from "@prisma/client";
 
 type ProductInfo = {
     title?: string;
