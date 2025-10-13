@@ -1,7 +1,6 @@
-import {Body, Controller, Post, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, HttpException, Post, Req, UseGuards} from '@nestjs/common';
 import {UserGuard} from "../../guards/user/user.guard";
 import {PicturesService} from "../../services/pictures/pictures.service";
-import {MailService} from "../../services/mail/mail.service";
 import {UsersService} from "../../services/users/users.service";
 
 @Controller('user')
@@ -12,7 +11,7 @@ export class UserController {
     @Post('picture')
     async updatePicture(@Req() request: any, @Body() body: any) {
         if (!body.picture) {
-            return { statusCode: 'error', statusMessage: 'Please upload a picture!' };
+            throw new HttpException('Please upload a picture!', 400);
         }
         const id = request.user.id;
         return await this.picturesService.updateProfilePicture(id, body.picture);
@@ -25,11 +24,11 @@ export class UserController {
 
         if (password) {
             if (!oldPassword) {
-                return { statusCode: 'error', statusMessage: 'Please specify the old password!' };
+                throw new HttpException('Please specify the old password!', 400);
             }
             const updated = await this.usersService.updatePassword(user.id, oldPassword, password);
             if (!updated) {
-                return { statusCode: 'error', statusMessage: 'Wrong password!' };
+                throw new HttpException('Wrong password!', 400);
             }
         }
         if (name) {

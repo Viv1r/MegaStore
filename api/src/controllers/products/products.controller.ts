@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Req, Res, Get, Post, Param, Query, UseGuards, Body } from '@nestjs/common';
+import {Controller, Req, Res, Get, Post, Param, Query, UseGuards, Body, HttpException} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
 
@@ -148,14 +148,15 @@ export class ProductsController {
 
             return response;
         }
-        return { statusCode: 'error', statusMessage: 'Try again' };
+
+        throw new HttpException('Please try again later!', 400);
     }
 
     @Get('/:id')
     async getProduct(@Param() params: { id: number }): Promise<object> {
         const targetID = Number(params.id);
         if (!targetID) {
-            return { statusCode: 'error', statusMessage: 'Wrong ID specified' }
+            throw new HttpException('Wrong ID specified', 400);
         }
 
         const result: Product = await this.products.findFirst({
@@ -196,6 +197,7 @@ export class ProductsController {
 
             return { statusCode: 'ok', product: result };
         }
-        return { statusCode: 'error', statusMessage: 'Could not get product' };
+
+        throw new HttpException('Could not get product', 400);
     }
 }

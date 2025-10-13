@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import jimp from 'jimp';
 import { generateHash } from "../../modules/hashgen";
 import { UsersService } from "../users/users.service";
@@ -28,17 +28,17 @@ export class PicturesService {
 
     async updateProfilePicture(userID: number, pictureBase64: string): Promise<any> {
         if (!userID || !pictureBase64) {
-            return { statusCode: 'error', statusMessage: 'Check userID and picture!' };
+            throw new HttpException('Check userID and picture!', 400);
         }
 
         let resultPicture; // Сюда отправляется аватарка, если загружена и валидна
         try {
             resultPicture = await this.readPicture(pictureBase64);
         } catch (e) {
-            return { statusCode: 'error', statusMessage: 'Invalid file! Please load an image!' }
+            throw new HttpException('Invalid file! Please load an image!', 400);
         }
         if (!resultPicture) {
-            return { statusCode: 'error', statusMessage: 'Invalid picture!' };
+            throw new HttpException('Invalid picture!', 400);
         }
 
         try {
@@ -52,22 +52,22 @@ export class PicturesService {
             }
         } catch {}
 
-        return { statusCode: 'error', statusMessage: 'Something went wrong!' };
+        throw new HttpException('Something went wrong!', 400);
     }
 
     async addProductPicture(productID: number, pictureBase64: string): Promise<any> {
         if (!productID || !pictureBase64) {
-            return { statusCode: 'error', statusMessage: 'Check userID and picture!' };
+            throw new HttpException('Check userID and picture!', 400);
         }
 
         let resultPicture;
         try {
             resultPicture = await this.readPicture(pictureBase64);
         } catch (e) {
-            return { statusCode: 'error', statusMessage: 'Invalid file! Please load an image!' }
+            throw new HttpException('Invalid file! Please load an image!', 400);
         }
         if (!resultPicture) {
-            return { statusCode: 'error', statusMessage: 'Invalid picture!' };
+            throw new HttpException('Invalid picture!', 400);
         }
 
         try {
@@ -78,7 +78,7 @@ export class PicturesService {
             return { statusCode: 'ok' };
         } catch {}
 
-        return { statusCode: 'error', statusMessage: 'Something went wrong!' };
+        throw new HttpException('Something went wrong!', 400);
     }
 
 

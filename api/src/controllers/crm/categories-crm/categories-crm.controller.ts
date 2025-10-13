@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Query, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpException, Param, Post, Query, UseGuards} from '@nestjs/common';
 import { SqlService } from "../../../services/sql/sql.service";
 import { CategoriesService } from "../../../services/categories/categories.service";
 import { AdminGuard } from "../../../guards/admin/admin.guard";
@@ -21,7 +21,8 @@ export class CategoriesCrmController {
             });
             return { statusCode: 'ok', categories: result };
         }
-        return { statusCode: 'error' }
+
+        throw new HttpException('Something went wrong!', 400);
     }
 
     @UseGuards(UserGuard)
@@ -55,22 +56,22 @@ export class CategoriesCrmController {
         @Query('replacement') replacement: number
     ): Promise<any> {
         if (isNaN(Number(id)) || isNaN(Number(replacement))) {
-            return { statusCode: 'error', statusMessage: 'Please check your query!' };
+            throw new HttpException('Please check your query!', 400);
         }
 
         const newCategory = await this.categoriesService.getOne(replacement);
         if (!newCategory) {
-            return { statusCode: 'error', statusMessage: 'No replacement with such id!' };
+            throw new HttpException('No replacement with such id!', 400);
         }
 
         const replaced = await this.categoriesService.replace(id, replacement);
         if (!replaced) {
-            return { statusCode: 'error', statusMessage: 'Check your query and try again!' };
+            throw new HttpException('Check your query and try again!', 400);
         }
 
         const deleted = await this.categoriesService.delete(id);
         if (!deleted) {
-            return { statusCode: 'error', statusMessage: 'Could not delete!' };
+            throw new HttpException('Could not delete!', 400);
         }
 
         return { statusCode: 'ok' };

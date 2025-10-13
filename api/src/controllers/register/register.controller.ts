@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import {Controller, Post, Body, Res, HttpException} from '@nestjs/common';
 import { Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
 import validate from 'src/modules/validate';
@@ -32,12 +32,13 @@ export class RegisterController {
 
         const badFields = Object.keys(registerData).filter(key => !registerData[key]);
         if (badFields.length) {
-            return { statusCode: 'error', statusMessage: 'Check these fields: ' + badFields.join(', ') };
+            const errorMessage = 'Check these fields: ' + badFields.join(', ');
+            throw new HttpException(errorMessage, 400);
         }
 
         const check = await this.emailExists(registerData.email);
         if (check) {
-            return { statusCode: 'error', statusMessage: 'This email is already taken!' };
+            throw new HttpException('This email is already taken!', 400);
         }
 
         let user;
@@ -54,6 +55,6 @@ export class RegisterController {
             return { statusCode: 'ok', user: user };
         }
 
-        return { statusCode: 'error', statusMessage: 'Something went wrong!' };
+        throw new HttpException('Something went wrong!', 400);
     }
 }

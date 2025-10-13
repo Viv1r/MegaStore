@@ -1,11 +1,11 @@
-import { Controller, Post, Body, Req, Get, UseGuards } from '@nestjs/common';
-import { SqlService } from "../../services/sql/sql.service";
-import { Request } from "express";
-import { UsersService } from "../../services/users/users.service";
-import { PurchasesService } from "../../services/purchases/purchases.service";
-import { UserGuard } from "../../guards/user/user.guard";
-import { AdminGuard } from "../../guards/admin/admin.guard";
-import { Prisma } from "@prisma/client";
+import {Body, Controller, Get, HttpException, Post, Req, UseGuards} from '@nestjs/common';
+import {SqlService} from "../../services/sql/sql.service";
+import {Request} from "express";
+import {UsersService} from "../../services/users/users.service";
+import {PurchasesService} from "../../services/purchases/purchases.service";
+import {UserGuard} from "../../guards/user/user.guard";
+import {AdminGuard} from "../../guards/admin/admin.guard";
+import {Prisma} from "@prisma/client";
 
 type ProductInfo = {
     title?: string;
@@ -58,7 +58,7 @@ export class PurchaseController {
         const user = (request as { user?: UserInfo }).user;
 
         if (!info || !info.products) {
-            return { statusCode: 'error', statusMessage: 'Bad request!' };
+            throw new HttpException('Bad request!', 400);
         }
 
         const outOfStock: ProductInfo[] = []; // В массив улетают продукты, которых в наличии меньше, чем нужно
@@ -66,7 +66,7 @@ export class PurchaseController {
 
         for (const item of info.products) {
             if (!(item.id && item.count && item.title)) {
-                return {statusCode: 'error', statusMessage: 'Bad request!'};
+                throw new HttpException('Bad request!', 400);
             }
 
             const targetProduct = await this.products.findFirst({
@@ -76,7 +76,7 @@ export class PurchaseController {
                 }
             })
             if (!targetProduct) {
-                return {statusCode: 'error', statusMessage: `Product "${item.title}" not found!`};
+                throw new HttpException(`Product "${item.title}" not found!`, 400);
             }
             if (targetProduct.count_available < item.count) {
                 outOfStock.push({id: item.id, count: targetProduct.count_available});
@@ -121,7 +121,7 @@ export class PurchaseController {
 
         // Проверка, прошла ли покупка
         if (!register) {
-            return { statusCode: 'error', statusMessage: 'Could not make a purchase' };
+            throw new HttpException('Could not make a purchase', 400);
         }
 
         // Покупка зарегистрирована, и поэтому нужное количество товара отнимается от количества товара в наличии

@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpException, Param, Post, Req, UseGuards} from '@nestjs/common';
 import { UserGuard } from "../../../guards/user/user.guard";
 import { StoresService } from "../../../services/stores/stores.service";
 
@@ -17,7 +17,8 @@ export class StoresCrmController {
         if (result) {
             return { statusCode: 'ok', items: result };
         }
-        return { statusCode: 'error' };
+
+        throw new HttpException('Something went wrong!', 400);
     }
 
     @UseGuards(UserGuard)
@@ -34,7 +35,9 @@ export class StoresCrmController {
     async getOneStore(@Param('id') storeID: number, @Req() request: any): Promise<any> {
         if (!request.user.is_admin) {
             const check = this.storesService.checkAccess(request.user.id, [storeID]);
-            if (!check) return { statusCode: 'error', statusMessage: 'No access to this store!' };
+            if (!check) {
+                throw new HttpException('No access to this store!', 400);
+            }
         }
         return await this.storesService.getOneStore(storeID);
     }
@@ -47,7 +50,7 @@ export class StoresCrmController {
 
             const check = this.storesService.checkAccess(request.user.id, [storeID]);
             if (!check) {
-                return { statusCode: 'error', statusMessage: 'No access to this store!' };
+                throw new HttpException('No access to this store!', 400);
             }
         }
         return await this.storesService.updateStore(storeID, body);
@@ -68,13 +71,15 @@ export class StoresCrmController {
     async deleteStore(@Req() request: any, @Param('id') storeID: number): Promise<any> {
         storeID = Number(storeID);
         if (isNaN(storeID)) {
-            return { statusCode: 'error', statusMessage: 'Wrong id specified!' };
+            throw new HttpException('Wrong id specified!', 400);
         }
         const user = request.user;
 
         if (!user.is_admin) {
             const check = this.storesService.checkAccess(user.id, [storeID]);
-            if (!check) return { statusCode: 'error', statusMessage: 'No access!' };
+            if (!check) {
+                throw new HttpException('No access!', 400);
+            }
         }
         return await this.storesService.deleteStore(storeID);
     }

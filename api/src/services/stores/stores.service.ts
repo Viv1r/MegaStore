@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import { UsersService } from "../users/users.service";
 import { SqlService } from "../sql/sql.service";
 
@@ -30,7 +30,7 @@ export class StoresService {
 
     async createStore(userID: number, data: any): Promise<any> {
         if (!data.name || !userID) {
-            return { statusCode: 'error', statusMessage: 'Check your data!' };
+            throw new HttpException('Check your data!', 400);
         }
 
         let newStore: any;
@@ -48,12 +48,12 @@ export class StoresService {
         if (newStore) {
             return { statusCode: 'ok', store: newStore };
         }
-        return { statusCode: 'error', statusMessage: 'Check your data!' };
+        throw new HttpException('Check your data!', 400);
     }
 
     async updateStore(storeID: number, data: any): Promise<any> {
         if (!storeID) {
-            return { statusCode: 'error', statusMessage: 'Please specify correct id!' };
+            throw new HttpException('Please specify correct id!', 400);
         }
 
         const newData = {
@@ -74,7 +74,7 @@ export class StoresService {
         if (result) {
             return { statusCode: 'ok' };
         }
-        return { statusCode: 'error', statusMessage: 'Check your data!' };
+        throw new HttpException('Check your data!', 400);
     }
 
     async getStoresShort(ownerID?: number): Promise<any> {
@@ -91,7 +91,7 @@ export class StoresService {
         if (stores) {
             return { statusCode: 'ok', items: stores };
         }
-        return { statusCode: 'error', statusMessage: 'Check your data!' };
+        throw new HttpException('Check your data!', 400);
     }
 
     async getAllStores(data?: any): Promise<any> {
@@ -153,7 +153,9 @@ export class StoresService {
     }
 
     public async getOneStore(storeID: number): Promise<any> {
-        if (!Number(storeID)) return { statusCode: 'error', statusMessage: 'Specify correct id!' };
+        if (!Number(storeID)) {
+            throw new HttpException('Specify correct id!', 400);
+        }
 
         let store;
         try {
@@ -168,7 +170,7 @@ export class StoresService {
         if (store) {
             return { statusCode: 'ok', item: store };
         }
-        return { statusCode: 'error', statusMessage: 'Check your data!' };
+        throw new HttpException('Check your data!', 400);
     }
 
     public async deleteStore(storeID: number): Promise<any> {
@@ -185,7 +187,7 @@ export class StoresService {
             });
         } catch {}
         if (!deleteProducts) {
-            return { statusCode: 'error', statusMessage: 'Could not delete!' };
+            throw new HttpException('Could not delete!', 400);
         }
 
         let deleteStore;
@@ -200,7 +202,7 @@ export class StoresService {
             });
         } catch {}
         if (!deleteStore) {
-            return { statusCode: 'error', statusMessage: 'Could not delete!' };
+            throw new HttpException('Could not delete!', 400);
         }
 
         return { statusCode: 'ok' };

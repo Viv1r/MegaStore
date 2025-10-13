@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import fs from "fs";
 import {SqlService} from "../sql/sql.service";
 import {StoresService} from "../stores/stores.service";
@@ -64,7 +64,7 @@ export class ProductsService {
         // Формирование списка магазинов в запросе (в т. ч. сверка с наличием доступа у юзера)
         storeQuery = await this.storesService.formStoresList(user, data.store);
         if (!storeQuery) {
-            return { statusCode: 'error', statusMessage: 'No access to some of the stores or no stores present!' };
+            throw new HttpException('No access to some of the stores or no stores present!', 400);
         }
 
         if (categoryQuery?.length) {
@@ -148,7 +148,7 @@ export class ProductsService {
                 skip: skip
             });
         } catch (error) {
-            return { statusCode: 'error', statusMessage: 'Wrong data!' };
+            throw new HttpException('Wrong data!', 400);
         }
 
         if (result) {
@@ -157,7 +157,7 @@ export class ProductsService {
             }
             return { statusCode: 'ok', products: result };
         }
-        return { statusCode: 'error' };
+        throw new HttpException('Something went wrong!', 400);
     }
 
     public async deleteProducts(products: number[]): Promise<any> {
@@ -174,17 +174,20 @@ export class ProductsService {
                 }
             });
         } catch {
-            return { statusCode: 'error', statusMessage: 'Could not delete, try again later' };
+            throw new HttpException('Could not delete, try again later', 400);
         }
 
         if (response) {
             return { statusCode: 'ok' };
         }
-        return { statusCode: 'error', statusMessage: 'Could not delete, try again later' };
+
+        throw new HttpException('Could not delete, try again later', 400);
     }
 
     public async createProduct(data: any): Promise<any> {
-        if (!data) return { statusCode: 'error', statusMessage: 'No data!' };
+        if (!data) {
+            throw new HttpException('No data!', 400);
+        }
 
         const newProductData = {
             title: data.title,
@@ -199,15 +202,12 @@ export class ProductsService {
 
         const emptyFields = Object.keys(newProductData).filter(key => newProductData[key] === undefined);
         if (emptyFields?.length) {
-            return {
-                statusCode: 'error',
-                statusMessage: 'Check these fields: '
-                    + emptyFields.join(', ').replaceAll('_', ' ')
-            };
+            const errorMessage = 'Check these fields: ' + emptyFields.join(', ').replaceAll('_', ' ');
+            throw new HttpException(errorMessage, 400);
         }
 
         if (newProductData.price <= 0) {
-            return { statusCode: 'error', statusMessage: 'Price cannot be zero or lower!' };
+            throw new HttpException('Price cannot be zero or lower!', 400);
         }
 
         let newProduct;
@@ -216,15 +216,19 @@ export class ProductsService {
                 data: newProductData
             });
         } catch(error) {
-            return { statusCode: 'error', statusMessage: 'Check your data!' };
+            throw new HttpException('Check your data!', 400);
         }
 
         return { statusCode: 'ok', product: newProduct };
     }
 
     public async updateProduct(productID: number, data: any): Promise<any> {
-        if (!productID) return { statusCode: 'error', statusMessage: 'Pleace specify the product id!' };
-        if (!data) return { statusCode: 'error', statusMessage: 'No data!' };
+        if (!productID) {
+            throw new HttpException('Pleace specify the product id!', 400);
+        }
+        if (!data) {
+            throw new HttpException('No data!', 400);
+        }
 
         const newData = {
             title: data.title,
@@ -238,13 +242,12 @@ export class ProductsService {
         };
 
         if (Object.values(newData).every(item => item === undefined)) {
-            return { statusCode: 'error', statusMessage: 'No new fields! You can specify: '
-                + Object.keys(newData).join(', ')
-            }
+            const errorMessage = 'No new fields! You can specify: ' + Object.keys(newData).join(', ');
+            throw new HttpException(errorMessage, 400);
         }
 
         if (newData.price <= 0) {
-            return { statusCode: 'error', statusMessage: 'Price cannot be zero or lower!' };
+            throw new HttpException('Price cannot be zero or lower!', 400);
         }
 
         let updatedProduct;
@@ -256,7 +259,7 @@ export class ProductsService {
                 }
             });
         } catch(error) {
-            return { statusCode: 'error', statusMessage: 'Check your data!' };
+            throw new HttpException('Check your data!', 400);
         }
 
         return { statusCode: 'ok', product: updatedProduct };

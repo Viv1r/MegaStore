@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import { SqlService } from "../sql/sql.service";
 import {StoresService} from "../stores/stores.service";
 
@@ -17,7 +17,7 @@ export class SalesService {
         const storeQuery = await this.storesService.formStoresList(user, data.seller);
 
         if (!storeQuery) {
-            return { statusCode: 'error', statusMessage: 'No access to some of the stores or no stores present!' };
+            throw new HttpException('No access to some of the stores or no stores present!', 400);
         } else if (storeQuery?.length) {
             whereCondition.AND.push({
                 OR: storeQuery.map(id => ({ seller_id: id }))
@@ -85,6 +85,6 @@ export class SalesService {
         if (result) {
             return { statusCode: 'ok', sale: result };
         }
-        return { statusCode: 'error', statusMessage: 'Not found!' };
+        throw new HttpException('Not found!', 400);
     }
 }
