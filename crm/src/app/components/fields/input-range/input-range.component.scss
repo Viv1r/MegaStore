@@ -1,3 +1,4 @@
+@import "src/styles/mixins";
 $color-main: #008be1;
 
 .input_range {
@@ -14,7 +15,7 @@ $color-main: #008be1;
     background-color: rgba($color: black, $alpha: .025);
     border: none;
     border-bottom: 1px solid #a2a2a2;
-    font-family: "Raleway", serif;
+    @include font-fancy;
     font-size: 14px;
 
     &:focus {

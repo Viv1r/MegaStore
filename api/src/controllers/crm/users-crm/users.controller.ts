@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, HttpException, Param, Post, Req, UseGuards} from '@nestjs/common';
 import { UsersService } from "../../../services/users/users.service";
 import { AdminGuard } from "../../../guards/admin/admin.guard";
 import {PicturesService} from "../../../services/pictures/pictures.service";
@@ -16,7 +16,7 @@ export class UsersController {
             return { statusCode: 'ok', users: users };
         }
 
-        return { statusCode: 'error' };
+        throw new HttpException('Something went wrong!', 400);
     }
 
     @UseGuards(AdminGuard)
@@ -26,7 +26,7 @@ export class UsersController {
         if (users) {
             return { statusCode: 'ok', items: users };
         }
-        return { statusCode: 'error' };
+        throw new HttpException('Something went wrong!', 400);
     }
 
     @UseGuards(AdminGuard)
@@ -38,14 +38,16 @@ export class UsersController {
             return { statusCode: 'ok', item: user };
         }
 
-        return { statusCode: 'error' };
+        throw new HttpException('Something went wrong!', 400);
     }
 
     @UseGuards(AdminGuard)
     @Post('ban/:id')
     async banUser(@Param('id') id: number): Promise<any> {
         id = Number(id);
-        if (isNaN(id)) return { statusCode: 'error', statusMessage: 'Invalid id!' };
+        if (isNaN(id)) {
+            throw new HttpException('Invalid id!', 400);
+        }
 
         return await this.usersService.banById(id);
     }
@@ -54,7 +56,9 @@ export class UsersController {
     @Post('picture/:id')
     async updatePicture(@Param('id') id: number, @Body() body: any): Promise<any> {
         id = Number(id);
-        if (isNaN(id)) return { statusCode: 'error', statusMessage: 'Invalid id!' };
+        if (isNaN(id)) {
+            throw new HttpException('Invalid id!', 400);
+        }
 
         return await this.picturesService.updateProfilePicture(id, body.picture);
     }
@@ -63,7 +67,9 @@ export class UsersController {
     @Post('update/:id')
     async updateUser(@Req() request: any, @Body() body: any, @Param('id') id: number): Promise<any> {
         id = Number(id);
-        if (isNaN(id)) return { statusCode: 'error', statusMessage: 'Invalid id!' };
+        if (isNaN(id)) {
+            throw new HttpException('Invalid id!', 400);
+        }
 
         // Только рут может назначать админов
         if (!request.user.is_root) {

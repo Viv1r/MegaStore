@@ -17,7 +17,7 @@
 
 ## CRM
 ### Стек
-- Angular
+- Angular 14
 - Angular Router, Angular Reactive Forms, Material UI
 ### Функционал
 - Авторизация

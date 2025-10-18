@@ -1,4 +1,5 @@
-import {FilterField, ConstructorField, ColumnField} from "../types/Fields";
+import {FilterField, ConstructorField, ColumnField} from "../models/fields";
+import {FieldType} from "../models/field-type";
 
 export const columns: ColumnField[] = [
   {
@@ -41,35 +42,35 @@ export const filters: FilterField[] = [
   {
     key: 'id',
     name: 'ID',
-    type: 'number'
+    type: FieldType.NUMBER
   },
   {
     key: 'title',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'description',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'category',
     name: 'Categories',
-    type: 'select-multiple',
+    type: FieldType.SELECT_MULTIPLE,
     options: []
   },
   {
     key: 'price',
-    type: 'range'
+    type: FieldType.RANGE
   },
   {
     key: 'count_available',
     name: 'In Stock',
-    type: 'range'
+    type: FieldType.RANGE
   },
   {
     key: 'store',
     name: 'Sellers',
-    type: 'select-multiple',
+    type: FieldType.SELECT_MULTIPLE,
     options: [],
     showID: true
   }
@@ -79,43 +80,43 @@ export const constructor: ConstructorField[] = [
   {
     key: 'category_id',
     name: 'Category',
-    type: 'select-one',
+    type: FieldType.SELECT_ONE,
     options: [],
     optionsURL: 'categories'
   },
   {
     key: 'title',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'description',
-    type: 'longtext'
+    type: FieldType.LONG_TEXT
   },
   {
     key: 'price',
-    type: 'number'
+    type: FieldType.NUMBER
   },
   {
     key: 'price_postfix',
-    name: 'Unit',
-    type: 'text',
+    name: 'Unit (e. g. kg)',
+    type: FieldType.TEXT,
     optional: true
   },
   {
     key: 'attributes',
-    type: 'dictionary',
+    type: FieldType.DICTIONARY,
     optional: true
   },
   {
     key: 'count_available',
-    name: 'In Stock',
-    type: 'number',
+    name: 'In stock',
+    type: FieldType.NUMBER,
     optional: true
   },
   {
     key: 'store_id',
     name: 'Seller store',
-    type: 'select-one',
+    type: FieldType.SELECT_ONE,
     options: [],
     optionsURL: 'crm/stores/short',
     showID: true

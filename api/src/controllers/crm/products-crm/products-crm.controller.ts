@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Query, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpException, Param, Post, Query, Req, UseGuards} from '@nestjs/common';
 import {UserGuard} from "../../../guards/user/user.guard";
 import {Decimal} from "@prisma/client/runtime";
 import { Product } from "../types/Product";
@@ -31,14 +31,14 @@ export class ProductsCrmController {
     @Post('create')
     async createProduct(@Req() request: any, @Body() body: any): Promise<any> {
         if (!body?.store_id) {
-            return { statusCode: 'error', statusMessage: 'Please specify the store!' };
+            throw new HttpException('Please specify the store!', 400);
         }
 
         // Проверка доступа к магазину
         const hasAccess = request.user?.is_admin
             || await this.storesService.checkAccess(request.user?.id, [body.store_id]);
         if (!hasAccess) {
-            return { statusCode: 'error', statusMessage: 'No access to this store!' };
+            throw new HttpException('No access to this store!', 400);
         }
 
         return await this.productsService.createProduct(body);
@@ -48,12 +48,14 @@ export class ProductsCrmController {
     @Post('update/:id')
     async updateProduct(@Req() request: any, @Body() body: any, @Param('id') id: number): Promise<any> {
         id = Number(id);
-        if (isNaN(id)) return { statusCode: 'error', statusMessage: 'Specify correct id!' };
+        if (isNaN(id)) {
+            throw new HttpException('Specify correct id!', 400);
+        }
 
         const target = await this.productsService.get(id);
 
         if (!target) {
-            return { statusCode: 'error', statusMessage: 'Product not found!' };
+            throw new HttpException('Product not found!', 400);
         }
 
         const targetStores = [target.store_id];
@@ -65,7 +67,7 @@ export class ProductsCrmController {
         const hasAccess = request.user?.is_admin
             || await this.storesService.checkAccess(request.user?.id, targetStores);
         if (!hasAccess) {
-            return { statusCode: 'error', statusMessage: 'No access to this store!' };
+            throw new HttpException('No access to this store!', 400);
         }
 
         return await this.productsService.updateProduct(id, body);
@@ -80,23 +82,23 @@ export class ProductsCrmController {
     ) {
         id = Number(id);
         if (isNaN(id)) {
-            return { statusCode: 'error', statusMessage: 'Please specify id!' };
+            throw new HttpException('Please specify id!', 400);
         }
         if (!body.picture) {
-            return { statusCode: 'error', statusMessage: 'Please upload a picture!' };
+            throw new HttpException('Please upload a picture!', 400);
         }
 
         const product = await this.productsService.get(id);
 
         if (!product) {
-            return { statusCode: 'error', statusMessage: 'Product not found!' };
+            throw new HttpException('Product not found!', 400);
         }
 
         // Проверка доступа к магазину
         if (!request.user?.is_admin) {
             const hasAccess = await this.storesService.checkAccess(request.user?.id, [product.store_id]);
             if (!hasAccess) {
-                return { statusCode: 'error', statusMessage: 'No access to this product!' };
+                throw new HttpException('No access to this product!', 400);
             }
         }
 
@@ -108,20 +110,20 @@ export class ProductsCrmController {
     async getProduct(@Param('id') id: number, @Req() request: any): Promise<any> {
         const targetID = Number(id);
         if (isNaN(targetID)) {
-            return { statusCode: 'error', statusMessage: 'Please specify id' };
+            throw new HttpException('Please specify id', 400);
         }
 
         const product = await this.productsService.get(id);
 
         if (!product) {
-            return { statusCode: 'error', statusMessage: 'Product not found!' };
+            throw new HttpException('Product not found!', 400);
         }
 
         // Проверка доступа к магазину
         if (!request.user?.is_admin) {
             const hasAccess = await this.storesService.checkAccess(request.user?.id, [product.store_id]);
             if (!hasAccess) {
-                return { statusCode: 'error', statusMessage: 'No access to this product!' };
+                throw new HttpException('No access to this product!', 400);
             }
         }
 
@@ -139,7 +141,7 @@ export class ProductsCrmController {
     async deleteProduct(@Param('id') id: number, @Req() request: any): Promise<any> {
         const targetID = Number(id);
         if (isNaN(targetID)) {
-            return { statusCode: 'error', statusMessage: 'Please specify id' };
+            throw new HttpException('Please specify id', 400);
         }
 
         const target = await this.products.findFirst({
@@ -153,14 +155,14 @@ export class ProductsCrmController {
         });
 
         if (!target) {
-            return { statusCode: 'error', statusMessage: 'Product not found!' };
+            throw new HttpException('Product not found!', 400);
         }
 
         // Проверка, владеет ли юзер магазином, товар которого он удаляет
         const hasAccess = request.user?.is_admin
             || await this.storesService.checkAccess(request.user?.id, [target.store_id]);
         if (!hasAccess) {
-            return { statusCode: 'error', statusMessage: 'No access to this product!' };
+            throw new HttpException('No access to this product!', 400);
         }
 
         return await this.productsService.deleteProducts([targetID]);
@@ -171,7 +173,7 @@ export class ProductsCrmController {
     @Post('delete')
     async deleteMultipleProducts(@Body() productsList: number[], @Req() request: any): Promise<any> {
         if (!Array.isArray(productsList)) {
-            return { statusCode: 'error', statusMessage: 'Please specify products!' };
+            throw new HttpException('Please specify products!', 400);
         }
 
         const productsQuery = productsList.map(id => { return { id: Number(id) } });
@@ -188,7 +190,7 @@ export class ProductsCrmController {
         });
 
         if (!target.length) {
-            return { statusCode: 'error', statusMessage: 'No products found!' };
+            throw new HttpException('No products found!', 400);
         }
 
         const targetStores = [...new Set(target.map(item => item.store_id))];
@@ -197,7 +199,7 @@ export class ProductsCrmController {
         const hasAccess = request.user?.is_admin
             || await this.storesService.checkAccess(request.user?.id, targetStores);
         if (!hasAccess) {
-            return { statusCode: 'error', statusMessage: 'No access to some products!' };
+            throw new HttpException('No access to some products!', 400);
         }
 
         return await this.productsService.deleteProducts(target.map(item => item.id));

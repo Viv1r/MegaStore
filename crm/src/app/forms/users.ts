@@ -1,4 +1,5 @@
-import {ColumnField, FilterField, ConstructorField} from "../types/Fields";
+import {ColumnField, FilterField, ConstructorField} from "../models/fields";
+import {FieldType} from "../models/field-type";
 
 export const columns: ColumnField[] = [
   {
@@ -41,21 +42,21 @@ export const filters: FilterField[] = [
   {
     key: 'id',
     name: 'ID',
-    type: 'number'
+    type: FieldType.NUMBER
   },
   {
     key: 'email',
     name: 'E-mail',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'name',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'is_admin',
     name: 'Access level',
-    type: 'select-one',
+    type: FieldType.SELECT_ONE,
     options: [
       {
         id: 1,
@@ -70,7 +71,7 @@ export const filters: FilterField[] = [
   {
     key: 'is_banned',
     name: 'Status',
-    type: 'select-one',
+    type: FieldType.SELECT_ONE,
     options: [
       {
         id: false,
@@ -87,20 +88,20 @@ export const filters: FilterField[] = [
 export const constructor: ConstructorField[] = [
   {
     key: 'email',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'password',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'name',
-    type: 'text'
+    type: FieldType.TEXT
   },
   {
     key: 'is_admin',
     name: 'Access level',
-    type: 'select-one',
+    type: FieldType.SELECT_ONE,
     rootOnly: true,
     options: [
       {
@@ -116,7 +117,7 @@ export const constructor: ConstructorField[] = [
   {
     key: 'is_banned',
     name: 'Status',
-    type: 'select-one',
+    type: FieldType.SELECT_ONE,
     options: [
       {
         id: false,

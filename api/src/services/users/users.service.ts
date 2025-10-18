@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import { SqlService } from "../sql/sql.service";
 import { Prisma } from "@prisma/client";
 
@@ -81,7 +81,9 @@ export class UsersService {
     }
 
     async banById(id: number): Promise<any> {
-        if (!id) return {statusCode: 'error'};
+        if (!id) {
+            throw new HttpException('Something went wrong!', 400);
+        }
 
         const result = await this.users.update({
             where: {
@@ -95,7 +97,9 @@ export class UsersService {
         if (result) {
             return {statusCode: 'ok'};
         }
-        if (!id) return {statusCode: 'error', statusMessage: `The user #${id} was not banned!`};
+        if (!id) {
+            throw new HttpException(`The user #${id} was not banned!`, 400);
+        }
     }
 
     async updateProfilePicture(userID: number, pictureLink: string): Promise<boolean> {
@@ -124,13 +128,10 @@ export class UsersService {
 
         const emptyFields = Object.keys(newUserData).filter(key => newUserData[key] === undefined);
         if (emptyFields?.length) {
-            return {
-                statusCode: 'error',
-                statusMessage: 'Check these fields: '
-                    + emptyFields.toString()
-                        .replaceAll(',', ', ')
-                        .replaceAll('_', ' ')
-            };
+            const message = 'Check these fields: ' + emptyFields.toString()
+                .replaceAll(',', ', ')
+                .replaceAll('_', ' ');
+            throw new HttpException(message, 400);
         }
 
         let newUser;
@@ -139,14 +140,16 @@ export class UsersService {
                 data: newUserData
             });
         } catch {
-            return { statusCode: 'error', statusMessage: 'Check your data!' };
+            throw new HttpException('Check your data!', 400);
         }
 
         return { statusCode: 'ok', product: newUser };
     }
 
     public async updateUser(userID: number, data: any): Promise<any> {
-        if (!userID) return { statusCode: 'error', statusMessage: 'Pleace specify the product id!' };
+        if (!userID) {
+            throw new HttpException('Pleace specify the product id!', 400);
+        }
 
         const newData = {
             email: data?.email,
@@ -157,10 +160,8 @@ export class UsersService {
         };
 
         if (Object.values(newData).every(item => item === undefined)) {
-            return { statusCode: 'error', statusMessage: 'No new fields! You can specify: '
-                + Object.keys(newData).toString()
-                    .replaceAll(',', ', ')
-            }
+            const availableFields = Object.keys(newData).toString().replaceAll(',', ', ');
+            throw new HttpException('No new fields! You can specify: ' + availableFields, 400);
         }
 
         let updatedUser;
@@ -172,7 +173,7 @@ export class UsersService {
                 }
             });
         } catch {
-            return { statusCode: 'error', statusMessage: 'Check your data!' };
+            throw new HttpException('Check your data!', 400);
         }
 
         return { statusCode: 'ok', product: updatedUser };

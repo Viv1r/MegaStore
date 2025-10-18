@@ -1,4 +1,4 @@
-import {Get, Injectable} from '@nestjs/common';
+import {Get, HttpException, Injectable} from '@nestjs/common';
 import {SqlService} from "../sql/sql.service";
 
 @Injectable()
@@ -46,7 +46,7 @@ export class CategoriesService {
         if (data) {
             return { statusCode: 'ok', items: data };
         }
-        return { statusCode: 'error' };
+        throw new HttpException('Something went wrong!', 400);
     }
 
     async getOne(id: number): Promise<any> {
@@ -65,12 +65,12 @@ export class CategoriesService {
         if (result) {
             return { statusCode: 'ok', item: result };
         }
-        return { statusCode: 'error', statusMessage: 'Try again later!' };
+        throw new HttpException('Try again later!', 400);
     }
 
     async create(data: any) {
         if (!data.name) {
-            return { statusCode: 'error', statusMessage: 'Check your data!' };
+            throw new HttpException('Check your data!', 400);
         }
 
         let newCategory;
@@ -85,14 +85,14 @@ export class CategoriesService {
         if (newCategory) {
             return { statusCode: 'ok' };
         }
-        return { statusCode: 'error', statusMessage: 'Could not create!' };
+        throw new HttpException('Could not create!', 400);
     }
 
     async update(id: number, data: any) {
         id = Number(id);
 
         if (isNaN(id) || !data.name) {
-            return { statusCode: 'error', statusMessage: 'Check your data!' };
+            throw new HttpException('Check your data!', 400);
         }
 
         let updatedCategory;
@@ -110,7 +110,7 @@ export class CategoriesService {
         if (updatedCategory) {
             return { statusCode: 'ok' };
         }
-        return { statusCode: 'error', statusMessage: 'Could not create!' };
+        throw new HttpException('Could not create!', 400);
     }
 
     async replace(oldCategory: number, newCategory: number): Promise<boolean> {

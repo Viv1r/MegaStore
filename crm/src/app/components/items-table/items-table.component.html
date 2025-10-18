@@ -7,7 +7,7 @@
   >
     <div *ngFor="let field of filtersFields" class="field_wrapper">
 
-      <ng-template [ngIf]="!field.adminOnly || user.isAdmin">
+      <ng-container *ngIf="!field.adminOnly || user.isAdmin">
         <label>{{ field.name ?? (field.key | titlecase) }}</label>
 
         <app-select-one
@@ -41,7 +41,7 @@
           type="number"
           [formControlName]="field.key"
         >
-      </ng-template>
+      </ng-container>
 
     </div>
   </form>
@@ -54,23 +54,23 @@
 <div class="container" *ngIf="!loading; else loadingIndicator">
   <table class="items-table">
     <tr class="headers">
-      <th *ngIf="selectMode" class="pseudo_cl"></th>
+      <th *ngIf="selectMode" class="pseudo-cl"></th>
 
       <th *ngFor="let cl of columns">
         {{ cl.name || (cl.tag | titlecase) }}
       </th>
 
-      <ng-template [ngIf]="editable">
-        <th class="pseudo_cl"></th>
-        <th class="pseudo_cl"></th>
+      <ng-container *ngIf="editable">
+        <th class="pseudo-cl"></th>
+        <th class="pseudo-cl"></th>
 
         <div class="btn_add" (click)="add.emit()">
           <img src="assets/svg/add-item.svg" alt="add">
         </div>
-      </ng-template>
+      </ng-container>
 
     </tr>
-    <ng-template [ngIf]="items.length">
+    <ng-container *ngIf="items.length">
       <tr
         class="item"
         *ngFor="let item of items; let i = index"
@@ -88,10 +88,10 @@
           </div>
         </td>
 
-        <ng-template ngFor let-cl [ngForOf]="columns">
+        <ng-container *ngFor="let cl of columns">
           <td [class]="{ marked: item[cl.tag] === cl.highlightValue }">
 
-            <ng-template [ngIf]="cl.image" [ngIfElse]="noImage">
+            <ng-container *ngIf="cl.image; else noImage">
               <label for="inp_{{item.id}}">
                 <img
                   class="item_picture"
@@ -107,20 +107,20 @@
                 accept="image/png, image/jpeg"
                 (input)="applyPicture(cl.tag, item.id, $event)"
               >
-            </ng-template>
+            </ng-container>
             <ng-template #noImage>
-              <ng-template [ngIf]="cl.transform" [ngIfElse]="noTransform">
+              <ng-container *ngIf="cl.transform; else noTransform">
                 {{ cl.transform(item[cl.tag]) }}
-              </ng-template>
+              </ng-container>
               <ng-template #noTransform>
                 {{ item[cl.tag] ?? cl.default ?? '' }}
               </ng-template>
             </ng-template>
 
           </td>
-        </ng-template>
+        </ng-container>
 
-        <ng-template [ngIf]="editable">
+        <ng-container *ngIf="editable">
           <td class="btn_edit" (click)="$event.stopPropagation(); editItem(item.id)">
             <img src="assets/svg/edit-item.svg" alt="edit">
           </td>
@@ -128,10 +128,10 @@
           <td class="btn_delete" (click)="$event.stopPropagation(); delete.emit(item.id)">
             <img src="assets/svg/delete-item.svg" alt="delete">
           </td>
-        </ng-template>
+        </ng-container>
 
       </tr>
-    </ng-template>
+    </ng-container>
   </table>
 
   <div

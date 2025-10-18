@@ -1,4 +1,5 @@
-import {FilterField, ConstructorField, ColumnField} from "../types/Fields";
+import {FilterField, ConstructorField, ColumnField} from "../models/fields";
+import {FieldType} from "../models/field-type";
 
 export const columns: ColumnField[] = [
   {
@@ -19,17 +20,17 @@ export const filters: FilterField[] = [
   {
     key: 'id',
     name: 'ID',
-    type: 'number'
+    type: FieldType.NUMBER
   },
   {
     key: 'name',
-    type: 'text'
+    type: FieldType.TEXT
   }
 ];
 
 export const constructor: ConstructorField[] = [
   {
     key: 'name',
-    type: 'text'
+    type: FieldType.TEXT
   }
 ];

@@ -1,57 +1,56 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import { FormGroup } from "@angular/forms";
+import {FormGroup} from "@angular/forms";
 import {environment} from "../../environments/environment";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {PopupFormItem} from "../models/popup-form-item";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PopupFormService {
-  active = false;
 
-  itemChange = new EventEmitter<any>();
-  constructorChange = new EventEmitter<any>();
-  close = new EventEmitter<void>();
-  error = new EventEmitter<string>();
+    applyItem$?: Subject<any>;
 
-  applyItem?: EventEmitter<any>;
-  itemID?: number;
+    readonly active$ = new BehaviorSubject<boolean>(false);
 
-  clear(): void {
-    this.itemID = undefined;
-    this.close.emit();
-  }
+    readonly itemChange$ = new Subject<any>();
+    readonly constructorChange$ = new Subject<any>();
+    readonly close$ = new Subject<void>();
+    readonly error$ = new Subject<string>();
 
-  apply(data: any) {
-    if (this.applyItem) {
-      this.applyItem.emit({id: this.itemID, item: data});
+    readonly popupFormItem$ = new BehaviorSubject<PopupFormItem | null>(null);
+
+    clear(): void {
+        this.popupFormItem$.next(null);
+        this.close$.next();
     }
-  }
 
-  pushError(errorMessage: string): void {
-    this.error.emit(errorMessage);
-  }
-
-  load({id, source, constructor, emitter}: {
-    id?: number,
-    source?: Observable<any>,
-    constructor: any,
-    emitter: EventEmitter<any>
-  }) {
-    this.applyItem = emitter; // Привязка внешнего эмиттера для последующей отправки данных
-    this.itemID = id;
-
-    if (source) {
-      source.subscribe((data: any) => {
-        if (data.item) {
-          this.constructorChange.emit(constructor);
-          this.itemChange.emit(data.item);
+    apply(data: any): void {
+        if (this.applyItem$) {
+            const id = this.popupFormItem$.value?.id;
+            this.applyItem$.next({id, item: data});
         }
-        this.active = true;
-      });
-    } else {
-      this.constructorChange.emit(constructor);
-      this.active = true;
     }
-  }
+
+    pushError(errorMessage: string): void {
+        this.error$.next(errorMessage);
+    }
+
+    load(item: PopupFormItem): void {
+        this.popupFormItem$.next(item);
+        this.applyItem$ = item.emitter; // Привязка внешнего эмиттера для последующей отправки данных
+
+        if (item?.source) {
+            item.source.subscribe((data: any) => {
+                if (data.item) {
+                    this.constructorChange$.next(item.constructor);
+                    this.itemChange$.next(data.item);
+                }
+                this.active$.next(true);
+            });
+        } else {
+            this.constructorChange$.next(item.constructor);
+            this.active$.next(true);
+        }
+    }
 }

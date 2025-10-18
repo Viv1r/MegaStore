@@ -1,3 +1,5 @@
+@import "src/styles/mixins";
+
 $color-main: #008be1;
 $color-main-light: #11a3ff;
 $color-danger: #e12900;
@@ -10,7 +12,7 @@ $base-indent: 48px;
   padding: 30px $base-indent 20px $base-indent;
 
   .title {
-    font-family: "Kulim Park", serif;
+    @include font-default;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 22px;
@@ -36,7 +38,7 @@ $base-indent: 48px;
     flex-grow: 1;
 
     label {
-      font-family: "Kulim Park", serif;
+      @include font-default;
       margin-bottom: 4px;
     }
 
@@ -46,7 +48,7 @@ $base-indent: 48px;
       border: none;
       border-bottom: 1px solid #a2a2a2;
       background-color: rgba($color: black, $alpha: .025);
-      font-family: "Raleway", serif;
+      @include font-fancy;
       font-size: 13px;
 
       &:focus {
@@ -66,15 +68,16 @@ $base-indent: 48px;
     width: 140px;
     height: 36px;
     padding: 0 10px;
-    border-radius: 8px;
+    border-radius: 12px;
     transition: all .1s ease-out;
     cursor: pointer;
+    font-weight: 600;
   }
 
   .btn_apply {
     background-color: white;
     color: $color-main;
-    border: 1px solid $color-main;
+    border: 2px solid $color-main;
 
     &:hover {
       background-color: $color-main;
@@ -85,7 +88,7 @@ $base-indent: 48px;
   .btn_reset {
     background-color: white;
     color: $color-danger;
-    border: 1px solid $color-danger;
+    border: 2px solid $color-danger;
 
     &:hover {
       background-color: $color-danger;
@@ -102,7 +105,7 @@ $base-indent: 48px;
 
 .container {
   background-color: white;
-  box-shadow: 2px 2px 7px rgba($color: black, $alpha: .15);
+  //box-shadow: 2px 2px 7px rgba($color: black, $alpha: .15);
   overflow: auto;
 
   .message {
@@ -111,7 +114,7 @@ $base-indent: 48px;
     justify-content: center;
     align-items: center;
     padding: 40px 0;
-    font-family: "Kulim Park", serif;
+    @include font-default;
     font-size: 20px;
     font-style: italic;
     color: #bfbfbf;
@@ -141,24 +144,25 @@ $base-indent: 48px;
   img {
     width: auto;
     height: 100%;
-    filter: invert(100%);
+    filter: invert(1);
+    opacity: 1;
     transition: .1s ease-out;
   }
 
   &:hover img {
-    filter: invert(75%);
+    opacity: .75;
   }
 }
 
 td, th {
   padding: 20px 10px 20px 16px;
   text-align: start;
-  font-family: "Kufam", serif;
   max-width: 300px;
   box-sizing: border-box;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @include font-secondary;
 
   &:first-of-type {
     padding-left: $base-indent;
@@ -183,7 +187,7 @@ th {
 
 .items-table tr {
 
-  .pseudo_cl:hover {
+  .pseudo-cl:hover {
     background: transparent;
     cursor: default;
   }
@@ -270,7 +274,7 @@ th {
   gap: 12px;
   border-top: 1px solid #ececec;
   font-size: 16px;
-  font-family: "Kulim Park", serif;
+  @include font-default;
   user-select: none;
 
   .btn_cancel {

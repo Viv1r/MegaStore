@@ -1,0 +1,28 @@
+@import "src/styles/mixins";
+
+.page {
+  width: 100%;
+  height: fit-content;
+  position: relative;
+}
+
+.header {
+  width: 100%;
+  height: 60px;
+  position: relative;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  box-shadow: 2px 2px 7px rgba($color: black, $alpha: .15);
+  font-size: 24px;
+  @include font-default;
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+  height: fit-content;
+}

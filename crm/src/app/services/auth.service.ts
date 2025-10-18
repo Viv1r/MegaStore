@@ -1,90 +1,95 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-import { User } from "../types/User";
-import { Router } from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import {User} from "../models/user";
+import {Router} from "@angular/router";
+import {UserResponseData} from "../models/user-response-data";
+import {firstValueFrom} from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {}
 
-  private readonly apiBasePath = environment.API_BASE_PATH;
-  public readonly user = new User();
+    readonly user = new User();
+    readonly errorEmitter = new EventEmitter<string>();
 
-  public readonly errorEmitter = new EventEmitter<string>();
+    private readonly apiBasePath = environment.API_BASE_PATH;
 
-  public tokenAuth(): Promise<boolean> {
-    const URL = this.apiBasePath + 'token-auth';
+    constructor(private http: HttpClient, private router: Router) {}
 
-    return new Promise(resolve => {
-      this.http.post(URL, {})
-        .subscribe(response => {
-          const user = (response as { user?: User }).user;
-          if (user) {
-            this.user.auth(user);
-            resolve(true);
-          } else {
-            resolve(false);
-          }
-        });
-    })
-  }
+    async tokenAuth(): Promise<boolean> {
+        const url = this.apiBasePath + 'token-auth';
 
-  public login(data: any): void {
-    if ( !(data.email && data.password) ) {
-      this.errorEmitter.emit('Please fill all the fields!');
-      return;
-    }
+        const data = await this.http.post(url, {}).toPromise();
 
-    const URL = this.apiBasePath + 'login';
-
-    this.http.post(URL, data)
-      .subscribe((response: any) => {
-        const user = response.user;
+        const user = (data as { user?: UserResponseData }).user;
         if (user) {
-          this.user.auth(user);
-          this.router.navigate(['']);
-        } else if (response.statusMessage) {
-          this.errorEmitter.emit(response.statusMessage);
+            this.user.auth(user);
+            return true;
         }
-      });
-  }
-
-  public register(data: any): void {
-    if ( !(data.email && data.password && data.confirmPassword && data.name) ) {
-      this.errorEmitter.emit('All fields are required!');
-      return;
+        return false;
     }
-    if (data.password !== data.confirmPassword) {
-      this.errorEmitter.emit('Passwords should match!');
-      return;
+
+    public async login(data: any): Promise<void> {
+        if (!(data.email && data.password)) {
+            this.errorEmitter.emit('Please fill all the fields!');
+            return;
+        }
+
+        const URL = this.apiBasePath + 'login';
+
+        const response = await firstValueFrom(
+            this.http.post<any>(URL, data)
+        );
+
+        if (response?.user) {
+            this.user.auth(response.user);
+            this.router.navigate(['']);
+        } else if (response.statusMessage) {
+            this.errorEmitter.emit(response.statusMessage);
+        }
     }
-    delete data.confirmPassword;
 
-    const URL = this.apiBasePath + 'register';
+    public async register(data: any): Promise<void> {
+        if (!(data.email && data.password && data.confirmPassword && data.name)) {
+            this.errorEmitter.emit('All fields are required!');
+            return;
+        }
 
-    this.http.post(URL, data)
-      .subscribe((response: any) => {
+        if (data.password !== data.confirmPassword) {
+            this.errorEmitter.emit('Passwords should match!');
+            return;
+        }
+
+        delete data.confirmPassword;
+
+        const url = this.apiBasePath + 'register';
+
+        const response = await firstValueFrom(
+            this.http.post<any>(url, data)
+        );
+
         if (response.user) {
-          this.user.auth(response.user);
-          this.router.navigate(['']);
-        } else if (response.statusMessage) {
-          this.errorEmitter.emit(response.statusMessage);
+            this.user.auth(response.user);
+            this.router.navigate(['']);
+            return;
         }
-      });
-  }
+        if (response.statusMessage) {
+            this.errorEmitter.emit(response.statusMessage);
+        }
+    }
 
-  public logout(): void {
-    const URL = this.apiBasePath + 'logout';
+    public async logout(): Promise<void> {
+        const url = this.apiBasePath + 'logout';
 
-    this.http.post(URL, {})
-      .subscribe((response: any) => {
+        const response = await firstValueFrom(
+            this.http.post<any>(url, {})
+        );
+
         if (response.statusCode === 'ok') {
-          this.user.logout();
-          this.router.navigate(['login']);
+            this.user.logout();
+            this.router.navigate(['login']);
         }
-      })
-  }
+    }
 }

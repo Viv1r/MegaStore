@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Res } from '@nestjs/common';
+import {Controller, Post, Body, Req, Res, HttpException} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
 import {UsersService} from "../../services/users/users.service";
@@ -21,7 +21,7 @@ export class LoginController {
         };
 
         if (!(authData.email && authData.password)) {
-            return { statusCode: 'error', statusMessage: 'Bad details!' }
+            throw new HttpException('Bad details!', 401);
         }
         
         let token;
@@ -35,10 +35,7 @@ export class LoginController {
             const user = await this.usersService.get(token);
 
             if (user?.is_banned) {
-                return {
-                    statusCode: 'error',
-                    statusMessage: 'You are banned!'
-                }
+                throw new HttpException('You are banned!', 403);
             }
 
             response.cookie('token', token);
@@ -51,6 +48,6 @@ export class LoginController {
         }
         
         response.clearCookie('token');
-        return { statusCode: 'error', statusMessage: 'Wrong email or password!' };
+        throw new HttpException('Wrong email or password!', 401);
     }
 }

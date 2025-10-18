@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Res } from '@nestjs/common';
+import {Controller, HttpException, Post, Req, Res} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { SqlService } from 'src/services/sql/sql.service';
 import { UsersService } from "../../services/users/users.service";
@@ -11,7 +11,7 @@ export class TokenAuthController {
     async authByToken(@Req() request: Request, @Res({ passthrough: true }) response: Response): Promise<object> {
 		const token = request.cookies['token'];
         if (!token) {
-			return { statusCode: 'error', statusMessage: 'bad token!' };
+			throw new HttpException('Bad token!', 400);
 		}
 
         let user;
@@ -25,6 +25,7 @@ export class TokenAuthController {
         }
 
         response.clearCookie('token');
-        return { statusCode: 'error', statusMessage: 'bad request!' };
+
+        throw new HttpException('Bad request!', 400);
     }
 }
